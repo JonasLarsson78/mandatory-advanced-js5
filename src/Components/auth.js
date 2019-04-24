@@ -38,7 +38,7 @@ const Auth = () => {
 
  
     if(isLoggedIn){
-      return  <Redirect to={{pathname:"/main", state: {data: data}}} />
+      return  <Redirect to={{pathname:"/main", state: {data: data, isLoggedIn: isLoggedIn}}} />
       
     }
   return(
