@@ -13,7 +13,8 @@ const Main = (props) => {
 
   const logOut = () => {
     updateToken(null);
-    updateTokenState(token$.value)
+    updateTokenState(token$.value);
+    updateIsLoggedIn(false)
   }
 
   if(token === null){
