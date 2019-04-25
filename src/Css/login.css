@@ -1,0 +1,38 @@
+a:visited{
+    color: white;
+}
+.loginMain{
+    position: absolute;
+    top: 100px;
+    left: 50%;
+    width: 350px;
+    height: 350px;
+    transform: translate(-50%, 0%);
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 10px;
+    background-image: url(../Img/box_logo.png);
+    background-size: 60%;
+    background-repeat: no-repeat;
+    background-position-x: 50%;
+    background-position-x: 50%;
+    box-shadow: 10px 10px 5px 0px #000000bf;
+}
+.loginBtn{
+    position: absolute;
+    bottom: 70px;
+    left: 50%;
+    transform: translate(-50%, 0%);
+    width: 100px;
+    height: 25px;
+    border:none;
+    border-radius: 5px;
+    color: white;
+    background-color: black;
+}
+.loginBtn:hover{
+    background-color: #444444;
+}
+.loginLink{
+    text-decoration: none;
+}
