@@ -1,5 +1,5 @@
 import React from 'react';
-import './App.css';
+//import './App.css';
 import Login from './Components/login';
 import Auth from './Components/auth';
 import Main from './Components/main';

@@ -20,7 +20,7 @@ const url = () =>{
 
     <>
     <div className="loginMain">
-      <button className="loginBtn"><a className="loginLink" href={dbx.getAuthenticationUrl('http://localhost:3000/auth')}>Connect</a></button>
+      <a className="loginLink" href={dbx.getAuthenticationUrl('http://localhost:3000/auth')}><button className="loginBtn">Connect</button></a>
     </div>
     </>
   )
