@@ -7,16 +7,14 @@ import '../Css/main.css';
 
 const Main = (props) => {
 
-  const [isLoggedIn, updateIsLoggedIn] = useState(props.location.state.isLoggedIn)
+  //const [isLoggedIn, updateIsLoggedIn] = useState(props.location.state.isLoggedIn)
   const [token, updateTokenState] = useState(token$.value)
-  const [data, updateData] = useState(props.location.state.data.entries)
-  
-  console.log(data)
+
 
   const logOut = () => {
     updateToken(null);
     updateTokenState(token$.value);
-    updateIsLoggedIn(false)
+    //updateIsLoggedIn(false)
   }
 
   if(token === null){

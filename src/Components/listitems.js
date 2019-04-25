@@ -6,8 +6,36 @@ import '../Css/listitems.css';
 
 const ListItems = (props) => {
 
-  const [data, updateData] = useState(props.listData)
+  const [data, updateData] = useState([])
 
+
+  useEffect(() => {
+    const option = {
+      fetch: fetch,
+      accessToken: token$.value
+    };
+    
+    const dbx = new Dropbox(
+      option,
+    );
+    dbx.filesListFolder({
+      path: ''
+    })
+    .then(response => {
+      console.log(response)
+      updateData(response.entries)
+     
+      
+      
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
+  
+  
+  }, [])
+
+  
   
   const navigate = (e) => {
     
@@ -46,29 +74,7 @@ const ListItems = (props) => {
 
      return;
    }
-    //updateFolder(e.target.dataset.folder)
-
-    const option = {
-      fetch: fetch,
-      accessToken: token$.value
-    };
-    
-    const dbx = new Dropbox(
-      option,
-    );
-    dbx.filesListFolder({
-      path: e.target.dataset.folder
-    })
-    .then(response => {
-      console.log(response)
-      updateData(response.entries)
-     
-      
-      
-    })
-    .catch(function(error) {
-      console.log(error);
-    });
+    //updateFolder(e.target.dataset.folder
 
 
   }
