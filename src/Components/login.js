@@ -12,9 +12,6 @@ const dbx = new Dropbox({
   fetch: fetch,
 })
 
-const url = () =>{
-  dbx.getAuthenticationUrl('http://localhost:3000/auth');
-} 
   
   return(
 

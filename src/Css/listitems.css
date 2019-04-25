@@ -1,0 +1,7 @@
+.listFiles{
+    cursor: pointer;
+    list-style-type: none;
+}
+.listFiles:hover{
+    color: darkred;
+}
