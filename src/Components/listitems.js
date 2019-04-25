@@ -6,10 +6,15 @@ const ListItems = (props) => {
 
   const [data, updateData] = useState(props.listData)
 
-
   const navigate = (e) => {
 
    console.log(e.target.dataset.folder)
+   console.log(e.target.dataset.tag)
+
+   if(e.target.dataset.tag === 'file'){
+     console.log('detta är en fil')
+     return;
+   }
     //updateFolder(e.target.dataset.folder)
 
     const option = {
@@ -38,7 +43,7 @@ const ListItems = (props) => {
 
   const renderList = (data) => {
     return(
-      <li onClick={navigate} key={data.id} data-folder={data.path_lower}>{data.name}</li>
+      <li onClick={navigate} key={data.id} data-folder={data.path_lower} data-tag={data[".tag"]}>{data.name}</li>
     )
   }
 
