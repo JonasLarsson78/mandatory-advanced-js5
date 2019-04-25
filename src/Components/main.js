@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Link, Redirect}from "react-router-dom";
 import { updateToken } from './store.js'
 import {token$} from './store.js';
 import ListItems from './listitems'
+import '../Css/main.css';
 
 const Main = (props) => {
 
@@ -24,11 +25,19 @@ const Main = (props) => {
 
   return(
     <>
-    <p>Du är nu på din sida</p>
-    <button onClick={logOut}>logOut</button>
-    <ul>
-    <ListItems listData={data}></ListItems>
-    </ul>
+    <div className="mainHeader">
+    mainHeader
+    </div>
+    <div className="mainMain">
+      <p>Du är nu på din sida</p>
+      <button onClick={logOut}>logOut</button>
+      <ul>
+      <ListItems listData={data}></ListItems>
+      </ul>
+    </div>
+    <div className="mainSide">
+      mainSide
+    </div>
     </>
   )
 }
