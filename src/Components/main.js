@@ -2,14 +2,15 @@ import React, {useState} from 'react';
 import { BrowserRouter as Router, Route, Link, Redirect}from "react-router-dom";
 import { updateToken } from './store.js'
 import {token$} from './store.js';
+import ListItems from './listitems'
 
 const Main = (props) => {
 
   const [isLoggedIn, updateIsLoggedIn] = useState(props.location.state.isLoggedIn)
   const [token, updateTokenState] = useState(token$.value)
-
-  console.log(props.location)
-  console.log(isLoggedIn)
+  const [data, updateData] = useState(props.location.state.data.entries)
+  
+  console.log(data)
 
   const logOut = () => {
     updateToken(null);
@@ -25,6 +26,9 @@ const Main = (props) => {
     <>
     <p>Du är nu på din sida</p>
     <button onClick={logOut}>logOut</button>
+    <ul>
+    <ListItems listData={data}></ListItems>
+    </ul>
     </>
   )
 }
