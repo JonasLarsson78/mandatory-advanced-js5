@@ -37,7 +37,11 @@ const ListItems = (props) => {
 
   
   
-  const navigate = (e) => {
+  const downloadFile = (e) => {
+
+    if(e.target.dataset.tag === 'folder'){
+      return null;
+    }
     
    console.log(e.target.dataset.folder)
    console.log(e.target.dataset.tag)
@@ -81,7 +85,7 @@ const ListItems = (props) => {
  
   const renderList = (data) => {
     return(
-      <li className="listFiles" to={data.path_lower} data-name={data.name} onClick={navigate} key={data.id} data-folder={data.path_lower} data-tag={data[".tag"]}>{data.name}</li>
+      <li className="listFiles" to={data.path_lower} data-name={data.name} onClick={downloadFile} key={data.id} data-folder={data.path_lower} data-tag={data[".tag"]}>{data.name}</li>
     )
   }
 
