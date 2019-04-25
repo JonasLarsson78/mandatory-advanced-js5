@@ -1,13 +1,14 @@
 import React, {useState, useEffect} from 'react';
 import {token$} from './store.js';
 import { Dropbox } from 'dropbox';
+import { BrowserRouter as Router, Route, Link}from "react-router-dom";
 
 const ListItems = (props) => {
 
   const [data, updateData] = useState(props.listData)
 
   const navigate = (e) => {
-
+    
    console.log(e.target.dataset.folder)
    console.log(e.target.dataset.tag)
 
@@ -31,6 +32,7 @@ const ListItems = (props) => {
     .then(response => {
       console.log(response)
       updateData(response.entries)
+     
       
       
     })
@@ -40,10 +42,10 @@ const ListItems = (props) => {
 
 
   }
-
+ 
   const renderList = (data) => {
     return(
-      <li onClick={navigate} key={data.id} data-folder={data.path_lower} data-tag={data[".tag"]}>{data.name}</li>
+      <li to={data.path_lower} data-name={data.name} onClick={navigate} key={data.id} data-folder={data.path_lower} data-tag={data[".tag"]}>{data.name}</li>
     )
   }
 
@@ -58,3 +60,5 @@ const ListItems = (props) => {
 }
 
 export default ListItems;
+
+{/* <li><Link to={data.path_lower} onClick={navigate} key={data.id} data-folder={data.path_lower} data-tag={data[".tag"]}>{data.name}</Link></li> */}
