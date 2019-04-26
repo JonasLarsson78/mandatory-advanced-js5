@@ -89,6 +89,16 @@ const ListItems = (props) => {
   
  
   const renderList = (data) => {
+
+
+    if(data[".tag"] === 'file'){
+
+      return(
+        <li key={data.id} className="listFiles" to={data.path_lower} data-name={data.name} onClick={downloadFile} data-folder={data.path_lower} data-tag={data[".tag"]}>{data.name}</li>
+      )
+      
+    }
+
     return(
       
       <li key={data.id} className="listFiles" to={data.path_lower} data-name={data.name} onClick={downloadFile} data-folder={data.path_lower} data-tag={data[".tag"]}><Link to={"/main" + data.path_lower}>{data.name}</Link></li>
