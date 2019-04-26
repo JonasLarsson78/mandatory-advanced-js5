@@ -10,7 +10,6 @@ const Main = (props) => {
   //const [isLoggedIn, updateIsLoggedIn] = useState(props.location.state.isLoggedIn)
   const [token, updateTokenState] = useState(token$.value)
 
-
   const logOut = () => {
     updateToken(null);
     updateTokenState(token$.value);
@@ -30,7 +29,7 @@ const Main = (props) => {
       <p>Du är nu på din sida</p>
       <button onClick={logOut}>logOut</button>
       <ul>
-      <ListItems listData={data}></ListItems>
+      <ListItems folder={props.location.pathname}></ListItems>
       </ul>
     </div>
     <div className="mainSide">

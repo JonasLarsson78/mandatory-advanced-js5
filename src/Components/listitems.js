@@ -1,15 +1,14 @@
 import React, {useState, useEffect} from 'react';
 import {token$} from './store.js';
 import { Dropbox } from 'dropbox';
-import { BrowserRouter as Router, Route, Link}from "react-router-dom";
+import { BrowserRouter as Router, Route, Link, Redirect}from "react-router-dom";
 import '../Css/listitems.css';
 
 const ListItems = (props) => {
-
   const [data, updateData] = useState([])
 
-
   useEffect(() => {
+   
     const option = {
       fetch: fetch,
       accessToken: token$.value
@@ -18,44 +17,55 @@ const ListItems = (props) => {
     const dbx = new Dropbox(
       option,
     );
-    dbx.filesListFolder({
-      path: ''
-    })
-    .then(response => {
-      console.log(response)
-      updateData(response.entries)
-     
+    if (props.folder === "/main"){
+      dbx.filesListFolder({
+        path: ''
+      })
+      .then(response => {
+        updateData(response.entries)
+        
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+    }
+    else{
+      let newFolder = props.folder;
+      newFolder = newFolder.substring(5)
       
-      
-    })
-    .catch(function(error) {
-      console.log(error);
-    });
+      dbx.filesListFolder({
+        path: newFolder
+      })
+      .then(response => {
+        updateData(response.entries)
+       
+        
+        
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+    }
+    
   
-  
-  }, [])
+  return
+  }, [props.folder])
 
   
   
   const downloadFile = (e) => {
-
     if(e.target.dataset.tag === 'folder'){
       return null;
     }
     
-   console.log(e.target.dataset.folder)
-   console.log(e.target.dataset.tag)
-
    if(e.target.dataset.tag === 'file'){
-     console.log('detta är en fil')
 
      const option = {
       fetch: fetch,
       accessToken: token$.value
     };
-
+    console.log(props)
      const dbx = new Dropbox(option);
-     
      dbx.filesDownload({ 
        path: e.target.dataset.folder})
         .then(response => {
@@ -69,29 +79,25 @@ const ListItems = (props) => {
           document.body.append(link);
           link.click();
           link.remove();
-          window.addEventListener('focus', e => URL.revokeObjectURL(link.href), {once:true});
-
+          window.addEventListener('focus', (e) => URL.revokeObjectURL(link.href));
         })
         .catch(error => {
          console.log(error)
-             });
-
-     return;
-   }
-    //updateFolder(e.target.dataset.folder
-
-
+        });
+    }
   }
+  
  
   const renderList = (data) => {
     return(
-      <li className="listFiles" to={data.path_lower} data-name={data.name} onClick={downloadFile} key={data.id} data-folder={data.path_lower} data-tag={data[".tag"]}>{data.name}</li>
-    )
+      
+      <li key={data.id} className="listFiles" to={data.path_lower} data-name={data.name} onClick={downloadFile} data-folder={data.path_lower} data-tag={data[".tag"]}><Link to={"/main" + data.path_lower}>{data.name}</Link></li>
+      
+      )
   }
 
   const listData = data.map(renderList)
   
-
   return(
     <>
       {listData}
