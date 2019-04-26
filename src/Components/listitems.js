@@ -72,14 +72,12 @@ const ListItems = (props) => {
           
          let fileName = response.name
          let blob = response.fileBlob
-         
           const link = document.createElement('a');
           link.href = URL.createObjectURL(blob);
           link.download = fileName;
-          document.body.append(link);
+          document.body.appendChild(link);
           link.click();
-          link.remove();
-          window.addEventListener('focus', (e) => URL.revokeObjectURL(link.href));
+          document.body.removeChild(link);
         })
         .catch(error => {
          console.log(error)
@@ -96,15 +94,11 @@ const ListItems = (props) => {
       return(
         <li key={data.id} className="listFiles" to={data.path_lower} data-name={data.name} onClick={downloadFile} data-folder={data.path_lower} data-tag={data[".tag"]}>{data.name}</li>
       )
-      
     }
-
-    return(
-      
-      <li key={data.id} className="listFiles" to={data.path_lower} data-name={data.name} onClick={downloadFile} data-folder={data.path_lower} data-tag={data[".tag"]}><Link to={"/main" + data.path_lower}>{data.name}</Link></li>
-      
+      return(
+        <li key={data.id} className="listFiles" to={data.path_lower} data-name={data.name} onClick={downloadFile} data-folder={data.path_lower} data-tag={data[".tag"]}><Link className="listFolderLink" to={"/main" + data.path_lower}>{data.name}</Link></li>
       )
-  }
+    }
 
   const listData = data.map(renderList)
   

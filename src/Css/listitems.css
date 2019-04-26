@@ -5,3 +5,10 @@
 .listFiles:hover{
     color: darkred;
 }
+.listFolderLink{
+    text-decoration: none;
+    color: black;
+}
+.listFolderLink:hover{
+    color: darkred;
+}
