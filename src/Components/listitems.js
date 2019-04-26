@@ -38,8 +38,7 @@ const ListItems = (props) => {
       })
       .then(response => {
         updateData(response.entries)
-       
-        
+      
         
       })
       .catch(function(error) {
@@ -99,8 +98,22 @@ const ListItems = (props) => {
         <li key={data.id} className="listFiles" to={data.path_lower} data-name={data.name} data-folder={data.path_lower} data-tag={data[".tag"]}><Link className="listFolderLink" to={"/main" + data.path_lower}>{data.name}</Link></li>
       )
     }
-
-  const listData = data.map(renderList)
+    const x = props.search;
+        let newArr = []
+        for (let i of x){
+          newArr.push(i.metadata) 
+        }
+      
+      const searchData = newArr.map(renderList);
+      const listData = data.map(renderList)
+   
+  if(x){
+    return(
+      <>
+      {searchData}
+      </>
+    )
+  }
   
   return(
     <>
