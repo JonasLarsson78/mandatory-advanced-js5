@@ -3,6 +3,7 @@ import React from 'react';
 import Login from './Components/login';
 import Auth from './Components/auth';
 import Main from './Components/main';
+
 import { BrowserRouter as Router, Route, Link}from "react-router-dom";
 
 function App() {

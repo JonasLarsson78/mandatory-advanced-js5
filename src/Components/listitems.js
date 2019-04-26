@@ -4,6 +4,7 @@ import { Dropbox } from 'dropbox';
 import { BrowserRouter as Router, Route, Link}from "react-router-dom";
 import '../Css/listitems.css';
 
+
 const ListItems = (props) => {
 
   const [data, updateData] = useState([])
@@ -14,25 +15,28 @@ const ListItems = (props) => {
       fetch: fetch,
       accessToken: token$.value
     };
-    
     const dbx = new Dropbox(
       option,
     );
-    dbx.filesListFolder({
-      path: ''
-    })
-    .then(response => {
-      console.log(response)
-      updateData(response.entries)
-     
-      
-      
-    })
-    .catch(function(error) {
-      console.log(error);
-    });
-  
-  
+
+    if(data.length === 0){
+
+      dbx.filesListFolder({
+        path: ''
+      })
+      .then(response => {
+        console.log(response.entries)
+        updateData(response.entries)
+        console.log(data)
+       
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+
+    }
+    
+    
   }, [])
 
   
@@ -85,7 +89,7 @@ const ListItems = (props) => {
  
   const renderList = (data) => {
     return(
-      <li className="listFiles" to={data.path_lower} data-name={data.name} onClick={downloadFile} key={data.id} data-folder={data.path_lower} data-tag={data[".tag"]}>{data.name}</li>
+      <Link to={'/main' + data.path_lower}><li className="listFiles" data-name={data.name} onClick={downloadFile} key={data.id} data-folder={data.path_lower} data-tag={data[".tag"]}>{data.name}</li></Link>
     )
   }
 
