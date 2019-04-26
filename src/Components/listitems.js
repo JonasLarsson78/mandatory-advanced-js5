@@ -92,11 +92,11 @@ const ListItems = (props) => {
     if(data[".tag"] === 'file'){
 
       return(
-        <li key={data.id} className="listFiles" to={data.path_lower} data-name={data.name} onClick={downloadFile} data-folder={data.path_lower} data-tag={data[".tag"]}>{data.name}</li>
+        <li title={"Download: " + data.name} key={data.id} className="listFiles" to={data.path_lower} data-name={data.name} onClick={downloadFile} data-folder={data.path_lower} data-tag={data[".tag"]}>{data.name}</li>
       )
     }
       return(
-        <li key={data.id} className="listFiles" to={data.path_lower} data-name={data.name} onClick={downloadFile} data-folder={data.path_lower} data-tag={data[".tag"]}><Link className="listFolderLink" to={"/main" + data.path_lower}>{data.name}</Link></li>
+        <li key={data.id} className="listFiles" to={data.path_lower} data-name={data.name} data-folder={data.path_lower} data-tag={data[".tag"]}><Link className="listFolderLink" to={"/main" + data.path_lower}>{data.name}</Link></li>
       )
     }
 
@@ -110,5 +110,3 @@ const ListItems = (props) => {
 }
 
 export default ListItems;
-
-{/* <li><Link to={data.path_lower} onClick={navigate} key={data.id} data-folder={data.path_lower} data-tag={data[".tag"]}>{data.name}</Link></li> */}
