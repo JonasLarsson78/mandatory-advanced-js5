@@ -8,6 +8,7 @@
 .listFolderLink{
     text-decoration: none;
     color: black;
+    font-weight: 500;
 }
 .listFolderLink:hover{
     color: darkred;
