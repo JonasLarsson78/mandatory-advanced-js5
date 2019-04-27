@@ -19,7 +19,12 @@ const Main = (props) => {
     //updateIsLoggedIn(false)
   }
   const searchResults = (matches) => {
-    updateSearch(matches)
+    
+    let newArr = []
+        for (let i of matches){
+          newArr.push(i.metadata) 
+        }
+    updateSearch(newArr)
   }
 
   if(token === null){

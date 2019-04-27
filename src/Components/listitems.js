@@ -9,6 +9,7 @@ const ListItems = (props) => {
   const [data, updateData] = useState([])
 
   useEffect(() => {
+    
    
     const option = {
       fetch: fetch,
@@ -17,21 +18,28 @@ const ListItems = (props) => {
     const dbx = new Dropbox(
       option,
     );
-    const x = props.search;
-   if (!x) {
+  
 
     if (props.folder === "/main"){
       dbx.filesListFolder({
         path: ''
       })
       .then(response => {
+        console.log(response.entries)
         updateData(response.entries)
+
+        const searchArr = props.search;
+          if (searchArr){
+           updateData(searchArr)
+      
+    }
         
       })
       .catch(function(error) {
         console.log(error);
       });
     }
+    
     else{
       let newFolder = props.folder;
       newFolder = newFolder.substring(5)
@@ -40,6 +48,7 @@ const ListItems = (props) => {
         path: newFolder
       })
       .then(response => {
+        console.log(response.entries)
         updateData(response.entries)
       
         
@@ -48,17 +57,11 @@ const ListItems = (props) => {
         console.log(error);
       });
     }
-    }
-   else{
-      let newArr = []
-        for (let i of x){
-          newArr.push(i.metadata) 
-        }
-        updateData(newArr)
-    }
+    
+    
   
   return
-  }, [data, props.folder])
+  }, [props.folder,props.search])
 
   
   
@@ -108,7 +111,6 @@ const ListItems = (props) => {
         <li key={data.id} className="listFiles" to={data.path_lower} data-name={data.name} data-folder={data.path_lower} data-tag={data[".tag"]}><Link className="listFolderLink" to={"/main" + data.path_lower}>{data.name}</Link></li>
       )
     }
-      
       
       const listData = data.map(renderList)
    
