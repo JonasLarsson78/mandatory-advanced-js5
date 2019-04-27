@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Link, Redirect}from "react-router-dom";
 import { updateToken } from './store.js'
 import {token$} from './store.js';
 import ListItems from './listitems'
-import Search from './search'
+import Search, {SearchResult} from './search'
 import '../Css/main.css';
 
 const Main = (props) => {
@@ -35,7 +35,7 @@ const Main = (props) => {
     <>
     <div className="mainHeader">
     mainHeader<br/>
-    <Search search={searchResults}></Search>
+    <Search folder={props.location.pathname} search={searchResults}></Search>
     </div>
     <div className="mainMain">
       <p>Du är nu på din sida</p>

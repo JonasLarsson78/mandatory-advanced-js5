@@ -3,11 +3,13 @@ import {token$} from './store.js';
 import { Dropbox } from 'dropbox';
 import { BrowserRouter as Router, Route, Link, Redirect}from "react-router-dom";
 import '../Css/listitems.css';
+import { downloadFile } from './dowload'
 
 
 const ListItems = (props) => {
+  
   const [data, updateData] = useState([])
-
+  const searchArr = props.search;
   useEffect(() => {
     
    
@@ -25,13 +27,11 @@ const ListItems = (props) => {
         path: ''
       })
       .then(response => {
-        console.log(response.entries)
         updateData(response.entries)
 
-        const searchArr = props.search;
+        
           if (searchArr){
            updateData(searchArr)
-      
     }
         
       })
@@ -48,7 +48,6 @@ const ListItems = (props) => {
         path: newFolder
       })
       .then(response => {
-        console.log(response.entries)
         updateData(response.entries)
       
         
@@ -58,45 +57,9 @@ const ListItems = (props) => {
       });
     }
     
-    
   
   return
   }, [props.folder,props.search])
-
-  
-  
-  const downloadFile = (e) => {
-    if(e.target.dataset.tag === 'folder'){
-      return null;
-    }
-    
-   if(e.target.dataset.tag === 'file'){
-
-     const option = {
-      fetch: fetch,
-      accessToken: token$.value
-    };
-    console.log(props)
-     const dbx = new Dropbox(option);
-     dbx.filesDownload({ 
-       path: e.target.dataset.folder})
-        .then(response => {
-          
-         let fileName = response.name
-         let blob = response.fileBlob
-          const link = document.createElement('a');
-          link.href = URL.createObjectURL(blob);
-          link.download = fileName;
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-        })
-        .catch(error => {
-         console.log(error)
-        });
-    }
-  }
-  
  
   const renderList = (data) => {
 

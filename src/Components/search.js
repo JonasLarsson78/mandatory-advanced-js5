@@ -1,13 +1,18 @@
 import React, {useState, useEffect} from 'react';
 import { Dropbox } from 'dropbox';
 import {token$} from './store.js';
+import { BrowserRouter as Router, Route, Link, Redirect}from "react-router-dom";
+
 
 
 
 const Search = (props) => {
  const [input, updateInput] = useState("");
+ let newFolder = props.folder
+ newFolder = newFolder.substring(5);
 
- const makeSerch = () => {
+ const makeSerch = (e) => {
+    
     const option = {
         fetch: fetch,
         accessToken: token$.value
@@ -17,11 +22,10 @@ const Search = (props) => {
         option,
       );
       dbx.filesSearch({
-        path: "",
+        path: newFolder,
         query: input
       })
       .then(response => {
-        //console.log(response)
         props.search(response.matches)
         
       })
@@ -41,9 +45,7 @@ return (
     <input type="text" onChange={onChange} />
     <button onClick={makeSerch}>Search</button>
     </>
-
-);
-
-
+    )
 }
+
 export default Search;
