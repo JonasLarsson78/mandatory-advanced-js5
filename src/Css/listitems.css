@@ -13,3 +13,13 @@
 .listFolderLink:hover{
     color: darkred;
 }
+.listBackBtn{
+    border: none;
+    background: transparent;
+    color: black;
+    cursor: pointer;
+    outline: none;
+}
+.listBackBtn:hover{
+    color: darkred;
+}

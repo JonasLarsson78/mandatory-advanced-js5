@@ -151,13 +151,20 @@ let newFolder = props.folder;
         <li key={data.id} className="listFiles" to={data.path_lower} data-name={data.name} data-folder={data.path_lower} data-tag={data[".tag"]}><Link className="listFolderLink" to={"/main" + data.path_lower}>{data.name}</Link></li>
       )
     }
+    const replace = () =>{
+      window.location.replace("/main")
+    }
       
       const listData = data.map(renderList)
-   
+   let button = ""   
+   if (searchArr){
+    button = <><br/><button className="listBackBtn" onClick={replace}>⟲ Back to files..</button></>
+   }
   
   return(
     <>
       {listData}
+      {button}
     </>
   )
 }

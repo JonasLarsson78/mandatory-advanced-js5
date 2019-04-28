@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Link, Redirect}from "react-router-dom";
 import { updateToken } from './store.js'
 import {token$} from './store.js';
 import ListItems from './listitems'
-import Search, {SearchResult} from './search'
+import Search from './search'
 import '../Css/main.css';
 
 const Main = (props) => {
@@ -11,7 +11,7 @@ const Main = (props) => {
   //const [isLoggedIn, updateIsLoggedIn] = useState(props.location.state.isLoggedIn)
   const [token, updateTokenState] = useState(token$.value)
 
-  const [search, updateSearch] = useState("")
+  const [search, updateSearch] = useState(null)
 
   const logOut = () => {
     updateToken(null);
@@ -24,6 +24,7 @@ const Main = (props) => {
         for (let i of matches){
           newArr.push(i.metadata) 
         }
+        console.log(newArr)
     updateSearch(newArr)
   }
 
