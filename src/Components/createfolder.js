@@ -7,37 +7,34 @@ import { BrowserRouter as Router, Route, Link, Redirect}from "react-router-dom";
 const CreateFolder = (props) => {
 
   const [input, updateInput] = useState('')
-
-  console.log(props)
+  let newFolder = props.folder
+  newFolder = newFolder.substring(5);
+  console.log(newFolder)
 
   const changeInput = (e) => {
     updateInput(e.target.value)
   }
 
-  let newFolder = props.folder
   const createFolder = () => {
 
     const option = {
       fetch: fetch,
-      accessToken: token$.value
+      accessToken: token$.value,
+      
     };
     const dbx = new Dropbox(
       option,
     );
     dbx.filesCreateFolderV2({
       
-      path: newFolder,
+      path: newFolder + '/'+ input,
       autorename: true
      
     })
     .then(response => {
         console.log(response)
-
-        dbx.filesMoveV2({
-          from_path: newFolder,
-          to_path: '/' + input,
-          autorename: true
-        })
+        
+        
 
         
     })
