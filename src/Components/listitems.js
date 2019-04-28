@@ -117,13 +117,25 @@ let newFolder = props.folder;
   const lastEdited = (str) => {
    
     const year = str.substring(0, 4);
-    const month = str.substring(5, 7)
+    let month = str.substring(5, 7)
     const day = str.substring(8, 10)
     const hour = str.substring(11, 13)
     const minute = str.substring(14, 16)
     const second = str.substring(17, 19)
+    console.log(month)
 
-    return <label>{', Last edited: ' + moment(str).fromNow() + ', ' + year + '-' + month + '-' + day + '.'}</label>
+    const months = [
+      "January", "February", "March",
+      "April", "May", "June", "July",
+      "August", "September", "October",
+      "November", "December"
+    ];
+    
+    month = month.replace(/^0+/, '')
+    let monthInText = months[month-1];
+    
+
+    return <label>{', Last edited: ' + moment(str).fromNow() + ', ' + day + ' ' + monthInText + ' ' + year}</label>
     
   }
 
