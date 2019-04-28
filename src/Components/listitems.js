@@ -6,6 +6,9 @@ import '../Css/listitems.css';
 import { downloadFile } from './dowload'
 
 
+
+
+
 const ListItems = (props) => {
   
   const [data, updateData] = useState([])
@@ -48,13 +51,6 @@ const ListItems = (props) => {
 
 let newFolder = props.folder;
       newFolder = newFolder.substring(5)
-
-      
-
-
-
-
-
 
       
       
@@ -107,14 +103,23 @@ let newFolder = props.folder;
   
   return
   }, [props.folder,props.search, searchArr])
+
+
+  const readableBytes = (bytes) => {
+    const i = Math.floor(Math.log(bytes) / Math.log(1024)),
+    sizes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+  
+    return (bytes / Math.pow(1024, i)).toFixed(2) * 1 + ' ' + sizes[i];
+  }
+
  
   const renderList = (data) => {
-    console.log(data)
+
 
     if(data[".tag"] === 'file'){
 
       return(
-        <li title={"Download: " + data.name} key={data.id} className="listFiles" to={data.path_lower} data-name={data.name} onClick={downloadFile} data-folder={data.path_lower} data-tag={data[".tag"]}>{data.name}</li>
+        <li title={"Download: " + data.name} key={data.id} className="listFiles" to={data.path_lower} data-name={data.name} onClick={downloadFile} data-folder={data.path_lower} data-tag={data[".tag"]}>{data.name}{readableBytes(data.size)}</li>
       )
     }
       return(
