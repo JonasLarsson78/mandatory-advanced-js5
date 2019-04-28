@@ -115,7 +115,7 @@ let newFolder = props.folder;
   }
 
   const lastEdited = (str) => {
-    console.log(str)
+   
     const year = str.substring(0, 4);
     const month = str.substring(5, 7)
     const day = str.substring(8, 10)
@@ -123,7 +123,7 @@ let newFolder = props.folder;
     const minute = str.substring(14, 16)
     const second = str.substring(17, 19)
 
-    return <label>{'Last edited: ' + moment(str).fromNow() + ', ' + year + '-' + month + '-' + day + '.'}</label>
+    return <label>{', Last edited: ' + moment(str).fromNow() + ', ' + year + '-' + month + '-' + day + '.'}</label>
     
   }
 
