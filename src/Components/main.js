@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Link, Redirect}from "react-router-dom";
 import { updateToken } from './store.js'
 import {token$} from './store.js';
 import ListItems from './listitems'
+import CreateFolder from './createfolder'
 import Search from './search'
 import '../Css/main.css';
 
@@ -40,7 +41,9 @@ const Main = (props) => {
     </div>
     <div className="mainMain">
       <p>Du är nu på din sida</p>
+      <CreateFolder folder={props.location.pathname}></CreateFolder>
       <button onClick={logOut}>logOut</button>
+     
       <ul>
         <ListItems folder={props.location.pathname} search={search}></ListItems>
       </ul>
