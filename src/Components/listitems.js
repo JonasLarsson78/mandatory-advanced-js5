@@ -30,8 +30,6 @@ const ListItems = (props) => {
     if (props.folder === "/main"){
 
 
-     
-
       dbx.filesListFolder({
         path: ''
       })
@@ -114,14 +112,14 @@ let newFolder = props.folder;
     return (bytes / Math.pow(1024, index)).toFixed(2) * 1 + ' ' + sizes[index];
   }
 
-  const lastEdited = (str) => {
+  const lastEdited = (date) => {
    
-    const year = str.substring(0, 4);
-    let month = str.substring(5, 7)
-    const day = str.substring(8, 10)
-    const hour = str.substring(11, 13)
-    const minute = str.substring(14, 16)
-    const second = str.substring(17, 19)
+    const year = date.substring(0, 4);
+    let month = date.substring(5, 7)
+    const day = date.substring(8, 10)
+    const hour = date.substring(11, 13)
+    const minute = date.substring(14, 16)
+    const second = date.substring(17, 19)
     console.log(month)
 
     const months = [
@@ -135,7 +133,7 @@ let newFolder = props.folder;
     let monthInText = months[month-1];
     
 
-    return <label>{', Last edited: ' + moment(str).fromNow() + ', ' + day + ' ' + monthInText + ' ' + year}</label>
+    return <label>{', Last edited: ' + moment(date).fromNow() + ', ' + day + ' ' + monthInText + ' ' + year}</label>
     
   }
 
