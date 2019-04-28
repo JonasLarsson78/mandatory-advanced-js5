@@ -23,6 +23,10 @@ const ListItems = (props) => {
   
 
     if (props.folder === "/main"){
+
+
+     
+
       dbx.filesListFolder({
         path: ''
       })
@@ -41,28 +45,71 @@ const ListItems = (props) => {
     }
     
     else{
-      let newFolder = props.folder;
+
+let newFolder = props.folder;
       newFolder = newFolder.substring(5)
+
+      
+
+
+
+
+
+
+      
       
       dbx.filesListFolder({
         path: newFolder
       })
       .then(response => {
-        updateData(response.entries)
-      
-        
+       updateData(response.entries)
+        console.log(response)
+
+       
+
+
+        dbx.filesGetThumbnailBatch({
+          entries: response.entries.map(entry => {
+            return{
+              path: entry.id,
+              format : {'.tag': 'jpeg'},
+              size: { '.tag': 'w2048h1536'},
+              mode: { '.tag': 'strict' }  
+            }
+          } )
+          
+          
+        })
+        .then(response => {
+          console.log(response)
+          //updateData(response.entries)
+          
+          
+        }) 
+
+
+
+
+
       })
       .catch(function(error) {
         console.log(error);
       });
+
+
+
+
+
     }
+    
+    
     
   
   return
-  }, [props.folder,props.search])
+  }, [props.folder,props.search, searchArr])
  
   const renderList = (data) => {
-
+    console.log(data)
 
     if(data[".tag"] === 'file'){
 
