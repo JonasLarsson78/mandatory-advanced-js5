@@ -12,7 +12,11 @@ import Modal from './modal.js';
 const ListItems = (props) => {
 
   const [data, updateData] = useState([])
+  const [rename, updateRename] = useState(false)
+  const [name, updateName] = useState("")
+
   const searchArr = props.search;
+
   useEffect(() => {
     
    
@@ -139,12 +143,8 @@ let newFolder = props.folder;
     const del = (e) => {
       props.path(e.target.dataset.path) 
       props.showModal(true)
-      
-      
     }
     
-    
-   
     if(data[".tag"] === 'file'){
            
       return(

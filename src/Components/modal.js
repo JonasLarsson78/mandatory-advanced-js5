@@ -28,7 +28,7 @@ const Modal = (props) => {
         <div className="modal">
         <div className="mainModal">
         <h1>Delete</h1>
-        <p>Vill du tabort filen/mappen ??</p>
+        <p>Vill du ta bort filen/mappen ??</p>
         <button onClick={ja}>Ja</button><button onClick={nej}>Nej</button>
         </div>
         </div>

@@ -10,6 +10,7 @@
     background-color: white;
     border-radius: 10px;
     text-align: center;
+    box-shadow: 10px 10px 5px 0px #000000bf;
     z-index: 1000;
 }
 .modalBack{

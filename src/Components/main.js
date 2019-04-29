@@ -19,12 +19,12 @@ const Main = (props) => {
   const [showModal, updateShowModal] = useState(false)
   const [delPath, updateDelPath] = useState(null)
 
-
   const logOut = () => {
     updateToken(null);
     updateTokenState(token$.value);
     //updateIsLoggedIn(false)
   }
+  /* Functions for serarch files/folders */
   const searchResults = (matches) => {
     let newArr = []
         for (let i of matches){
@@ -32,10 +32,15 @@ const Main = (props) => {
         }
     updateSearch(newArr)
   }
+/* ------------ end serarch -------------- */
 
+/*  Function for create folder */
   const create = (folder) => {
     updateCreateF(folder)
   }
+/* ----------- end create folder----------- */
+
+  /* Functions for del files/folders */
   const del = (path) =>{
    deleteFiles(path)
   }
@@ -46,6 +51,7 @@ const Main = (props) => {
   const path = (path) => {
     updateDelPath(path)
   }
+  /* ----------- end del ----------------- */
 
   if(token === null){
     return <Redirect to="/" />
@@ -63,7 +69,7 @@ const Main = (props) => {
       <button onClick={logOut}>logOut</button>
      
       <ul>
-        <ListItems folder={props.location.pathname}  path={path} showModal={modalOnClick} search={search} createFolder={createF}></ListItems>
+        <ListItems folder={props.location.pathname} path={path} showModal={modalOnClick} search={search} createFolder={createF}></ListItems>
       </ul>
     </div>
     <div className="mainSide">
