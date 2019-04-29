@@ -53,6 +53,9 @@ let newFolder = props.folder;
       })
       .then(response => {
        updateData(response.entries)
+       if (searchArr){
+        updateData(searchArr)
+ }
 
 
         dbx.filesGetThumbnailBatch({
@@ -68,7 +71,7 @@ let newFolder = props.folder;
           
         })
         .then(response => {
-          console.log(response)
+          
           //updateData(response.entries)
           
           

@@ -16,28 +16,25 @@ const Search = (props) => {
       const dbx = new Dropbox(
         option,
       );
+      console.log(newFolder)
       dbx.filesSearch({
+       
         path: newFolder,
         query: e.target.value,
       })
       .then(response => {
 
-        console.log(response.matches)
+        console.log(response.matches.length)
         if (response.matches.length === 0){
+
+            props.updateSearch(null)
+            
           
-            dbx.filesListFolder({
-              path: ''
-            })
-            .then(response => {
-              console.log(response.entries)
-              props.updateSearch(response.entries)
-              
-            })
-            .catch(function(error) {
-              console.log(error);
-            });
         }
-        props.search(response.matches)
+        else{
+          props.search(response.matches)
+        }
+        
       })
       .catch(function(error) {
         console.log(error);
