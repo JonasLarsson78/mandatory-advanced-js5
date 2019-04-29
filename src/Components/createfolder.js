@@ -5,7 +5,8 @@ import { BrowserRouter as Router, Route, Link, Redirect}from "react-router-dom";
 
 
 const CreateFolder = (props) => {
-
+  
+  console.log(props)
   const [input, updateInput] = useState('')
   let newFolder = props.folder
   newFolder = newFolder.substring(5);
@@ -34,7 +35,8 @@ const CreateFolder = (props) => {
     .then(response => {
         console.log(response)
         
-        
+       
+       props.create(response)
 
         
     })

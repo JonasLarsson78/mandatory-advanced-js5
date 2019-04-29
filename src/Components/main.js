@@ -13,6 +13,7 @@ const Main = (props) => {
   const [token, updateTokenState] = useState(token$.value)
 
   const [search, updateSearch] = useState(null)
+  const [createF, updateCreateF] = useState(null)
 
   const logOut = () => {
     updateToken(null);
@@ -29,6 +30,13 @@ const Main = (props) => {
     updateSearch(newArr)
   }
 
+  const create = (folder) => {
+
+    console.log(folder)
+
+    updateCreateF(folder)
+  }
+
   if(token === null){
     return <Redirect to="/" />
   }
@@ -41,11 +49,11 @@ const Main = (props) => {
     </div>
     <div className="mainMain">
       <p>Du är nu på din sida</p>
-      <CreateFolder folder={props.location.pathname}></CreateFolder>
+      <CreateFolder folder={props.location.pathname} create={create}></CreateFolder>
       <button onClick={logOut}>logOut</button>
      
       <ul>
-        <ListItems folder={props.location.pathname} search={search}></ListItems>
+        <ListItems folder={props.location.pathname} search={search} createFolder={createF}></ListItems>
       </ul>
     </div>
     <div className="mainSide">

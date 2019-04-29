@@ -12,7 +12,7 @@ import moment from 'moment';
 
 
 const ListItems = (props) => {
-  
+  console.log(props.createFolder)
   const [data, updateData] = useState([])
   const searchArr = props.search;
   useEffect(() => {
@@ -102,7 +102,7 @@ let newFolder = props.folder;
     
   
   return
-  }, [props.folder,props.search, searchArr])
+  }, [props.folder,props.search, searchArr, props.createFolder])
 
 
   const readableBytes = (bytes) => {

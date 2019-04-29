@@ -28,7 +28,7 @@ console.log(newFolder)
       })
       .then(response => {
         props.search(response.matches)
-        
+        console.log(response.matches)
       })
       .catch(function(error) {
         console.log(error);
