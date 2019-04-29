@@ -43,7 +43,7 @@ const Main = (props) => {
     updateShowModal(x)
   }
 
-  const test = (path) => {
+  const path = (path) => {
     updateDelPath(path)
   }
 
@@ -63,7 +63,7 @@ const Main = (props) => {
       <button onClick={logOut}>logOut</button>
      
       <ul>
-        <ListItems folder={props.location.pathname}  test={test} showModal={modalOnClick} search={search} createFolder={createF}></ListItems>
+        <ListItems folder={props.location.pathname}  path={path} showModal={modalOnClick} search={search} createFolder={createF}></ListItems>
       </ul>
     </div>
     <div className="mainSide">

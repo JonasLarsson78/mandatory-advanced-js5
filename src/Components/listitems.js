@@ -137,7 +137,7 @@ let newFolder = props.folder;
   const renderList = (data) => {
     
     const del = (e) => {
-      props.test(e.target.dataset.path) 
+      props.path(e.target.dataset.path) 
       props.showModal(true)
       
       
