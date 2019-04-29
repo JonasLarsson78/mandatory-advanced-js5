@@ -41,7 +41,7 @@ const Search = (props) => {
 
 return (
     <>
-    <input type="text" onChange={makeSerch} />
+    <input className="header-search" placeholder="Search..." type="text" onChange={makeSerch} />
     
     </>
     )

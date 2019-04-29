@@ -43,21 +43,28 @@ const Main = (props) => {
   
   return(
     <>
-    <div className="mainHeader">
-    mainHeader<br/>
+    <header className="mainHeader">
+    <div className="header-logo-wrap"><img id="header-logo" src={ require('../Img/Logo_mybox.png') } alt="My Box logo"/> </div>
     <Search folder={props.location.pathname} search={searchResults}></Search>
-    </div>
-    <div className="mainMain">
-      <p>Du är nu på din sida</p>
-      <CreateFolder folder={props.location.pathname} create={create}></CreateFolder>
-      <button onClick={logOut}>logOut</button>
-     
-      <ul>
-        <ListItems folder={props.location.pathname} search={search} createFolder={createF}></ListItems>
-      </ul>
-    </div>
-    <div className="mainSide">
-      mainSide
+    </header>
+    <div className="mainWrapper">
+      <aside className="leftSide">
+        <div className="left-link-wrap">link</div>
+
+      </aside>
+      <main className="mainMain">
+        <p>Main</p>
+        <CreateFolder folder={props.location.pathname} create={create}></CreateFolder>
+        <button onClick={logOut}>logOut</button>
+        <ul>
+          <ListItems folder={props.location.pathname} search={search} createFolder={createF}></ListItems>
+        </ul>
+      </main>
+      <aside className="rightSide">
+        <div className="aside"></div>
+        höger aside
+      </aside>
+      
     </div>
     </>
   )

@@ -1,19 +1,64 @@
-.mainMain{
-    position: fixed;
-    top: 171px;
-}
+/* ========== COLORS ===========
+Mörkblå #029BB5
+blå #00AFD6
+grön #00D01D
+Textgrå #4D4D4D
+*/
+
+
+/* ========== HEADER ============ */
+
 .mainHeader{
-    position: fixed;
-    top: 0px;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
     width: 100%;
-    height: 170px;
+    height: 150px;
     border: 1px solid black;
 }
-.mainSide{
-    position: fixed;
-    right: 0px;
-    top: 171px;
-    width: 300px;
-    height: 100%;
+
+#header-logo {
+    width: 200px;
+    margin: 50px 0 0 40px;
+}
+
+.header-search {
+    width: 200px;
+    height: 25px;
+    margin-top: 50px;
+    margin-right: 50px;
+}
+
+/* ========== MAIN ============ */
+
+.mainWrapper {
+    display: flex;
+    flex-flow: row wrap;
+}
+
+.leftSide{
+    flex-grow: 0;
+    flex-basis: 250px;
+    height: 500px;
     border: 1px solid black;
+}
+
+.left-link-wrap {
+    margin-left: 10px;
+    width: 200px;
+    background-color: #00AFD6;
+    height: 200px;
+    border-radius: 20px;
+}
+
+.mainMain{
+    flex-grow: 2;
+    width: 60%;
+    border: 1px solid red;
+}
+
+
+.rightSide {
+    width: 250px;
+    border: 1px solid green;
 }
