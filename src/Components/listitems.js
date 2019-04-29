@@ -147,8 +147,8 @@ let newFolder = props.folder;
     }
       
       const listData = data.map(renderList)
+      
    let button = "" 
-   console.log(searchArr)  
    if (searchArr){
     button = <><br/><button className="listBackBtn" onClick={replace}>⟲ Back to files..</button></>
    }
