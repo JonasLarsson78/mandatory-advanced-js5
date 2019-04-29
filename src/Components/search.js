@@ -8,13 +8,14 @@ import { BrowserRouter as Router, Route, Link, Redirect}from "react-router-dom";
 
 const Search = (props) => {
  const [input, updateInput] = useState("");
- 
+
  let newFolder = props.folder
  newFolder = newFolder.substring(5);
 
  const makeSerch = (e) => {
 
-  
+  updateInput(e.target.value)
+
     const option = {
         fetch: fetch,
         accessToken: token$.value
@@ -40,8 +41,8 @@ const Search = (props) => {
 
 return (
     <>
-    <input type="text" onChange={onChange} />
-    <button onClick={makeSerch}>Search</button>
+    <input type="text" onChange={makeSerch} />
+    
     </>
     )
 }
