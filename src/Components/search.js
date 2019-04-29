@@ -18,12 +18,23 @@ const Search = (props) => {
       );
       console.log(newFolder)
       dbx.filesSearch({
+       
         path: newFolder,
         query: e.target.value,
       })
       .then(response => {
-        console.log(response.matches)
-        props.search(response.matches)
+
+        console.log(response.matches.length)
+        if (response.matches.length === 0){
+
+            props.updateSearch(null)
+            
+          
+        }
+        else{
+          props.search(response.matches)
+        }
+        
       })
       .catch(function(error) {
         console.log(error);
