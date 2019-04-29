@@ -21,12 +21,10 @@ const Main = (props) => {
     //updateIsLoggedIn(false)
   }
   const searchResults = (matches) => {
-    
     let newArr = []
         for (let i of matches){
           newArr.push(i.metadata) 
         }
-
     updateSearch(newArr)
   }
 
@@ -45,7 +43,7 @@ const Main = (props) => {
     <>
     <div className="mainHeader">
     mainHeader<br/>
-    <Search folder={props.location.pathname} search={searchResults}></Search>
+    <Search folder={props.location.pathname} search={searchResults} updateSearch={updateSearch}></Search>
     </div>
     <div className="mainMain">
       <p>Du är nu på din sida</p>

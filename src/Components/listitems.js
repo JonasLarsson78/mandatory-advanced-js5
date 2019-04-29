@@ -147,6 +147,7 @@ let newFolder = props.folder;
     }
       
       const listData = data.map(renderList)
+      
    let button = "" 
   
    if (searchArr){
