@@ -28,6 +28,7 @@ const Search = (props) => {
         query: input,
       })
       .then(response => {
+        console.log(response)
         props.search(response.matches)
    
       })
