@@ -26,13 +26,13 @@ const Main = (props) => {
         for (let i of matches){
           newArr.push(i.metadata) 
         }
-        console.log(newArr)
+
     updateSearch(newArr)
   }
 
   const create = (folder) => {
 
-    console.log(folder)
+
 
     updateCreateF(folder)
   }

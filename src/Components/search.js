@@ -11,7 +11,7 @@ const Search = (props) => {
  
  let newFolder = props.folder
  newFolder = newFolder.substring(5);
-console.log(newFolder)
+
  const makeSerch = (e) => {
 
   
@@ -28,7 +28,7 @@ console.log(newFolder)
       })
       .then(response => {
         props.search(response.matches)
-        console.log(response.matches)
+   
       })
       .catch(function(error) {
         console.log(error);

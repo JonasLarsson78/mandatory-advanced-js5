@@ -12,7 +12,7 @@ import moment from 'moment';
 
 
 const ListItems = (props) => {
-  console.log(props.createFolder)
+
   const [data, updateData] = useState([])
   const searchArr = props.search;
   useEffect(() => {
@@ -59,7 +59,7 @@ let newFolder = props.folder;
       })
       .then(response => {
        updateData(response.entries)
-        console.log(response)
+
 
        
 
@@ -77,7 +77,7 @@ let newFolder = props.folder;
           
         })
         .then(response => {
-          console.log(response)
+   
           //updateData(response.entries)
           
           
@@ -120,7 +120,7 @@ let newFolder = props.folder;
     const hour = date.substring(11, 13)
     const minute = date.substring(14, 16)
     const second = date.substring(17, 19)
-    console.log(month)
+  
 
     const months = [
       "January", "February", "March",
