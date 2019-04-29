@@ -5,6 +5,8 @@ import {token$} from './store.js';
 import ListItems from './listitems'
 import CreateFolder from './createfolder'
 import Search from './search'
+import Modal from './modal';
+import { deleteFiles } from './delete'
 import '../Css/main.css';
 
 const Main = (props) => {
@@ -14,6 +16,9 @@ const Main = (props) => {
 
   const [search, updateSearch] = useState(null)
   const [createF, updateCreateF] = useState(null)
+  const [showModal, updateShowModal] = useState(false)
+  const [delPath, updateDelPath] = useState(null)
+
 
   const logOut = () => {
     updateToken(null);
@@ -29,18 +34,25 @@ const Main = (props) => {
   }
 
   const create = (folder) => {
-
-
-
     updateCreateF(folder)
+  }
+  const del = (path) =>{
+   deleteFiles(path)
+  }
+  const modalOnClick = (x) =>{
+    updateShowModal(x)
+  }
+
+  const test = (path) => {
+    updateDelPath(path)
   }
 
   if(token === null){
     return <Redirect to="/" />
   }
-  
   return(
     <>
+    <Modal showModal2={modalOnClick} delPath={delPath} showModal={showModal} del={del}/>
     <div className="mainHeader">
     mainHeader<br/>
     <Search folder={props.location.pathname} search={searchResults} updateSearch={updateSearch}></Search>
@@ -51,7 +63,7 @@ const Main = (props) => {
       <button onClick={logOut}>logOut</button>
      
       <ul>
-        <ListItems folder={props.location.pathname} search={search} createFolder={createF}></ListItems>
+        <ListItems folder={props.location.pathname}  test={test} showModal={modalOnClick} search={search} createFolder={createF}></ListItems>
       </ul>
     </div>
     <div className="mainSide">
