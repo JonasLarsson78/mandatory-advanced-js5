@@ -7,10 +7,6 @@ import { downloadFile } from './dowload'
 import moment from 'moment';
 
 
-
-
-
-
 const ListItems = (props) => {
 
   const [data, updateData] = useState([])
@@ -25,10 +21,8 @@ const ListItems = (props) => {
     const dbx = new Dropbox(
       option,
     );
-  
 
     if (props.folder === "/main"){
-
 
       dbx.filesListFolder({
         path: ''
@@ -59,9 +53,6 @@ let newFolder = props.folder;
       })
       .then(response => {
        updateData(response.entries)
-
-
-       
 
 
         dbx.filesGetThumbnailBatch({
@@ -156,7 +147,8 @@ let newFolder = props.folder;
     }
       
       const listData = data.map(renderList)
-   let button = ""   
+   let button = "" 
+   console.log(searchArr)  
    if (searchArr){
     button = <><br/><button className="listBackBtn" onClick={replace}>⟲ Back to files..</button></>
    }
