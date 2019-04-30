@@ -85,7 +85,7 @@ let newFolder = props.folder;
             console.log("THUMBNAIL: ")
             console.log(key.thumbnail)
               const thumbnailCode = key.thumbnail
-              thumbnailAarray.push(thumbnailCode)
+              thumbnailArray.push(thumbnailCode)
               console.log("THUMBNAILS: ")
               console.log(thumbnailArray) //Håller nu respektive thumbnailkod på varje index
 
