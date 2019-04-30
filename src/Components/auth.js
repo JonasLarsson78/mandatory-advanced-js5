@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import { Dropbox } from 'dropbox';
 import { updateToken } from './store.js'
 import {token$} from './store.js';
-import { BrowserRouter as Redirect}from "react-router-dom";
+import { BrowserRouter as Router, Route, Link, Redirect}from "react-router-dom";
 import fetch from 'isomorphic-fetch';
 
 const Auth = () => {
