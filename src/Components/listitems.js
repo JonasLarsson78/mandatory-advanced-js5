@@ -71,7 +71,7 @@ let newFolder = props.folder;
           
         })
         .then(response => {
-          
+          console.log(response)
           //updateData(response.entries)
           
           

@@ -28,8 +28,7 @@ const Search = (props) => {
         if (response.matches.length === 0){
 
             props.updateSearch(null)
-            
-          
+
         }
         else{
           props.search(response.matches)
