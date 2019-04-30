@@ -157,9 +157,18 @@ let newFolder = props.folder;
             data-name={data.name} 
             data-folder={data.path_lower} 
             data-tag={data[".tag"]} onClick={downloadFile}>
-            Icon
+              <i class="material-icons-outlined">
+                insert_drive_file
+              </i>
           </td>
-          <td>
+          <td
+            title={"Download: " + data.name} 
+            key={data.id} 
+            className="listFiles" 
+            data-name={data.name} 
+            data-folder={data.path_lower} 
+            data-tag={data[".tag"]} onClick={downloadFile}
+          >
             {data.name} 
           </td>
           <td>
@@ -169,7 +178,7 @@ let newFolder = props.folder;
             {lastEdited(data.server_modified)}
           </td>
           <td>
-            <button data-path={data.path_lower} onClick={del}>Del File</button>
+            <button data-path={data.path_lower} onClick={del}> <i class="material-icons">delete_outline</i></button>
           </td>
         </tr>
       )
@@ -177,10 +186,19 @@ let newFolder = props.folder;
       return( //FOLDERS
         <tr key={data.id} className="listFiles" to={data.path_lower} data-name={data.name} data-folder={data.path_lower} data-tag={data[".tag"]}>
           <td>
+          <i class="material-icons">
+            folder
+          </i>
+          </td>
+          <td>
             <Link className="listFolderLink" to={"/main" + data.path_lower}>{data.name}</Link>
           </td>
           <td>
-            <button data-path={data.path_lower} onClick={del}> Del Mapp</button>
+          </td>
+          <td>
+          </td>
+          <td>
+            <button data-path={data.path_lower} onClick={del}> <i class="material-icons">delete_outline</i></button>
           </td>
         </tr>
       )
