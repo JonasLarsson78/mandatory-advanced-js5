@@ -7,6 +7,7 @@ const Modal = (props) => {
     if (props.showModal === true){
         element.current.style.opacity = "1";
         element.current.style.zIndex = "100";
+        element.current.style.pointerEvent = "auto"
     }
     
     const ja = () => {
