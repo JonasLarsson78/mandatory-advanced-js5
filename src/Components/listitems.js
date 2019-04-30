@@ -83,9 +83,6 @@ let newFolder = props.folder;
               const thumbnailCode = key.thumbnail
               array.push(thumbnailCode)
               console.log(array) //Håller nu respektive thumbnailkod på varje index
-              return (
-                <img src={"data:image/jpeg;base64," + thumbnailCode} />
-              )
           }
         }) 
       })
@@ -130,7 +127,7 @@ let newFolder = props.folder;
     let monthInText = months[month-1];
     
 
-    return <label>{', Last edited: ' + moment(date).fromNow() + ', ' + day + ' ' + monthInText + ' ' + year}</label>
+    return <label>{'Last edited: ' + moment(date).fromNow() + ', ' + day + ' ' + monthInText + ' ' + year}</label>
     
   }
 
@@ -142,18 +139,50 @@ let newFolder = props.folder;
       props.showModal(true)
     }
     
-    if(data[".tag"] === 'file'){
+    if(data[".tag"] === 'file'){ //FILER
            
       return(
-        <>
-        <li title={"Download: " + data.name} key={data.id} className="listFiles" to={data.path_lower} data-name={data.name} onClick={downloadFile} data-folder={data.path_lower} data-tag={data[".tag"]}>{data.name}<label> {readableBytes(data.size)}{lastEdited(data.server_modified)}</label></li><button data-path={data.path_lower} onClick={del}> Del File</button>
-        </>
+        <tr
+            //title={"Download: " + data.name} 
+            key={data.id} 
+            //className="listFiles" 
+            //data-name={data.name} 
+            //data-folder={data.path_lower} 
+            //data-tag={data[".tag"]}
+            >
+          <td 
+            title={"Download: " + data.name} 
+            key={data.id} 
+            className="listFiles" 
+            data-name={data.name} 
+            data-folder={data.path_lower} 
+            data-tag={data[".tag"]} onClick={downloadFile}>
+            Icon
+          </td>
+          <td>
+            {data.name} 
+          </td>
+          <td>
+            {readableBytes(data.size)}
+          </td>
+          <td>
+            {lastEdited(data.server_modified)}
+          </td>
+          <td>
+            <button data-path={data.path_lower} onClick={del}>Del File</button>
+          </td>
+        </tr>
       )
     }
-      return(
-        <>
-        <li key={data.id} className="listFiles" to={data.path_lower} data-name={data.name} data-folder={data.path_lower} data-tag={data[".tag"]}><Link className="listFolderLink" to={"/main" + data.path_lower}>{data.name}</Link></li><button data-path={data.path_lower} onClick={del}> Del Mapp</button>
-        </>
+      return( //FOLDERS
+        <tr key={data.id} className="listFiles" to={data.path_lower} data-name={data.name} data-folder={data.path_lower} data-tag={data[".tag"]}>
+          <td>
+            <Link className="listFolderLink" to={"/main" + data.path_lower}>{data.name}</Link>
+          </td>
+          <td>
+            <button data-path={data.path_lower} onClick={del}> Del Mapp</button>
+          </td>
+        </tr>
       )
     }
     const replace = () =>{
@@ -171,7 +200,6 @@ let newFolder = props.folder;
   return(
     <>
       {listData}
-      {button}
     </>
   )
 }

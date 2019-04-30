@@ -67,10 +67,11 @@ const Main = (props) => {
       <p>Du är nu på din sida</p>
       <CreateFolder folder={props.location.pathname} create={create}></CreateFolder>
       <button onClick={logOut}>logOut</button>
-     
-      <ul>
-        <ListItems folder={props.location.pathname} path={path} showModal={modalOnClick} search={search} createFolder={createF}></ListItems>
-      </ul>
+      <table>
+        <tbody>
+          <ListItems folder={props.location.pathname} path={path} showModal={modalOnClick} search={search} createFolder={createF}></ListItems>
+        </tbody>
+      </table>
     </div>
     <div className="mainSide">
       mainSide
