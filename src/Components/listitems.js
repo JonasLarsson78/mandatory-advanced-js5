@@ -8,11 +8,11 @@ import moment from 'moment';
 
 
 const ListItems = (props) => {
-
+  
   const [data, updateData] = useState([])
   const searchArr = props.search;
   useEffect(() => {
-    
+    console.log(data)
    
     const option = {
       fetch: fetch,
@@ -29,7 +29,6 @@ const ListItems = (props) => {
       })
       .then(response => {
         updateData(response.entries)
-
         
           if (searchArr){
            updateData(searchArr)
@@ -45,18 +44,16 @@ const ListItems = (props) => {
 
 let newFolder = props.folder;
       newFolder = newFolder.substring(5)
-
-      
       
       dbx.filesListFolder({
         path: newFolder
       })
       .then(response => {
        updateData(response.entries)
-
-
+        
         dbx.filesGetThumbnailBatch({
           entries: response.entries.map(entry => {
+            
             return{
               path: entry.id,
               format : {'.tag': 'jpeg'},
@@ -68,24 +65,23 @@ let newFolder = props.folder;
           
         })
         .then(response => {
-   
+          const array = [];
           //updateData(response.entries)
-          
-          
+          console.log(response.entries) //Thumbnails
+          const respEntry = response.entries;
+          for (let key of respEntry) {
+              const thumbnailCode = key.thumbnail
+              array.push(thumbnailCode)
+              console.log(array) //Håller nu respektive thumbnailkod på varje index
+              return (
+                <img src={"data:image/jpeg;base64," + thumbnailCode} />
+              )
+          }
         }) 
-
-
-
-
-
       })
       .catch(function(error) {
         console.log(error);
       });
-
-
-
-
 
     }
     
@@ -129,7 +125,7 @@ let newFolder = props.folder;
   }
 
  
-  const renderList = (data) => {
+  const renderList = (data) => { //Lägg till img-argument för att skicka in.
 
 
     if(data[".tag"] === 'file'){
