@@ -7,7 +7,7 @@ import fetch from 'isomorphic-fetch';
 
 const Auth = () => {
   const [isLoggedIn, updateIsLoggedIn] = useState(false)
-  const [data, updateData] = useState(null);
+  //const [data, updateData] = useState(null);
   const hash = window.location.hash
   const regex = /#(?:access_token)=([\S\s]*?)&/
   const token = hash.match(regex)[1];
@@ -26,7 +26,7 @@ const Auth = () => {
       path: ''
     })
     .then(response => {
-      updateData(response)
+      //updateData(response)
       updateIsLoggedIn(true)
       
       
@@ -47,7 +47,7 @@ const Auth = () => {
 
  
     if(isLoggedIn){
-      return  <Redirect to={{pathname:"/main", state: {data: data, isLoggedIn: isLoggedIn}}} />
+      return  <Redirect to={{pathname:"/main", state: {isLoggedIn: isLoggedIn}}} />
       
     }
   return(
