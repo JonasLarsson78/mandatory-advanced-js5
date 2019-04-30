@@ -85,7 +85,7 @@ let newFolder = props.folder;
           for (let key of respEntry) {
               const thumbnailCode = key.thumbnail
               array.push(thumbnailCode)
-              console.log(array) //Håller nu respektive thumbnailkod på varje index
+              //console.log(array) //Håller nu respektive thumbnailkod på varje index
           }
         }) 
 
@@ -147,6 +147,7 @@ let newFolder = props.folder;
   const renderList = (data) => {
     
     const del = (e) => {
+      console.log(e.target)
       props.path(e.target.dataset.path) 
       props.showModal(true)
     }
@@ -155,12 +156,12 @@ let newFolder = props.folder;
            
       return(
         <tr
-            //title={"Download: " + data.name} 
+            title={"Download: " + data.name} 
             key={data.id} 
-            //className="listFiles" 
-            //data-name={data.name} 
-            //data-folder={data.path_lower} 
-            //data-tag={data[".tag"]}
+            className="listFiles" 
+            data-name={data.name} 
+            data-folder={data.path_lower} 
+            data-tag={data[".tag"]}
             >
           <td 
             title={"Download: " + data.name} 
@@ -169,7 +170,7 @@ let newFolder = props.folder;
             data-name={data.name} 
             data-folder={data.path_lower} 
             data-tag={data[".tag"]} onClick={downloadFile}>
-              <i class="material-icons-outlined">
+              <i className="material-icons-outlined">
                 insert_drive_file
               </i>
           </td>
@@ -189,7 +190,7 @@ let newFolder = props.folder;
             {lastEdited(data.server_modified)}
           </td>
           <td>
-            <button className="listDelBtn" data-path={data.path_lower} onClick={del}> <i class="material-icons">delete_outline</i></button>
+            <button className="listDelBtn" onClick={del}> <i data-path={data.path_lower} className="material-icons">delete_outline</i></button>
           </td>
         </tr>
       )
@@ -197,7 +198,7 @@ let newFolder = props.folder;
       return( //FOLDERS
         <tr key={data.id} className="listFiles" to={data.path_lower} data-name={data.name} data-folder={data.path_lower} data-tag={data[".tag"]}>
           <td>
-          <i class="material-icons">
+          <i className="material-icons">
             folder
           </i>
           </td>
@@ -209,7 +210,7 @@ let newFolder = props.folder;
           <td>
           </td>
           <td>
-            <button className="listDelBtn" data-path={data.path_lower} onClick={del}> <i class="material-icons">delete_outline</i></button>
+            <button className="listDelBtn" onClick={del}> <i data-path={data.path_lower} className="material-icons">delete_outline</i></button>
           </td>
         </tr>
       )
