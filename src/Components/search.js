@@ -36,7 +36,7 @@ const Search = (props) => {
         console.log(error);
       });
  }
-return <input type="text" onChange={makeSerch} />
+return <input placeholder="Search..." type="text" onChange={makeSerch} />
 }
 
 export default Search;
