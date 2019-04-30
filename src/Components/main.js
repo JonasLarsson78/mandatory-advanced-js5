@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { BrowserRouter as Router, Route, Link, Redirect} from "react-router-dom";
+import { BrowserRouter as Redirect} from "react-router-dom";
 import { updateToken } from './store.js'
 import {token$} from './store.js';
 import ListItems from './listitems'
@@ -56,7 +56,6 @@ const Main = (props) => {
     return <Redirect to="/" />
   }
 
-  //const modalRender = ((showModal) ? <Modal showModal2={modalOnClick} delPath={delPath} showModal={showModal} del={del}/> : false);
   
   return(
     <>

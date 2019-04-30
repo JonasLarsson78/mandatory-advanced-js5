@@ -1,7 +1,7 @@
 import { Dropbox } from 'dropbox';
 import {token$} from './store.js';
 
-export const rename = (name, newName) => {
+export const renameFile = (name, newName) => {
 
     const option = {
         fetch: fetch,
