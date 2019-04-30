@@ -96,7 +96,7 @@ let newFolder = props.folder;
     
   
   return
-  }, [props.folder,props.search, searchArr, props.createFolder])
+  }, [props.folder, props.search, searchArr, props.createFolder])
 
 
   const readableBytes = (bytes) => {
@@ -128,7 +128,6 @@ let newFolder = props.folder;
     
 
     return <label>{'Last edited: ' + moment(date).fromNow() + ', ' + day + ' ' + monthInText + ' ' + year}</label>
-    
   }
 
  
