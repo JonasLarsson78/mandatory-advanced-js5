@@ -21,12 +21,10 @@ const Main = (props) => {
     //updateIsLoggedIn(false)
   }
   const searchResults = (matches) => {
-    
     let newArr = []
         for (let i of matches){
           newArr.push(i.metadata) 
         }
-
     updateSearch(newArr)
   }
 

@@ -53,6 +53,9 @@ let newFolder = props.folder;
       })
       .then(response => {
        updateData(response.entries)
+       if (searchArr){
+        updateData(searchArr)
+ }
 
 
         dbx.filesGetThumbnailBatch({
@@ -68,7 +71,7 @@ let newFolder = props.folder;
           
         })
         .then(response => {
-   
+          
           //updateData(response.entries)
           
           
@@ -131,9 +134,9 @@ let newFolder = props.folder;
  
   const renderList = (data) => {
 
-
+   
     if(data[".tag"] === 'file'){
-
+      
       return(
         <li title={"Download: " + data.name} key={data.id} className="listFiles" to={data.path_lower} data-name={data.name} onClick={downloadFile} data-folder={data.path_lower} data-tag={data[".tag"]}>{data.name}<label> {readableBytes(data.size)}{lastEdited(data.server_modified)}</label></li>
       )
@@ -147,8 +150,9 @@ let newFolder = props.folder;
     }
       
       const listData = data.map(renderList)
+      
    let button = "" 
-   console.log(searchArr)  
+  
    if (searchArr){
     button = <><br/><button className="listBackBtn" onClick={replace}>⟲ Back to files..</button></>
    }
