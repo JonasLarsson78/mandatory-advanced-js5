@@ -36,7 +36,12 @@ const Search = (props) => {
         console.log(error);
       });
  }
-return <input placeholder="Search..." type="text" onChange={makeSerch} />
+
+return (
+    <>
+    <input className="header-search" placeholder="Search..." type="text" onChange={makeSerch} />
+    </>
+    )
 }
 
 export default Search;
