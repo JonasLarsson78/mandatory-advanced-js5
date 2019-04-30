@@ -151,7 +151,7 @@ let newFolder = props.folder;
     }
     
     if(data[".tag"] === 'file'){ //FILER
-           
+         console.log(data)  
       return(
         <tr
             //title={"Download: " + data.name} 
