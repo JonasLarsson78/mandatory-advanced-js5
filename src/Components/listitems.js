@@ -10,7 +10,7 @@ import Modal from './modal.js';
 
 
 const ListItems = (props) => {
-  
+
   const [data, updateData] = useState([])
   const [rename, updateRename] = useState(false)
   const [name, updateName] = useState("")
@@ -18,7 +18,7 @@ const ListItems = (props) => {
   const searchArr = props.search;
 
   useEffect(() => {
-    console.log(data)
+    
    
     const option = {
       fetch: fetch,
@@ -35,6 +35,7 @@ const ListItems = (props) => {
       })
       .then(response => {
         updateData(response.entries)
+
         
           if (searchArr){
            updateData(searchArr)
@@ -50,6 +51,8 @@ const ListItems = (props) => {
 
 let newFolder = props.folder;
       newFolder = newFolder.substring(5)
+
+      
       
       dbx.filesListFolder({
         path: newFolder
@@ -63,7 +66,6 @@ let newFolder = props.folder;
 
         dbx.filesGetThumbnailBatch({
           entries: response.entries.map(entry => {
-            
             return{
               path: entry.id,
               format : {'.tag': 'jpeg'},
@@ -76,6 +78,7 @@ let newFolder = props.folder;
         })
         .then(response => {
           const array = [];
+          console.log(response)
           //updateData(response.entries)
           console.log(response.entries) //Thumbnails
           const respEntry = response.entries;
@@ -85,10 +88,19 @@ let newFolder = props.folder;
               console.log(array) //Håller nu respektive thumbnailkod på varje index
           }
         }) 
+
+
+
+
+
       })
       .catch(function(error) {
         console.log(error);
       });
+
+
+
+
 
     }
     
@@ -156,9 +168,17 @@ let newFolder = props.folder;
             data-name={data.name} 
             data-folder={data.path_lower} 
             data-tag={data[".tag"]} onClick={downloadFile}>
-            Icon
+              <i class="material-icons-outlined">
+                insert_drive_file
+              </i>
           </td>
-          <td>
+          <td
+            title={"Download: " + data.name} 
+            className="listFiles" 
+            data-name={data.name} 
+            data-folder={data.path_lower} 
+            data-tag={data[".tag"]} onClick={downloadFile}
+          >
             {data.name} 
           </td>
           <td>
@@ -168,7 +188,7 @@ let newFolder = props.folder;
             {lastEdited(data.server_modified)}
           </td>
           <td>
-            <button data-path={data.path_lower} onClick={del}>Del File</button>
+            <button className="listDelBtn" data-path={data.path_lower} onClick={del}> <i class="material-icons">delete_outline</i></button>
           </td>
         </tr>
       )
@@ -176,10 +196,19 @@ let newFolder = props.folder;
       return( //FOLDERS
         <tr key={data.id} className="listFiles" to={data.path_lower} data-name={data.name} data-folder={data.path_lower} data-tag={data[".tag"]}>
           <td>
+          <i class="material-icons">
+            folder
+          </i>
+          </td>
+          <td>
             <Link className="listFolderLink" to={"/main" + data.path_lower}>{data.name}</Link>
           </td>
           <td>
-            <button data-path={data.path_lower} onClick={del}> Del Mapp</button>
+          </td>
+          <td>
+          </td>
+          <td>
+            <button className="listDelBtn" data-path={data.path_lower} onClick={del}> <i class="material-icons">delete_outline</i></button>
           </td>
         </tr>
       )
