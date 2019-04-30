@@ -14,6 +14,7 @@ const ListItems = (props) => {
   const [data, updateData] = useState([])
   const [rename, updateRename] = useState(false)
   const [name, updateName] = useState("")
+  const [thumbnails, updateThumbnails] = useState([])
 
   const searchArr = props.search;
 
@@ -53,7 +54,6 @@ let newFolder = props.folder;
       newFolder = newFolder.substring(5)
 
       
-      
       dbx.filesListFolder({
         path: newFolder
       })
@@ -77,38 +77,32 @@ let newFolder = props.folder;
           
         })
         .then(response => {
-          const array = [];
-          console.log(response)
+          const thumbnailArray = [];
           //updateData(response.entries)
-          console.log(response.entries) //Thumbnails
+          console.log(response.entries)
           const respEntry = response.entries;
-          for (let key of respEntry) {
+           for (let key of respEntry) {
+            console.log("THUMBNAIL: ")
+            console.log(key.thumbnail)
               const thumbnailCode = key.thumbnail
-              array.push(thumbnailCode)
-              //console.log(array) //Håller nu respektive thumbnailkod på varje index
-          }
+              thumbnailArray.push(thumbnailCode)
+              console.log("THUMBNAILS: ")
+              console.log(thumbnailArray) //Håller nu respektive thumbnailkod på varje index
+
+              //Vid useEFfect bör ovan kod köras, både vid första mappen(main) och vid rendering av ny mapp. 
+              //thumbnailArray måste skickas in i sitt eget state.
+          } 
         }) 
-
-
-
-
-
       })
       .catch(function(error) {
         console.log(error);
       });
-
-
-
-
-
     }
-    
     
     
   
   return
-  }, [props.folder,props.search, searchArr, props.createFolder])
+  }, [props.folder, props.search, searchArr, props.createFolder])
 
 
   const readableBytes = (bytes) => {
@@ -140,7 +134,6 @@ let newFolder = props.folder;
     
 
     return <label>{'Last edited: ' + moment(date).fromNow() + ', ' + day + ' ' + monthInText + ' ' + year}</label>
-    
   }
 
  
@@ -153,7 +146,6 @@ let newFolder = props.folder;
     }
     
     if(data[".tag"] === 'file'){ //FILER
-           
       return(
         <tr
             title={"Download: " + data.name} 
@@ -165,7 +157,6 @@ let newFolder = props.folder;
             >
           <td 
             title={"Download: " + data.name} 
-            key={data.id} 
             className="listFiles" 
             data-name={data.name} 
             data-folder={data.path_lower} 
