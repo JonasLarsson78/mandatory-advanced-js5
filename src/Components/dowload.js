@@ -7,7 +7,6 @@ export const downloadFile = (e) => {
     }
     
    if(e.target.dataset.tag === 'file'){
-    console.log(e.target)
      const option = {
       fetch: fetch,
       accessToken: token$.value
