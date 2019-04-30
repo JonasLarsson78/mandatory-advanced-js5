@@ -14,6 +14,7 @@ const ListItems = (props) => {
   const [data, updateData] = useState([])
   const [rename, updateRename] = useState(false)
   const [name, updateName] = useState("")
+  const [thumbnails, updateThumbnails] = useState([])
 
   const searchArr = props.search;
 
@@ -53,7 +54,6 @@ let newFolder = props.folder;
       newFolder = newFolder.substring(5)
 
       
-      
       dbx.filesListFolder({
         path: newFolder
       })
@@ -77,33 +77,27 @@ let newFolder = props.folder;
           
         })
         .then(response => {
-          const array = [];
-          console.log(response)
+          const thumbnailArray = [];
           //updateData(response.entries)
-          console.log(response.entries) //Thumbnails
+          console.log(response.entries)
           const respEntry = response.entries;
-          for (let key of respEntry) {
+           for (let key of respEntry) {
+            console.log("THUMBNAIL: ")
+            console.log(key.thumbnail)
               const thumbnailCode = key.thumbnail
-              array.push(thumbnailCode)
-              console.log(array) //Håller nu respektive thumbnailkod på varje index
-          }
+              thumbnailArray.push(thumbnailCode)
+              console.log("THUMBNAILS: ")
+              console.log(thumbnailArray) //Håller nu respektive thumbnailkod på varje index
+
+              //Vid useEFfect bör ovan kod köras, både vid första mappen(main) och vid rendering av ny mapp. 
+              //thumbnailArray måste skickas in i sitt eget state.
+          } 
         }) 
-
-
-
-
-
       })
       .catch(function(error) {
         console.log(error);
       });
-
-
-
-
-
     }
-    
     
     
   
@@ -163,12 +157,11 @@ let newFolder = props.folder;
             >
           <td 
             title={"Download: " + data.name} 
-            key={data.id} 
             className="listFiles" 
             data-name={data.name} 
             data-folder={data.path_lower} 
             data-tag={data[".tag"]} onClick={downloadFile}>
-              <i class="material-icons-outlined">
+              <i className="material-icons-outlined">
                 insert_drive_file
               </i>
           </td>
@@ -196,7 +189,7 @@ let newFolder = props.folder;
       return( //FOLDERS
         <tr key={data.id} className="listFiles" to={data.path_lower} data-name={data.name} data-folder={data.path_lower} data-tag={data[".tag"]}>
           <td>
-          <i class="material-icons">
+          <i className="material-icons">
             folder
           </i>
           </td>
