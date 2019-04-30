@@ -9,3 +9,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+aside, header, main, div {
+  box-sizing: border-box;
+}
+

@@ -44,11 +44,20 @@ Textgrå #4D4D4D
 }
 
 .left-link-wrap {
+    display: inline-block;
     margin-left: 10px;
     width: 200px;
     background-color: #00AFD6;
     height: 200px;
     border-radius: 20px;
+}
+
+.left-link{
+    position: relative;
+    top: 25px;
+    margin: 20px;
+    color: #fff;
+    border: 1px solid red;
 }
 
 .mainMain{

@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { BrowserRouter as Router, Route, Link, Redirect}from "react-router-dom";
+import { BrowserRouter as Router, Route, Link, Redirect} from "react-router-dom";
 import { updateToken } from './store.js'
 import {token$} from './store.js';
 import ListItems from './listitems'
@@ -55,17 +55,19 @@ const Main = (props) => {
   if(token === null){
     return <Redirect to="/" />
   }
+
+  //const modalRender = ((showModal) ? <Modal showModal2={modalOnClick} delPath={delPath} showModal={showModal} del={del}/> : false);
+  
   return(
     <>
     <Modal showModal2={modalOnClick} delPath={delPath} showModal={showModal} del={del}/>
     <header className="mainHeader">
-    <div className="header-logo-wrap"><img id="header-logo" src={ require('../Img/Logo_mybox.png') } alt="My Box logo"/> </div>
-    <Search folder={props.location.pathname} search={searchResults} updateSearch={updateSearch}></Search>
+      <div className="header-logo-wrap"><img id="header-logo" src={ require('../Img/Logo_mybox.png') } alt="My Box logo"/> </div>
+      <Search folder={props.location.pathname} search={searchResults} updateSearch={updateSearch}></Search>
     </header>
     <div className="mainWrapper">
       <aside className="leftSide">
-        <div className="left-link-wrap">link</div>
-
+        <div className="left-link-wrap"><a href="http://www.example.com" className="left-link">link</a> </div>
       </aside>
       <main className="mainMain">
         <p>Main</p>
@@ -79,8 +81,8 @@ const Main = (props) => {
         <div className="aside"></div>
         höger aside
       </aside>
-      
     </div>
+    
     </>
   )
 }
