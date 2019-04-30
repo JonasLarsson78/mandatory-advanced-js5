@@ -23,3 +23,9 @@
 .listBackBtn:hover{
     color: darkred;
 }
+.listDelBtn{
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    outline: none;
+}

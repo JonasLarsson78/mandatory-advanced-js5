@@ -102,7 +102,7 @@ let newFolder = props.folder;
     
   
   return
-  }, [props.folder,props.search, searchArr, props.createFolder])
+  }, [props.folder, props.search, searchArr, props.createFolder])
 
 
   const readableBytes = (bytes) => {
@@ -134,7 +134,6 @@ let newFolder = props.folder;
     
 
     return <label>{'Last edited: ' + moment(date).fromNow() + ', ' + day + ' ' + monthInText + ' ' + year}</label>
-    
   }
 
  
@@ -181,7 +180,7 @@ let newFolder = props.folder;
             {lastEdited(data.server_modified)}
           </td>
           <td>
-            <button data-path={data.path_lower} onClick={del}> <i className="material-icons">delete_outline</i></button>
+            <button className="listDelBtn" data-path={data.path_lower} onClick={del}> <i class="material-icons">delete_outline</i></button>
           </td>
         </tr>
       )
@@ -201,7 +200,7 @@ let newFolder = props.folder;
           <td>
           </td>
           <td>
-            <button data-path={data.path_lower} onClick={del}> <i className="material-icons">delete_outline</i></button>
+            <button className="listDelBtn" data-path={data.path_lower} onClick={del}> <i class="material-icons">delete_outline</i></button>
           </td>
         </tr>
       )
