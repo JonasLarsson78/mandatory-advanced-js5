@@ -10,7 +10,7 @@ import Modal from './modal.js';
 
 
 const ListItems = (props) => {
-  
+
   const [data, updateData] = useState([])
   const [rename, updateRename] = useState(false)
   const [name, updateName] = useState("")
@@ -18,7 +18,7 @@ const ListItems = (props) => {
   const searchArr = props.search;
 
   useEffect(() => {
-    console.log(data)
+    
    
     const option = {
       fetch: fetch,
@@ -35,6 +35,7 @@ const ListItems = (props) => {
       })
       .then(response => {
         updateData(response.entries)
+
         
           if (searchArr){
            updateData(searchArr)
@@ -50,6 +51,8 @@ const ListItems = (props) => {
 
 let newFolder = props.folder;
       newFolder = newFolder.substring(5)
+
+      
       
       dbx.filesListFolder({
         path: newFolder
@@ -63,7 +66,6 @@ let newFolder = props.folder;
 
         dbx.filesGetThumbnailBatch({
           entries: response.entries.map(entry => {
-            
             return{
               path: entry.id,
               format : {'.tag': 'jpeg'},
@@ -75,23 +77,24 @@ let newFolder = props.folder;
           
         })
         .then(response => {
-          const array = [];
+          console.log(response)
           //updateData(response.entries)
-          console.log(response.entries) //Thumbnails
-          const respEntry = response.entries;
-          for (let key of respEntry) {
-              const thumbnailCode = key.thumbnail
-              array.push(thumbnailCode)
-              console.log(array) //Håller nu respektive thumbnailkod på varje index
-              return (
-                <img src={"data:image/jpeg;base64," + thumbnailCode} />
-              )
-          }
+          
+          
         }) 
+
+
+
+
+
       })
       .catch(function(error) {
         console.log(error);
       });
+
+
+
+
 
     }
     
