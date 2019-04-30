@@ -4,13 +4,19 @@ import { Dropbox } from 'dropbox';
 import { BrowserRouter as Router, Route, Link, Redirect}from "react-router-dom";
 import '../Css/listitems.css';
 import { downloadFile } from './dowload'
+import { deleteFiles } from './delete'
 import moment from 'moment';
+import Modal from './modal.js';
 
 
 const ListItems = (props) => {
 
   const [data, updateData] = useState([])
+  const [rename, updateRename] = useState(false)
+  const [name, updateName] = useState("")
+
   const searchArr = props.search;
+
   useEffect(() => {
     
    
@@ -133,16 +139,24 @@ let newFolder = props.folder;
 
  
   const renderList = (data) => {
-
-   
+    
+    const del = (e) => {
+      props.path(e.target.dataset.path) 
+      props.showModal(true)
+    }
+    
     if(data[".tag"] === 'file'){
-      
+           
       return(
-        <li title={"Download: " + data.name} key={data.id} className="listFiles" to={data.path_lower} data-name={data.name} onClick={downloadFile} data-folder={data.path_lower} data-tag={data[".tag"]}>{data.name}<label> {readableBytes(data.size)}{lastEdited(data.server_modified)}</label></li>
+        <>
+        <li title={"Download: " + data.name} key={data.id} className="listFiles" to={data.path_lower} data-name={data.name} onClick={downloadFile} data-folder={data.path_lower} data-tag={data[".tag"]}>{data.name}<label> {readableBytes(data.size)}{lastEdited(data.server_modified)}</label></li><button data-path={data.path_lower} onClick={del}> Del File</button>
+        </>
       )
     }
       return(
-        <li key={data.id} className="listFiles" to={data.path_lower} data-name={data.name} data-folder={data.path_lower} data-tag={data[".tag"]}><Link className="listFolderLink" to={"/main" + data.path_lower}>{data.name}</Link></li>
+        <>
+        <li key={data.id} className="listFiles" to={data.path_lower} data-name={data.name} data-folder={data.path_lower} data-tag={data[".tag"]}><Link className="listFolderLink" to={"/main" + data.path_lower}>{data.name}</Link></li><button data-path={data.path_lower} onClick={del}> Del Mapp</button>
+        </>
       )
     }
     const replace = () =>{

@@ -26,14 +26,11 @@ const Search = (props) => {
 
         console.log(response.matches.length)
         if (response.matches.length === 0){
-
             props.updateSearch(null)
-
         }
         else{
           props.search(response.matches)
         }
-        
       })
       .catch(function(error) {
         console.log(error);
