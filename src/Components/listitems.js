@@ -175,7 +175,6 @@ let newFolder = props.folder;
           </td>
           <td
             title={"Download: " + data.name} 
-            key={data.id} 
             className="listFiles" 
             data-name={data.name} 
             data-folder={data.path_lower} 
@@ -190,7 +189,7 @@ let newFolder = props.folder;
             {lastEdited(data.server_modified)}
           </td>
           <td>
-            <button data-path={data.path_lower} onClick={del}> <i class="material-icons">delete_outline</i></button>
+            <button className="listDelBtn" data-path={data.path_lower} onClick={del}> <i class="material-icons">delete_outline</i></button>
           </td>
         </tr>
       )
@@ -210,7 +209,7 @@ let newFolder = props.folder;
           <td>
           </td>
           <td>
-            <button data-path={data.path_lower} onClick={del}> <i class="material-icons">delete_outline</i></button>
+            <button className="listDelBtn" data-path={data.path_lower} onClick={del}> <i class="material-icons">delete_outline</i></button>
           </td>
         </tr>
       )
