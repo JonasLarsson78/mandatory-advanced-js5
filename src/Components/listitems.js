@@ -4,15 +4,21 @@ import { Dropbox } from 'dropbox';
 import { BrowserRouter as Router, Route, Link, Redirect}from "react-router-dom";
 import '../Css/listitems.css';
 import { downloadFile } from './dowload'
+import { deleteFiles } from './delete'
 import moment from 'moment';
+import Modal from './modal.js';
 
 
 const ListItems = (props) => {
-
+  
   const [data, updateData] = useState([])
+  const [rename, updateRename] = useState(false)
+  const [name, updateName] = useState("")
+
   const searchArr = props.search;
+
   useEffect(() => {
-    
+    console.log(data)
    
     const option = {
       fetch: fetch,
@@ -29,7 +35,6 @@ const ListItems = (props) => {
       })
       .then(response => {
         updateData(response.entries)
-
         
           if (searchArr){
            updateData(searchArr)
@@ -45,8 +50,6 @@ const ListItems = (props) => {
 
 let newFolder = props.folder;
       newFolder = newFolder.substring(5)
-
-      
       
       dbx.filesListFolder({
         path: newFolder
@@ -60,6 +63,7 @@ let newFolder = props.folder;
 
         dbx.filesGetThumbnailBatch({
           entries: response.entries.map(entry => {
+            
             return{
               path: entry.id,
               format : {'.tag': 'jpeg'},
@@ -71,24 +75,23 @@ let newFolder = props.folder;
           
         })
         .then(response => {
-          
+          const array = [];
           //updateData(response.entries)
-          
-          
+          console.log(response.entries) //Thumbnails
+          const respEntry = response.entries;
+          for (let key of respEntry) {
+              const thumbnailCode = key.thumbnail
+              array.push(thumbnailCode)
+              console.log(array) //Håller nu respektive thumbnailkod på varje index
+              return (
+                <img src={"data:image/jpeg;base64," + thumbnailCode} />
+              )
+          }
         }) 
-
-
-
-
-
       })
       .catch(function(error) {
         console.log(error);
       });
-
-
-
-
 
     }
     
@@ -133,16 +136,24 @@ let newFolder = props.folder;
 
  
   const renderList = (data) => {
-
-   
+    
+    const del = (e) => {
+      props.path(e.target.dataset.path) 
+      props.showModal(true)
+    }
+    
     if(data[".tag"] === 'file'){
-      
+           
       return(
-        <li title={"Download: " + data.name} key={data.id} className="listFiles" to={data.path_lower} data-name={data.name} onClick={downloadFile} data-folder={data.path_lower} data-tag={data[".tag"]}>{data.name}<label> {readableBytes(data.size)}{lastEdited(data.server_modified)}</label></li>
+        <>
+        <li title={"Download: " + data.name} key={data.id} className="listFiles" to={data.path_lower} data-name={data.name} onClick={downloadFile} data-folder={data.path_lower} data-tag={data[".tag"]}>{data.name}<label> {readableBytes(data.size)}{lastEdited(data.server_modified)}</label></li><button data-path={data.path_lower} onClick={del}> Del File</button>
+        </>
       )
     }
       return(
-        <li key={data.id} className="listFiles" to={data.path_lower} data-name={data.name} data-folder={data.path_lower} data-tag={data[".tag"]}><Link className="listFolderLink" to={"/main" + data.path_lower}>{data.name}</Link></li>
+        <>
+        <li key={data.id} className="listFiles" to={data.path_lower} data-name={data.name} data-folder={data.path_lower} data-tag={data[".tag"]}><Link className="listFolderLink" to={"/main" + data.path_lower}>{data.name}</Link></li><button data-path={data.path_lower} onClick={del}> Del Mapp</button>
+        </>
       )
     }
     const replace = () =>{

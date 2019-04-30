@@ -26,28 +26,20 @@ const Search = (props) => {
 
         console.log(response.matches.length)
         if (response.matches.length === 0){
-
             props.updateSearch(null)
-            
-          
         }
         else{
           props.search(response.matches)
         }
-        
       })
       .catch(function(error) {
         console.log(error);
       });
  }
- const onChange = (e) => {
-  updateInput(e.target.value)
- }
 
 return (
     <>
     <input className="header-search" placeholder="Search..." type="text" onChange={makeSerch} />
-    
     </>
     )
 }
