@@ -7,6 +7,7 @@ import CreateFolder from './createfolder'
 import Search from './search'
 import Modal from './modal';
 import { deleteFiles } from './delete'
+import UploadFile from './uploadfile';
 import '../Css/main.css';
 
 const Main = (props) => {
@@ -71,6 +72,7 @@ const Main = (props) => {
       </aside>
       <main className="mainMain">
         <p>Main</p>
+        <UploadFile></UploadFile><br></br><br></br>
         <CreateFolder folder={props.location.pathname} create={create}></CreateFolder>
         <button onClick={logOut}>logOut</button>
         <table>
