@@ -416,7 +416,7 @@ renameInputFolder = <div className="listRenameInput" ref={inputElFolder} style={
     <>
       {listData}
       
-      <tr>
+      <tr style={{background: "white"}}>
       <td>
         {button}
         {renameInput}
