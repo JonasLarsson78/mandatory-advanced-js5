@@ -386,8 +386,10 @@ renameInputFolder = <div className="listRenameInput" ref={inputElFolder} style={
             <Link className="listFolderLink" to={"/main" + data.path_lower}>{data.name}</Link>
           </td>
           <td>
+            ...
           </td>
           <td>
+            ...
           </td>
           <td>
             <button className="listBtn" onClick={del}> <i data-path={data.path_lower} className="material-icons">delete_outline</i></button>

@@ -70,7 +70,7 @@
     font-size: 20px;
 }
 .material-icons, .material-icons-outlined{
-    color: #00AFD6
+    color: #00AFD6;
 }
 .material-icons:hover, .material-icons-outlined:hover{
     color: #029BB5;
