@@ -7,6 +7,11 @@ import { downloadFile } from './dowload'
 import moment from 'moment';
 import {renameFile} from './rename'
 
+const counter = (number = 0) => {
+  console.log(number)
+  return number = number + 1;
+  
+}
 
 const ListItems = (props) => {
   const inputEl = useRef(null);
@@ -15,12 +20,14 @@ const ListItems = (props) => {
   const [rename, updateRename] = useState("")
   const [newUrl, updateNewUrl] = useState("")
   const [thumbnails, updateThumbnails] = useState([])
+  
 
   const searchArr = props.search;
   const thumbnailArray = [];
 
   useEffect(() => {
     
+   
     const option = {
       fetch: fetch,
       accessToken: token$.value
@@ -37,16 +44,6 @@ const ListItems = (props) => {
       .then(response => {
         updateData(response.entries)
         console.log(response)
-          /* dbx.filesListFolderLongpoll({
-            path: ''
-          }) */
-
-          dbx.filesListFolderContinue({
-            cursor: response.cursor,
-            
-          })
-          .then( response => {
-            console.log(response)
 
             dbx.filesListFolderLongpoll({
               cursor: response.cursor,
@@ -54,17 +51,22 @@ const ListItems = (props) => {
             })
             .then(response => {
               console.log(response.changes)
-              if(response.changes === true){
-                console.log(props)
-                //updateData(response.entries)
-                props.pollChanges(true)
-              }
+             
+             
+                props.pollChanges(counter)
+                
+                
+              
+              
+              
+              
             })
+            .catch(function(error) {
+             console.log(error);
+            });
 
-          })
-          .catch(function(error) {
-            console.log(error);
-          });
+      
+          
 
         
           if (searchArr){
@@ -89,7 +91,7 @@ const ListItems = (props) => {
               let thumbnailCode = key.thumbnail;
               thumbnailArray.push(thumbnailCode);
 
-              console.log(thumbnailArray);
+             // console.log(thumbnailArray);
             }
           } 
         }) 
