@@ -7,7 +7,7 @@ const UploadFile = (props) => {
 
   let newFolder = props.folder
   newFolder = newFolder.substring(5);
-  console.log(newFolder)
+  //console.log(newFolder)
   const inputRef = useRef(null)
   const upload = (e) => {
     e.preventDefault();
