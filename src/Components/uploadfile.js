@@ -4,6 +4,10 @@ import {token$} from './store.js';
 
 
 const UploadFile = (props) => {
+  console.log(props)
+  let newFolder = props.folder
+  newFolder = newFolder.substring(5);
+  console.log(newFolder)
   const inputRef = useRef(null)
   const upload = (e) => {
     e.preventDefault();
@@ -27,11 +31,11 @@ const UploadFile = (props) => {
     for(let i = 0; i < fileList.length; i++){
 
       if(fileList[i].size < filesiZeLimit){
-
+        console.log(fileList[i])
         dbx.filesUpload({  
-        
+          
           contents: fileList[i],
-          path: '/' + fileList[i].name
+          path: newFolder + '/' + fileList[i].name
           })
 
               .then(function(response) {
@@ -84,7 +88,7 @@ const UploadFile = (props) => {
         }, Promise.resolve());
         
         task.then(function(result) {
-          props.upload(result)
+          //props.upload(result)
           
           console.log(result)
         })
