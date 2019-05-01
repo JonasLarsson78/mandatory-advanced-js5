@@ -1,19 +1,20 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect,useRef} from 'react';
 import {token$} from './store.js';
 import { Dropbox } from 'dropbox';
 import { BrowserRouter as Router, Route, Link, Redirect}from "react-router-dom";
 import '../Css/listitems.css';
 import { downloadFile } from './dowload'
-import { deleteFiles } from './delete'
 import moment from 'moment';
-import Modal from './modal.js';
+import {renameFile} from './rename'
 
 
 const ListItems = (props) => {
-
+  const inputEl = useRef(null);
+  const inputElFolder = useRef(null);
   const [data, updateData] = useState([])
-  const [rename, updateRename] = useState(false)
-  const [name, updateName] = useState("")
+  const [rename, updateRename] = useState("")
+  const [newUrl, updateNewUrl] = useState("")
+  const [thumbnails, updateThumbnails] = useState([])
 
   const searchArr = props.search;
   const thumbnailArray = [];
@@ -114,7 +115,7 @@ const ListItems = (props) => {
     
   
   return
-  }, [props.folder, props.search, searchArr, props.createFolder,])
+  }, [props.folder, props.search, searchArr, props.createFolder, props.uploadFile])
 
 
   const readableBytes = (bytes) => {
@@ -148,14 +149,86 @@ const ListItems = (props) => {
     return <label>{'Last edited: ' + moment(date).fromNow() + ', ' + day + ' ' + monthInText + ' ' + year}</label>
   }
 
-
+ let renameInput;
+ let renameInputFolder;
   const renderList = (data) => {
-    
-   
+
     const del = (e) => {
       props.path(e.target.dataset.path) 
       props.showModal(true)
     }
+/* Rename Files */
+    const reName = (e) => {
+      let old = e.target.dataset.path
+      updateRename(old)
+      inputEl.current.style.display = "block"
+    }
+    const newNameInput = (e) => {
+      let target = e.target.value
+      let idx = rename.lastIndexOf('.')
+      let newIdx = rename.substring(idx)
+      let newPath = rename.substring(0, rename.lastIndexOf("/"));
+      let fixNewname = newPath + "/" + target + newIdx;
+      updateNewUrl(fixNewname);
+    }
+
+    const addNewName = (e) => {
+      
+      renameFile(rename, newUrl)
+      inputEl.current.style.display = "none"
+
+      let path = window.location.pathname
+      setTimeout(startTimer, 500);
+        function startTimer() {
+          window.location.replace(path)
+        }
+       clearTimeout(startTimer)
+    }
+    const addNewNameClose = () =>{
+      inputEl.current.style.display = "none"
+    }
+    
+    renameInput = <div className="listRenameInput" ref={inputEl} style={{display: "none"}}><h3>Rename file:</h3><span className="listRenameClose" onClick={addNewNameClose}>x</span><input placeholder="New filename..." type="text" onChange={newNameInput} /><button onClick={addNewName}>Ok</button></div>
+/* ---------------- end renameFiles ----------------------------- */
+
+
+/* Rename Folder */
+const reNameFolder = (e) => {
+  let old = e.target.dataset.path
+  updateRename(old)
+  inputElFolder.current.style.display = "block"
+}
+const newNameInputFolder = (e) => {
+  let target = e.target.value
+
+  let path = rename.split("/");
+  let strippedPath = path.slice(0, path.length-1).join("/");
+  
+  let fixNewname = strippedPath + "/" + target;
+  updateNewUrl(fixNewname);
+}
+
+const addNewNameFolder = (e) => {
+  
+  console.log(rename)
+  console.log(newUrl)
+  renameFile(rename, newUrl)
+  inputElFolder.current.style.display = "none"
+
+  let path = window.location.pathname
+  setTimeout(startTimer, 700);
+    function startTimer() {
+      window.location.replace(path)
+    }
+   clearTimeout(startTimer)
+}
+const addNewNameCloseFolder = () =>{
+  inputElFolder.current.style.display = "none"
+}
+
+renameInputFolder = <div className="listRenameInput" ref={inputElFolder} style={{display: "none"}}><h3>Rename folder:</h3><span className="listRenameClose" onClick={addNewNameCloseFolder}>x</span><input placeholder="New filename..." type="text" onChange={newNameInputFolder} /><button onClick={addNewNameFolder}>Ok</button></div>
+/* ---------------- end renameFolder ----------------------------- */
+
     
     if(data[".tag"] === 'file'){ //FILER
       let fileEnd = data["name"];
@@ -209,12 +282,12 @@ const ListItems = (props) => {
     
       return( //FILES
         <tr
-            //title={"Download: " + data.name} 
+             
             key={data.id} 
-            //className="listFiles" 
-            //data-name={data.name} 
-            //data-folder={data.path_lower} 
-            //data-tag={data[".tag"]}
+            className="listFiles" 
+            data-name={data.name} 
+            data-folder={data.path_lower} 
+            data-tag={data[".tag"]}
             >
           <td 
             title={"Download: " + data.name} 
@@ -233,7 +306,7 @@ const ListItems = (props) => {
             data-folder={data.path_lower} 
             data-tag={data[".tag"]} onClick={downloadFile}
           >
-            {data.name} 
+          {data.name}
           </td>
           <td>
             {readableBytes(data.size)}
@@ -242,7 +315,10 @@ const ListItems = (props) => {
             {lastEdited(data.server_modified)}
           </td>
           <td>
-            <button className="listDelBtn" data-path={data.path_lower} onClick={del}> <i className="material-icons">delete_outline</i></button>
+            <button className="listBtn" onClick={del}> <i data-path={data.path_lower} className="material-icons">delete_outline</i></button>
+          </td>
+          <td>
+            <button className="listBtn" data-path={data.path_lower} onClick={reName}><i data-path={data.path_lower} className="material-icons">edit</i></button>
           </td>
         </tr>
       )
@@ -262,7 +338,10 @@ const ListItems = (props) => {
           <td>
           </td>
           <td>
-            <button className="listDelBtn" data-path={data.path_lower} onClick={del}> <i className="material-icons">delete_outline</i></button>
+            <button className="listBtn" onClick={del}> <i data-path={data.path_lower} className="material-icons">delete_outline</i></button>
+          </td>
+          <td>
+            <button className="listBtn" onClick={reNameFolder}><i data-path={data.path_lower} className="material-icons">edit</i></button>
           </td>
         </tr>
       )
@@ -282,6 +361,14 @@ const ListItems = (props) => {
   return(
     <>
       {listData}
+      
+      <tr>
+      <td>
+        {button}
+        {renameInput}
+        {renameInputFolder}
+      </td>
+      </tr>
     </>
   )
 }

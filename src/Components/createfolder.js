@@ -1,7 +1,7 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import { Dropbox } from 'dropbox';
 import {token$} from './store.js';
-import { BrowserRouter as Router, Route, Link, Redirect}from "react-router-dom";
+//import { BrowserRouter as Router, Route, Link, Redirect}from "react-router-dom";
 
 
 const CreateFolder = (props) => {
@@ -35,7 +35,7 @@ const CreateFolder = (props) => {
     .then(response => {
 
         
-       
+       console.log(response)
        props.create(response)
 
         

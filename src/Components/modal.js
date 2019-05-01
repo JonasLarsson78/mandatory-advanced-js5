@@ -3,11 +3,13 @@ import '../Css/modal.css'
 
 const Modal = (props) => {
     const element = useRef(null);
+    let pointerEvent = "none"
 
     if (props.showModal === true){
+        pointerEvent = "auto"
         element.current.style.opacity = "1";
         element.current.style.zIndex = "100";
-        element.current.style.pointerEvent = "auto"
+        //element.current.style.pointerEvent = "auto"
     }
     
     const ja = () => {
@@ -25,9 +27,9 @@ const Modal = (props) => {
     }
 
     return(
-        <div ref={element} className="modalBack">
-        <div className="modal">
-        <div className="mainModal">
+        <div style={{pointerEvents: pointerEvent}} ref={element} className="modalBack">
+        <div style={{pointerEvents: pointerEvent}} className="modal">
+        <div style={{pointerEvents: pointerEvent}} className="mainModal">
         <h1>Delete</h1>
         <p>Vill du ta bort filen/mappen ??</p>
         <button onClick={ja}>Ja</button><button onClick={nej}>Nej</button>
