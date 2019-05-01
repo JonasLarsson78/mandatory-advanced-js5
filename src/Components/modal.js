@@ -32,7 +32,7 @@ const Modal = (props) => {
         <div style={{pointerEvents: pointerEvent}} className="mainModal">
         <h1>Delete</h1>
         <p>Vill du ta bort filen/mappen ??</p>
-        <button onClick={ja}>Ja</button><button onClick={nej}>Nej</button>
+        <button className="modalBtn" onClick={ja}>Ja</button><button className="modalBtn" onClick={nej}>Nej</button>
         </div>
         </div>
         </div>
