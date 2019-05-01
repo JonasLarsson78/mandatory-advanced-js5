@@ -58,9 +58,6 @@ const ListItems = (props) => {
                 
                 
               
-              
-              
-              
             })
             .catch(function(error) {
              console.log(error);
@@ -74,7 +71,7 @@ const ListItems = (props) => {
            updateData(searchArr)
           }
 
-        dbx.filesGetThumbnailBatch({
+        /* dbx.filesGetThumbnailBatch({
           entries: response.entries.map(entry => {
             return{
               path: entry.id,
@@ -83,8 +80,8 @@ const ListItems = (props) => {
               mode: { '.tag': 'strict' }  
             }
           }) 
-        })
-        .then(response => {
+        }) */
+        /* .then(response => {
           
           const respEntry = response.entries;
           for (let key of respEntry) {
@@ -95,11 +92,11 @@ const ListItems = (props) => {
              // console.log(thumbnailArray);
             }
           } 
-        }) 
+        })  */
       })
-      .catch(function(error) {
+      /* .catch(function(error) {
         console.log(error);
-      });
+      }); */
     }
     
     else{
@@ -112,14 +109,32 @@ const ListItems = (props) => {
       })
       .then(response => {
        updateData(response.entries)
+       dbx.filesListFolderLongpoll({
+        cursor: response.cursor,
+       
+      })
+      .then(response => {
+        console.log(response.changes)
+       
+       
+          props.pollChanges(counter)
+          
+          
+        
+      })
+      .catch(function(error) {
+       console.log(error);
+      });
 
+
+    
 
 
        if (searchArr){
         updateData(searchArr)
  }
 
-        dbx.filesGetThumbnailBatch({
+        /* dbx.filesGetThumbnailBatch({
           entries: response.entries.map(entry => {
             return{
               path: entry.id,
@@ -128,8 +143,8 @@ const ListItems = (props) => {
               mode: { '.tag': 'strict' }  
             }
           } )
-        })
-        .then(response => {
+        }) */
+        /* .then(response => {
           const thumbnailArray = [];
           const respEntry = response.entries;
            for (let key of respEntry) {
@@ -141,11 +156,11 @@ const ListItems = (props) => {
               //Vid useEFfect bör ovan kod köras, både vid första mappen(main) och vid rendering av ny mapp. 
               //thumbnailArray måste skickas in i sitt eget state.
           } 
-        }) 
+        })  */
       })
-      .catch(function(error) {
+      /* .catch(function(error) {
         console.log(error);
-      });
+      }); */
     }
     
     
