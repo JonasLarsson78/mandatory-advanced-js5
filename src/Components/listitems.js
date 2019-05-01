@@ -14,13 +14,12 @@ const ListItems = (props) => {
   const [data, updateData] = useState([])
   const [rename, updateRename] = useState(false)
   const [name, updateName] = useState("")
-  const [thumbnails, updateThumbnails] = useState([])
 
   const searchArr = props.search;
+  const thumbnailArray = [];
 
   useEffect(() => {
     
-   
     const option = {
       fetch: fetch,
       accessToken: token$.value
@@ -36,12 +35,33 @@ const ListItems = (props) => {
       })
       .then(response => {
         updateData(response.entries)
-
         
           if (searchArr){
            updateData(searchArr)
-    }
-        
+          }
+
+        dbx.filesGetThumbnailBatch({
+          entries: response.entries.map(entry => {
+            return{
+              path: entry.id,
+              format : {'.tag': 'jpeg'},
+              size: { '.tag': 'w2048h1536'},
+              mode: { '.tag': 'strict' }  
+            }
+          }) 
+        })
+        .then(response => {
+          
+          const respEntry = response.entries;
+          for (let key of respEntry) {
+            if (key.thumbnail !== undefined){
+              let thumbnailCode = key.thumbnail;
+              thumbnailArray.push(thumbnailCode);
+
+              console.log(thumbnailArray);
+            }
+          } 
+        }) 
       })
       .catch(function(error) {
         console.log(error);
@@ -50,9 +70,8 @@ const ListItems = (props) => {
     
     else{
 
-let newFolder = props.folder;
+      let newFolder = props.folder;
       newFolder = newFolder.substring(5)
-
       
       dbx.filesListFolder({
         path: newFolder
@@ -63,7 +82,6 @@ let newFolder = props.folder;
         updateData(searchArr)
  }
 
-
         dbx.filesGetThumbnailBatch({
           entries: response.entries.map(entry => {
             return{
@@ -73,22 +91,16 @@ let newFolder = props.folder;
               mode: { '.tag': 'strict' }  
             }
           } )
-          
-          
         })
         .then(response => {
           const thumbnailArray = [];
-          //updateData(response.entries)
-          console.log(response.entries)
           const respEntry = response.entries;
            for (let key of respEntry) {
-            console.log("THUMBNAIL: ")
-            console.log(key.thumbnail)
-              const thumbnailCode = key.thumbnail
+            if (key.thumbnail !== undefined){
+              let thumbnailCode = key.thumbnail
               thumbnailArray.push(thumbnailCode)
-              console.log("THUMBNAILS: ")
-              console.log(thumbnailArray) //Håller nu respektive thumbnailkod på varje index
-
+               //Sätter statet ett steg efter. Här innehåller dock statet rätt information/index. 
+            }
               //Vid useEFfect bör ovan kod köras, både vid första mappen(main) och vid rendering av ny mapp. 
               //thumbnailArray måste skickas in i sitt eget state.
           } 
@@ -102,7 +114,7 @@ let newFolder = props.folder;
     
   
   return
-  }, [props.folder, props.search, searchArr, props.createFolder])
+  }, [props.folder, props.search, searchArr, props.createFolder,])
 
 
   const readableBytes = (bytes) => {
@@ -136,16 +148,66 @@ let newFolder = props.folder;
     return <label>{'Last edited: ' + moment(date).fromNow() + ', ' + day + ' ' + monthInText + ' ' + year}</label>
   }
 
- 
+
   const renderList = (data) => {
     
+   
     const del = (e) => {
       props.path(e.target.dataset.path) 
       props.showModal(true)
     }
     
     if(data[".tag"] === 'file'){ //FILER
-      return(
+      let fileEnd = data["name"];
+      fileEnd = fileEnd.substring(fileEnd.indexOf(".")  +1);
+
+        if (fileEnd === "jpg") {
+          
+          for (let i=0; i<thumbnailArray.length; i++){
+            
+
+          return (
+            <tr
+            //title={"Download: " + data.name} 
+            key={data.id} 
+            //className="listFiles" 
+            //data-name={data.name} 
+            //data-folder={data.path_lower} 
+            //data-tag={data[".tag"]}
+            >
+          <td 
+            title={"Download: " + data.name} 
+            className="listFiles" 
+            data-name={data.name} 
+            data-folder={data.path_lower} 
+            data-tag={data[".tag"]} onClick={downloadFile}
+            >
+              <img src={"data:image/jpeg;base64," + thumbnailArray[i]} />
+          </td>
+          <td
+            title={"Download: " + data.name} 
+            className="listFiles" 
+            data-name={data.name} 
+            data-folder={data.path_lower} 
+            data-tag={data[".tag"]} onClick={downloadFile}
+          >
+            {data.name} 
+          </td>
+          <td>
+            {readableBytes(data.size)}
+          </td>
+          <td>
+            {lastEdited(data.server_modified)}
+          </td>
+          <td>
+            <button className="listDelBtn" data-path={data.path_lower} onClick={del}> <i className="material-icons">delete_outline</i></button>
+          </td>
+        </tr>
+          ) 
+      }
+    }
+    
+      return( //FILES
         <tr
             //title={"Download: " + data.name} 
             key={data.id} 
@@ -180,7 +242,7 @@ let newFolder = props.folder;
             {lastEdited(data.server_modified)}
           </td>
           <td>
-            <button className="listDelBtn" data-path={data.path_lower} onClick={del}> <i class="material-icons">delete_outline</i></button>
+            <button className="listDelBtn" data-path={data.path_lower} onClick={del}> <i className="material-icons">delete_outline</i></button>
           </td>
         </tr>
       )
@@ -200,7 +262,7 @@ let newFolder = props.folder;
           <td>
           </td>
           <td>
-            <button className="listDelBtn" data-path={data.path_lower} onClick={del}> <i class="material-icons">delete_outline</i></button>
+            <button className="listDelBtn" data-path={data.path_lower} onClick={del}> <i className="material-icons">delete_outline</i></button>
           </td>
         </tr>
       )
