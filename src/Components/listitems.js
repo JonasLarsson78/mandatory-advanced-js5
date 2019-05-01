@@ -7,18 +7,24 @@ import { downloadFile } from './dowload'
 import moment from 'moment';
 import {renameFile} from './rename'
 
+const counter = (number = 0) => {
+  console.log(number)
+  return number = number + 1;
+  
+}
 
 const ListItems = (props) => {
   const inputEl = useRef(null);
   const inputElFolder = useRef(null);
+  const clearInput = useRef(null)
   const [data, updateData] = useState([])
   const [rename, updateRename] = useState("")
   const [newUrl, updateNewUrl] = useState("")
-  const [thumbnails, updateThumbnails] = useState([0])
 
   const searchArr = props.search;
-  const thumbnailArray = [];
 
+
+//===============================USEEFFECT=====================================
   useEffect(() => {
     
     const option = {
@@ -35,40 +41,31 @@ const ListItems = (props) => {
         path: ''
       })
       .then(response => {
-
-        dbx.filesGetThumbnailBatch({
-          entries: response.entries.map(entry => {
-            return{
-              path: entry.id,
-              format : {'.tag': 'jpeg'},
-              size: { '.tag': 'w2048h1536'},
-              mode: { '.tag': 'strict' }  
-            }
-          }) 
-        })
-        .then(response => {
-          
-          const respEntry = response.entries;
-          for (let key of respEntry) {
-            if (key.thumbnail !== undefined){
-              let thumbnailCode = key.thumbnail;
-              thumbnailArray.push(thumbnailCode);
-            }
-          }
-        }) 
-        
         updateData(response.entries)
-        
-        
+
+
+            dbx.filesListFolderLongpoll({
+              cursor: response.cursor,
+             
+            })
+            .then(response => {
+              console.log(response.changes)
+                        
+                props.pollChanges(counter)
+                
+   
+            })
+            .catch(function(error) {
+             console.log(error);
+            });
+
           if (searchArr){
            updateData(searchArr)
           }
-
-
       })
-      .catch(function(error) {
+      /* .catch(function(error) {
         console.log(error);
-      });
+      }); */
     }
     
     else{
@@ -81,51 +78,50 @@ const ListItems = (props) => {
       })
       .then(response => {
        updateData(response.entries)
-       if (searchArr){
-        updateData(searchArr)
- }
-
-/*         dbx.filesGetThumbnailBatch({
-          entries: response.entries.map(entry => {
-            return{
-              path: entry.id,
-              format : {'.tag': 'jpeg'},
-              size: { '.tag': 'w2048h1536'},
-              mode: { '.tag': 'strict' }  
-            }
-          } )
-        })
-        .then(response => {
-          const respEntry = response.entries;
-           for (let key of respEntry) {
-            if (key.thumbnail !== undefined){
-              let thumbnailCode = key.thumbnail
-              thumbnailArray.push(thumbnailCode)
-               //Sätter statet ett steg efter. Här innehåller dock statet rätt information/index. 
-            }
-              //Vid useEFfect bör ovan kod köras, både vid första mappen(main) och vid rendering av ny mapp. 
-              //thumbnailArray måste skickas in i sitt eget state.
-          } 
-        })  */
+       dbx.filesListFolderLongpoll({
+        cursor: response.cursor,
+       
+      })
+      .then(response => {
+        console.log(response.changes)
+       
+       
+          props.pollChanges(counter)
+          
+          
+        
       })
       .catch(function(error) {
-        console.log(error);
+       console.log(error);
       });
+
+
+       if (searchArr){
+        updateData(searchArr)
+        }
+      })
     }
     
     
   
   return
-  }, [props.folder, props.search, searchArr, props.createFolder, props.uploadFile])
+  }, [props.folder, props.search, searchArr, props.createFolder, props.uploadFile, props.pollChanges])
+
+  //==================END OF USEEFFECT======================
 
 
+
+
+  //=================BYTESIZE SETTING======================
   const readableBytes = (bytes) => {
     const index = Math.floor(Math.log(bytes) / Math.log(1024)),
     sizes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
   
     return (bytes / Math.pow(1024, index)).toFixed(2) * 1 + ' ' + sizes[index];
   }
+//==================END BYTESIZE SETTING===================
 
+//==================SET LATEST DATE EDITING================
   const lastEdited = (date) => {
    
     const year = date.substring(0, 4);
@@ -149,9 +145,13 @@ const ListItems = (props) => {
 
     return <label>{'Last edited: ' + moment(date).fromNow() + ', ' + day + ' ' + monthInText + ' ' + year}</label>
   }
+  //================END DATE SET=========================
+
 
  let renameInput;
  let renameInputFolder;
+
+ //===================RENDER LIST====================
   const renderList = (data) => {
 
     const del = (e) => {
@@ -177,9 +177,10 @@ const ListItems = (props) => {
       
       renameFile(rename, newUrl)
       inputEl.current.style.display = "none"
+      clearInput.current.value = "";
 
       let path = window.location.pathname
-      setTimeout(startTimer, 500);
+      //setTimeout(startTimer, 700);
         function startTimer() {
           window.location.replace(path)
         }
@@ -189,7 +190,7 @@ const ListItems = (props) => {
       inputEl.current.style.display = "none"
     }
     
-    renameInput = <div className="listRenameInput" ref={inputEl} style={{display: "none"}}><h3>Rename file:</h3><span className="listRenameClose" onClick={addNewNameClose}>x</span><input placeholder="New filename..." type="text" onChange={newNameInput} /><button onClick={addNewName}>Ok</button></div>
+    renameInput = <div className="listRenameInput" ref={inputEl} style={{display: "none"}}><h3>Rename file:</h3><span className="listRenameClose" onClick={addNewNameClose}>x</span><input ref={clearInput} placeholder="New filename..." type="text" onChange={newNameInput} /><button className="listBtnRename" onClick={addNewName}>Ok</button></div>
 /* ---------------- end renameFiles ----------------------------- */
 
 
@@ -222,63 +223,15 @@ const addNewNameFolder = (e) => {
       window.location.replace(path)
     }
    clearTimeout(startTimer)
+
 }
 const addNewNameCloseFolder = () =>{
   inputElFolder.current.style.display = "none"
 }
 
-renameInputFolder = <div className="listRenameInput" ref={inputElFolder} style={{display: "none"}}><h3>Rename folder:</h3><span className="listRenameClose" onClick={addNewNameCloseFolder}>x</span><input placeholder="New filename..." type="text" onChange={newNameInputFolder} /><button onClick={addNewNameFolder}>Ok</button></div>
+renameInputFolder = <div className="listRenameInput" ref={inputElFolder} style={{display: "none"}}><h3>Rename folder:</h3><span className="listRenameClose" onClick={addNewNameCloseFolder}>x</span><input ref={clearInput} placeholder="New filename..." type="text" onChange={newNameInputFolder} /><button className="listBtnRename" onClick={addNewNameFolder}>Ok</button></div>
 /* ---------------- end renameFolder ----------------------------- */
-
-      console.log(thumbnailArray);
     if(data[".tag"] === 'file'){ //FILER
-  /*     let fileEnd = data["name"];
-      fileEnd = fileEnd.substring(fileEnd.indexOf(".")  +1);
-          
-        if (fileEnd === "jpg") { 
-
-          for (let i=0; i<thumbnailArray.length; i++){
-     
-          return (
-            <tr
-            //title={"Download: " + data.name} 
-            key={data.id} 
-            //className="listFiles" 
-            //data-name={data.name} 
-            //data-folder={data.path_lower} 
-            //data-tag={data[".tag"]}
-            >
-          <td 
-            title={"Download: " + data.name} 
-            className="listFiles" 
-            data-name={data.name} 
-            data-folder={data.path_lower} 
-            data-tag={data[".tag"]} onClick={downloadFile}
-            >
-              <img src={"data:image/jpeg;base64," + thumbnailArray[i]} />
-          </td>
-          <td
-            title={"Download: " + data.name} 
-            className="listFiles" 
-            data-name={data.name} 
-            data-folder={data.path_lower} 
-            data-tag={data[".tag"]} onClick={downloadFile}
-          >
-            {data.name} 
-          </td>
-          <td>
-            {readableBytes(data.size)}
-          </td>
-          <td>
-            {lastEdited(data.server_modified)}
-          </td>
-          <td>
-            <button className="listDelBtn" data-path={data.path_lower} onClick={del}> <i className="material-icons">delete_outline</i></button>
-          </td>
-        </tr>
-          ) 
-      }
-    } */
     
       return( //FILES
         <tr
@@ -291,7 +244,6 @@ renameInputFolder = <div className="listRenameInput" ref={inputElFolder} style={
             >
           <td 
             title={"Download: " + data.name} 
-            className="listFiles" 
             data-name={data.name} 
             data-folder={data.path_lower} 
             data-tag={data[".tag"]} onClick={downloadFile}>
@@ -301,7 +253,6 @@ renameInputFolder = <div className="listRenameInput" ref={inputElFolder} style={
           </td>
           <td
             title={"Download: " + data.name} 
-            className="listFiles" 
             data-name={data.name} 
             data-folder={data.path_lower} 
             data-tag={data[".tag"]} onClick={downloadFile}
@@ -346,6 +297,8 @@ renameInputFolder = <div className="listRenameInput" ref={inputElFolder} style={
         </tr>
       )
     }
+    //==================END LIST RENDERING==================
+
     const replace = () =>{
       window.location.replace("/main")
     }

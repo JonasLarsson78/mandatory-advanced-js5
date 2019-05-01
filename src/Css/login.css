@@ -7,7 +7,7 @@
     height: 350px;
     transform: translate(-50%, 0%);
     background-color: white;
-    border: 1px solid black;
+    border: 5px solid #029BB5;
     border-radius: 10px;
     background-image: url(../Img/Logo_mybox.png);
     background-size: 70%;

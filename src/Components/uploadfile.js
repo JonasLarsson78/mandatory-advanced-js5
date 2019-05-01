@@ -4,6 +4,10 @@ import {token$} from './store.js';
 
 
 const UploadFile = (props) => {
+
+  let newFolder = props.folder
+  newFolder = newFolder.substring(5);
+  console.log(newFolder)
   const inputRef = useRef(null)
   const upload = (e) => {
     e.preventDefault();
@@ -27,11 +31,11 @@ const UploadFile = (props) => {
     for(let i = 0; i < fileList.length; i++){
 
       if(fileList[i].size < filesiZeLimit){
-
+        console.log(fileList[i])
         dbx.filesUpload({  
-        
+          
           contents: fileList[i],
-          path: '/' + fileList[i].name
+          path: newFolder + '/' + fileList[i].name
           })
 
               .then(function(response) {
@@ -77,16 +81,18 @@ const UploadFile = (props) => {
             // Last chunk of data, close session
             return acc.then(function(sessionId) {
               var cursor = { session_id: sessionId, offset: fileList[i].size - blob.size };
-              var commit = { path: '/' + fileList[i].name, mode: 'add', autorename: true, mute: false };              
+              var commit = { path: newFolder + '/' + fileList[i].name, mode: 'add', autorename: true, mute: false };              
               return dbx.filesUploadSessionFinish({ cursor: cursor, commit: commit, contents: blob });           
             });
           }          
         }, Promise.resolve());
         
         task.then(function(result) {
+          //props.upload(result)
           
           console.log(result)
-        }).catch(function(error) {
+        })
+        .catch(function(error) {
           console.error(error);
         });
         

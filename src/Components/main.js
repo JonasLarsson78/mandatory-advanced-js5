@@ -11,7 +11,7 @@ import UploadFile from './uploadfile';
 import '../Css/main.css';
 
 const Main = (props) => {
-
+  
   //const [isLoggedIn, updateIsLoggedIn] = useState(props.location.state.isLoggedIn)
   const [token, updateTokenState] = useState(token$.value)
   const [search, updateSearch] = useState(null)
@@ -19,6 +19,7 @@ const Main = (props) => {
   const [showModal, updateShowModal] = useState(false)
   const [delPath, updateDelPath] = useState(null)
   const [uploadFile, updateUpload] = useState(null)
+  const [changes, updateChanges] = useState(null)
 
   const logOut = () => {
     updateToken(null);
@@ -34,6 +35,13 @@ const Main = (props) => {
     updateSearch(newArr)
   }
 /* ------------ end serarch -------------- */
+
+const pollChanges = (change) => {
+  console.log(change)
+  updateChanges(change)
+  
+
+}
 
 /*  Function for create folder */
   const create = (folder) => {
@@ -77,12 +85,12 @@ const Main = (props) => {
       </aside>
       <main className="mainMain">
         <p>Main</p>
-        <UploadFile upload={upload}></UploadFile><br></br><br></br>
+        <UploadFile upload={upload} folder={props.location.pathname}></UploadFile><br></br><br></br>
         <CreateFolder folder={props.location.pathname} create={create}></CreateFolder>
         <button onClick={logOut}>logOut</button>
         <table>
           <tbody>
-            <ListItems folder={props.location.pathname} path={path} showModal={modalOnClick} search={search} createFolder={createF} uploadFile={uploadFile}></ListItems>
+            <ListItems folder={props.location.pathname} path={path} showModal={modalOnClick} search={search} createFolder={createF} uploadFile={uploadFile} pollChanges={pollChanges}></ListItems>
           </tbody>
         </table>
       </main>

@@ -17,9 +17,12 @@ export const deleteFiles = (filePath) => {
         path: filePath,
       })
       .then(response => {
-        /* Hitta en annan lösning */
-        let url = filePath.substring(0, filePath.lastIndexOf("/"));
-        window.location.replace("/main" + url)
+        let path = window.location.pathname
+        setTimeout(startTimer, 700);
+    function startTimer() {
+      window.location.replace(path)
+    }
+   clearTimeout(startTimer)
       })
       .catch(function(error) {
         console.log(error);
