@@ -44,7 +44,7 @@ const ListItems = (props) => {
       })
       .then(response => {
         updateData(response.entries)
-        console.log(response)
+     
 
             dbx.filesListFolderLongpoll({
               cursor: response.cursor,

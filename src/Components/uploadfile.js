@@ -4,7 +4,7 @@ import {token$} from './store.js';
 
 
 const UploadFile = (props) => {
-  console.log(props)
+
   let newFolder = props.folder
   newFolder = newFolder.substring(5);
   console.log(newFolder)
@@ -81,7 +81,7 @@ const UploadFile = (props) => {
             // Last chunk of data, close session
             return acc.then(function(sessionId) {
               var cursor = { session_id: sessionId, offset: fileList[i].size - blob.size };
-              var commit = { path: '/' + fileList[i].name, mode: 'add', autorename: true, mute: false };              
+              var commit = { path: newFolder + '/' + fileList[i].name, mode: 'add', autorename: true, mute: false };              
               return dbx.filesUploadSessionFinish({ cursor: cursor, commit: commit, contents: blob });           
             });
           }          
