@@ -221,7 +221,7 @@ const ListItems = (props) => {
       inputEl.current.style.display = "none"
     }
     
-    renameInput = <div className="listRenameInput" ref={inputEl} style={{display: "none"}}><h3>Rename file:</h3><span className="listRenameClose" onClick={addNewNameClose}>x</span><input placeholder="New filename..." type="text" onChange={newNameInput} /><button onClick={addNewName}>Ok</button></div>
+    renameInput = <div className="listRenameInput" ref={inputEl} style={{display: "none"}}><h3>Rename file:</h3><span className="listRenameClose" onClick={addNewNameClose}>x</span><input placeholder="New filename..." type="text" onChange={newNameInput} /><button className="listBtnRename" onClick={addNewName}>Ok</button></div>
 /* ---------------- end renameFiles ----------------------------- */
 
 
@@ -259,7 +259,7 @@ const addNewNameCloseFolder = () =>{
   inputElFolder.current.style.display = "none"
 }
 
-renameInputFolder = <div className="listRenameInput" ref={inputElFolder} style={{display: "none"}}><h3>Rename folder:</h3><span className="listRenameClose" onClick={addNewNameCloseFolder}>x</span><input placeholder="New filename..." type="text" onChange={newNameInputFolder} /><button onClick={addNewNameFolder}>Ok</button></div>
+renameInputFolder = <div className="listRenameInput" ref={inputElFolder} style={{display: "none"}}><h3>Rename folder:</h3><span className="listRenameClose" onClick={addNewNameCloseFolder}>x</span><input placeholder="New filename..." type="text" onChange={newNameInputFolder} /><button className="listBtnRename" onClick={addNewNameFolder}>Ok</button></div>
 /* ---------------- end renameFolder ----------------------------- */
 
     

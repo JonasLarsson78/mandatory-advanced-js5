@@ -23,3 +23,16 @@
     background-color: #00000078;
     z-index: 0;
 }
+.modalBtn{
+    margin-right: 5px;
+    height: 25px;
+    border:none;
+    border-radius: 5px;
+    color: white;
+    background-color: #00AFD6;
+    outline: none;
+    cursor: pointer;
+}
+.modalBtn:hover{
+    background-color: #029BB5;
+}

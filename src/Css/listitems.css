@@ -1,3 +1,21 @@
+input[type=text]{
+    border-radius: 5px;
+    margin-right: 5px;
+}
+.listBtnRename{
+    margin-right: 5px;
+    height: 25px;
+    border:none;
+    border-radius: 5px;
+    color: white;
+    background-color: #00AFD6;
+    outline: none;
+    cursor: pointer;
+}
+.listBtnRename:hover{
+    background-color: #029BB5;
+}
+
 .listFiles{
     cursor: pointer;
     list-style-type: none;
