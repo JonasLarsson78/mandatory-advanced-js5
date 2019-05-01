@@ -84,9 +84,11 @@ const UploadFile = (props) => {
         }, Promise.resolve());
         
         task.then(function(result) {
+          props.upload(result)
           
           console.log(result)
-        }).catch(function(error) {
+        })
+        .catch(function(error) {
           console.error(error);
         });
         

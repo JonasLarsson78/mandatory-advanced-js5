@@ -36,6 +36,35 @@ const ListItems = (props) => {
       })
       .then(response => {
         updateData(response.entries)
+        console.log(response)
+          /* dbx.filesListFolderLongpoll({
+            path: ''
+          }) */
+
+          dbx.filesListFolderContinue({
+            cursor: response.cursor,
+            
+          })
+          .then( response => {
+            console.log(response)
+
+            dbx.filesListFolderLongpoll({
+              cursor: response.cursor,
+             
+            })
+            .then(response => {
+              console.log(response.changes)
+              if(response.changes === true){
+                console.log(props)
+                //updateData(response.entries)
+                props.pollChanges(true)
+              }
+            })
+
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
 
         
           if (searchArr){
@@ -59,6 +88,9 @@ let newFolder = props.folder;
       })
       .then(response => {
        updateData(response.entries)
+
+
+
        if (searchArr){
         updateData(searchArr)
  }
@@ -102,7 +134,7 @@ let newFolder = props.folder;
     
   
   return
-  }, [props.folder, props.search, searchArr, props.createFolder, props.uploadFile])
+  }, [props.folder, props.search, searchArr, props.createFolder, props.uploadFile, props.pollChanges])
 
 
   const readableBytes = (bytes) => {

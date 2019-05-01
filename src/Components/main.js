@@ -19,6 +19,7 @@ const Main = (props) => {
   const [showModal, updateShowModal] = useState(false)
   const [delPath, updateDelPath] = useState(null)
   const [uploadFile, updateUpload] = useState(null)
+  const [changes, updateChanges] = useState(false)
 
   const logOut = () => {
     updateToken(null);
@@ -34,6 +35,12 @@ const Main = (props) => {
     updateSearch(newArr)
   }
 /* ------------ end serarch -------------- */
+
+const pollChanges = (change) => {
+  console.log(change)
+  updateChanges(change)
+  updateChanges(false)
+}
 
 /*  Function for create folder */
   const create = (folder) => {
@@ -82,7 +89,7 @@ const Main = (props) => {
         <button onClick={logOut}>logOut</button>
         <table>
           <tbody>
-            <ListItems folder={props.location.pathname} path={path} showModal={modalOnClick} search={search} createFolder={createF} uploadFile={uploadFile}></ListItems>
+            <ListItems folder={props.location.pathname} path={path} showModal={modalOnClick} search={search} createFolder={createF} uploadFile={uploadFile} pollChanges={pollChanges} ></ListItems>
           </tbody>
         </table>
       </main>
