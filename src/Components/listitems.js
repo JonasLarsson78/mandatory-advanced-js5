@@ -211,13 +211,7 @@ const ListItems = (props) => {
       
       renameFile(rename, newUrl)
       inputEl.current.style.display = "none"
-
-      let path = window.location.pathname
-      setTimeout(startTimer, 500);
-        function startTimer() {
-          window.location.replace(path)
-        }
-       clearTimeout(startTimer)
+      
     }
     const addNewNameClose = () =>{
       inputEl.current.style.display = "none"
@@ -250,12 +244,6 @@ const addNewNameFolder = (e) => {
   renameFile(rename, newUrl)
   inputElFolder.current.style.display = "none"
 
-  let path = window.location.pathname
-  setTimeout(startTimer, 700);
-    function startTimer() {
-      window.location.replace(path)
-    }
-   clearTimeout(startTimer)
 }
 const addNewNameCloseFolder = () =>{
   inputElFolder.current.style.display = "none"

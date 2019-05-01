@@ -9,7 +9,6 @@ const Modal = (props) => {
         pointerEvent = "auto"
         element.current.style.opacity = "1";
         element.current.style.zIndex = "100";
-        //element.current.style.pointerEvent = "auto"
     }
     
     const ja = () => {
@@ -28,13 +27,13 @@ const Modal = (props) => {
 
     return(
         <div style={{pointerEvents: pointerEvent}} ref={element} className="modalBack">
-        <div style={{pointerEvents: pointerEvent}} className="modal">
-        <div style={{pointerEvents: pointerEvent}} className="mainModal">
-        <h1>Delete</h1>
-        <p>Vill du ta bort filen/mappen ??</p>
-        <button className="modalBtn" onClick={ja}>Ja</button><button className="modalBtn" onClick={nej}>Nej</button>
-        </div>
-        </div>
+            <div style={{pointerEvents: pointerEvent}} className="modal">
+                <div style={{pointerEvents: pointerEvent}} className="mainModal">
+                    <h1>Delete</h1>
+                    <p>Vill du ta bort filen/mappen ??</p>
+                    <button className="modalBtn" onClick={ja}>Ja</button><button className="modalBtn" onClick={nej}>Nej</button>
+                </div>
+            </div>
         </div>
     );
 
