@@ -102,7 +102,7 @@ let newFolder = props.folder;
     
   
   return
-  }, [props.folder, props.search, searchArr, props.createFolder])
+  }, [props.folder, props.search, searchArr, props.createFolder, props.uploadFile])
 
 
   const readableBytes = (bytes) => {

@@ -35,7 +35,7 @@ const CreateFolder = (props) => {
     .then(response => {
 
         
-       
+       console.log(response)
        props.create(response)
 
         

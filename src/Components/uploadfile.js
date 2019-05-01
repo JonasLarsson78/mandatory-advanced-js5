@@ -3,7 +3,7 @@ import { Dropbox } from 'dropbox';
 import {token$} from './store.js';
 
 
-const UploadFile = () => {
+const UploadFile = (props) => {
   const inputRef = useRef(null)
   const upload = (e) => {
     e.preventDefault();
@@ -36,7 +36,8 @@ const UploadFile = () => {
 
               .then(function(response) {
                 
-             
+                props.upload(response)
+                console.log(props)
                 console.log(response);
               })
               .catch(function(error) {
@@ -91,12 +92,6 @@ const UploadFile = () => {
         
       }
         
-
-       
-    
-       console.log(offset)
-       console.log(workItems)
-
         
       
       

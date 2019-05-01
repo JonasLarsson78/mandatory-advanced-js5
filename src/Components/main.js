@@ -18,6 +18,7 @@ const Main = (props) => {
   const [createF, updateCreateF] = useState(null)
   const [showModal, updateShowModal] = useState(false)
   const [delPath, updateDelPath] = useState(null)
+  const [uploadFile, updateUpload] = useState(null)
 
   const logOut = () => {
     updateToken(null);
@@ -39,6 +40,10 @@ const Main = (props) => {
     updateCreateF(folder)
   }
 /* ----------- end create folder----------- */
+  const upload = (file) => {
+    
+    updateUpload(file)
+  }
 
   /* Functions for del files/folders */
   const del = (path) =>{
@@ -72,12 +77,12 @@ const Main = (props) => {
       </aside>
       <main className="mainMain">
         <p>Main</p>
-        <UploadFile></UploadFile><br></br><br></br>
+        <UploadFile upload={upload}></UploadFile><br></br><br></br>
         <CreateFolder folder={props.location.pathname} create={create}></CreateFolder>
         <button onClick={logOut}>logOut</button>
         <table>
           <tbody>
-            <ListItems folder={props.location.pathname} path={path} showModal={modalOnClick} search={search} createFolder={createF}></ListItems>
+            <ListItems folder={props.location.pathname} path={path} showModal={modalOnClick} search={search} createFolder={createF} uploadFile={uploadFile}></ListItems>
           </tbody>
         </table>
       </main>
