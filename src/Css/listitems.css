@@ -3,15 +3,16 @@
     list-style-type: none;
 }
 .listFiles:hover{
-    color: darkred;
+    color: #029BB5;
 }
+
 .listFolderLink{
     text-decoration: none;
     color: black;
     font-weight: 500;
 }
 .listFolderLink:hover{
-    color: darkred;
+    color: #029BB5;
 }
 .listBackBtn{
     border: none;
@@ -21,7 +22,7 @@
     outline: none;
 }
 .listBackBtn:hover{
-    color: darkred;
+    color: #029BB5;
 }
 .listBtn{
     border: none;
@@ -48,4 +49,10 @@
     right: 10px;
     cursor: pointer;
     font-size: 20px;
+}
+.material-icons, .material-icons-outlined{
+    color: #00AFD6
+}
+.material-icons:hover, .material-icons-outlined:hover{
+    color: #029BB5;
 }

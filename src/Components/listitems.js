@@ -324,7 +324,6 @@ renameInputFolder = <div className="listRenameInput" ref={inputElFolder} style={
             >
           <td 
             title={"Download: " + data.name} 
-            className="listFiles" 
             data-name={data.name} 
             data-folder={data.path_lower} 
             data-tag={data[".tag"]} onClick={downloadFile}>
@@ -334,7 +333,6 @@ renameInputFolder = <div className="listRenameInput" ref={inputElFolder} style={
           </td>
           <td
             title={"Download: " + data.name} 
-            className="listFiles" 
             data-name={data.name} 
             data-folder={data.path_lower} 
             data-tag={data[".tag"]} onClick={downloadFile}
