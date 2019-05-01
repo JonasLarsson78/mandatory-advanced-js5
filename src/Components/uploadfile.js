@@ -3,7 +3,11 @@ import { Dropbox } from 'dropbox';
 import {token$} from './store.js';
 
 
+
+
 const UploadFile = (props) => {
+
+  const [uploadMessage, updateMessage] = useState(null)
 
   let newFolder = props.folder
   newFolder = newFolder.substring(5);
@@ -27,9 +31,9 @@ const UploadFile = (props) => {
       option,
     );
     
-   
+    
     for(let i = 0; i < fileList.length; i++){
-
+     
       if(fileList[i].size < filesiZeLimit){
         console.log(fileList[i])
         dbx.filesUpload({  
@@ -39,6 +43,10 @@ const UploadFile = (props) => {
           })
 
               .then(function(response) {
+                updateMessage('Upload done')
+                setTimeout(() => {
+                  updateMessage(null)
+                }, 3000);
                 
                 props.upload(response)
                 console.log(props)
@@ -67,6 +75,9 @@ const UploadFile = (props) => {
             // Starting multipart upload of file
             return acc.then(function() {
               console.log('start')
+              updateMessage('Upload in progress...')
+         
+
               return dbx.filesUploadSessionStart({ close: false, contents: blob})
                         .then(response => response.session_id)
             });          
@@ -88,8 +99,12 @@ const UploadFile = (props) => {
         }, Promise.resolve());
         
         task.then(function(result) {
-          //props.upload(result)
           
+          //props.upload(result)
+          updateMessage('Upload done')
+          setTimeout(() => {
+            updateMessage(null)
+          }, 3000);
           console.log(result)
         })
         .catch(function(error) {
@@ -118,6 +133,7 @@ const UploadFile = (props) => {
     <>
     <input type="file" multiple ref={inputRef}></input>
     <input type="submit" onClick={upload}></input>
+    <label>{uploadMessage}</label>
     </>
   )
   
