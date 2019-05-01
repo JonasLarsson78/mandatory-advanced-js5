@@ -16,6 +16,7 @@ const counter = (number = 0) => {
 const ListItems = (props) => {
   const inputEl = useRef(null);
   const inputElFolder = useRef(null);
+  const clearInput = useRef(null)
   const [data, updateData] = useState([])
   const [rename, updateRename] = useState("")
   const [newUrl, updateNewUrl] = useState("")
@@ -211,13 +212,20 @@ const ListItems = (props) => {
       
       renameFile(rename, newUrl)
       inputEl.current.style.display = "none"
-      
+      clearInput.current.value = "";
+
+      let path = window.location.pathname
+      setTimeout(startTimer, 700);
+        function startTimer() {
+          window.location.replace(path)
+        }
+       clearTimeout(startTimer)
     }
     const addNewNameClose = () =>{
       inputEl.current.style.display = "none"
     }
     
-    renameInput = <div className="listRenameInput" ref={inputEl} style={{display: "none"}}><h3>Rename file:</h3><span className="listRenameClose" onClick={addNewNameClose}>x</span><input placeholder="New filename..." type="text" onChange={newNameInput} /><button className="listBtnRename" onClick={addNewName}>Ok</button></div>
+    renameInput = <div className="listRenameInput" ref={inputEl} style={{display: "none"}}><h3>Rename file:</h3><span className="listRenameClose" onClick={addNewNameClose}>x</span><input ref={clearInput} placeholder="New filename..." type="text" onChange={newNameInput} /><button className="listBtnRename" onClick={addNewName}>Ok</button></div>
 /* ---------------- end renameFiles ----------------------------- */
 
 
@@ -243,6 +251,13 @@ const addNewNameFolder = (e) => {
   console.log(newUrl)
   renameFile(rename, newUrl)
   inputElFolder.current.style.display = "none"
+
+  let path = window.location.pathname
+  setTimeout(startTimer, 700);
+    function startTimer() {
+      window.location.replace(path)
+    }
+   clearTimeout(startTimer)
 
 }
 const addNewNameCloseFolder = () =>{
