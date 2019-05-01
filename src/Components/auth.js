@@ -55,7 +55,7 @@ const Auth = () => {
    
    <div className="authMainLoader">
     <div className="authProgress">
-        <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+        <div className="lds-ring"><div></div><div></div><div></div><div></div></div>
         <p>Loading page...</p>
     </div>
    </div>
