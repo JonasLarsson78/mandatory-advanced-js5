@@ -17,9 +17,6 @@ export const deleteFiles = (filePath) => {
         path: filePath,
       })
       .then(response => {
-        /* Hitta en annan lösning */
-        let url = filePath.substring(0, filePath.lastIndexOf("/"));
-        window.location.replace("/main" + url)
       })
       .catch(function(error) {
         console.log(error);
