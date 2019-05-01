@@ -14,7 +14,7 @@ const ListItems = (props) => {
   const [data, updateData] = useState([])
   const [rename, updateRename] = useState("")
   const [newUrl, updateNewUrl] = useState("")
-  const [thumbnails, updateThumbnails] = useState([])
+  const [thumbnails, updateThumbnails] = useState([0])
 
   const searchArr = props.search;
   const thumbnailArray = [];
@@ -35,11 +35,6 @@ const ListItems = (props) => {
         path: ''
       })
       .then(response => {
-        updateData(response.entries)
-        
-          if (searchArr){
-           updateData(searchArr)
-          }
 
         dbx.filesGetThumbnailBatch({
           entries: response.entries.map(entry => {
@@ -58,11 +53,18 @@ const ListItems = (props) => {
             if (key.thumbnail !== undefined){
               let thumbnailCode = key.thumbnail;
               thumbnailArray.push(thumbnailCode);
-
-              console.log(thumbnailArray);
             }
-          } 
+          }
         }) 
+        
+        updateData(response.entries)
+        
+        
+          if (searchArr){
+           updateData(searchArr)
+          }
+
+
       })
       .catch(function(error) {
         console.log(error);
@@ -83,7 +85,7 @@ const ListItems = (props) => {
         updateData(searchArr)
  }
 
-        dbx.filesGetThumbnailBatch({
+/*         dbx.filesGetThumbnailBatch({
           entries: response.entries.map(entry => {
             return{
               path: entry.id,
@@ -94,7 +96,6 @@ const ListItems = (props) => {
           } )
         })
         .then(response => {
-          const thumbnailArray = [];
           const respEntry = response.entries;
            for (let key of respEntry) {
             if (key.thumbnail !== undefined){
@@ -105,7 +106,7 @@ const ListItems = (props) => {
               //Vid useEFfect bör ovan kod köras, både vid första mappen(main) och vid rendering av ny mapp. 
               //thumbnailArray måste skickas in i sitt eget state.
           } 
-        }) 
+        })  */
       })
       .catch(function(error) {
         console.log(error);
@@ -229,16 +230,15 @@ const addNewNameCloseFolder = () =>{
 renameInputFolder = <div className="listRenameInput" ref={inputElFolder} style={{display: "none"}}><h3>Rename folder:</h3><span className="listRenameClose" onClick={addNewNameCloseFolder}>x</span><input placeholder="New filename..." type="text" onChange={newNameInputFolder} /><button onClick={addNewNameFolder}>Ok</button></div>
 /* ---------------- end renameFolder ----------------------------- */
 
-    
+      console.log(thumbnailArray);
     if(data[".tag"] === 'file'){ //FILER
-      let fileEnd = data["name"];
+  /*     let fileEnd = data["name"];
       fileEnd = fileEnd.substring(fileEnd.indexOf(".")  +1);
-
-        if (fileEnd === "jpg") {
           
-          for (let i=0; i<thumbnailArray.length; i++){
-            
+        if (fileEnd === "jpg") { 
 
+          for (let i=0; i<thumbnailArray.length; i++){
+     
           return (
             <tr
             //title={"Download: " + data.name} 
@@ -278,7 +278,7 @@ renameInputFolder = <div className="listRenameInput" ref={inputElFolder} style={
         </tr>
           ) 
       }
-    }
+    } */
     
       return( //FILES
         <tr
