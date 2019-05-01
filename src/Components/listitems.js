@@ -230,7 +230,7 @@ const ListItems = (props) => {
       clearInput.current.value = "";
 
       let path = window.location.pathname
-      setTimeout(startTimer, 700);
+      //setTimeout(startTimer, 700);
         function startTimer() {
           window.location.replace(path)
         }
@@ -279,7 +279,7 @@ const addNewNameCloseFolder = () =>{
   inputElFolder.current.style.display = "none"
 }
 
-renameInputFolder = <div className="listRenameInput" ref={inputElFolder} style={{display: "none"}}><h3>Rename folder:</h3><span className="listRenameClose" onClick={addNewNameCloseFolder}>x</span><input placeholder="New filename..." type="text" onChange={newNameInputFolder} /><button className="listBtnRename" onClick={addNewNameFolder}>Ok</button></div>
+renameInputFolder = <div className="listRenameInput" ref={inputElFolder} style={{display: "none"}}><h3>Rename folder:</h3><span className="listRenameClose" onClick={addNewNameCloseFolder}>x</span><input ref={clearInput} placeholder="New filename..." type="text" onChange={newNameInputFolder} /><button className="listBtnRename" onClick={addNewNameFolder}>Ok</button></div>
 /* ---------------- end renameFolder ----------------------------- */
 
     
