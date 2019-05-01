@@ -6,6 +6,7 @@ import '../Css/listitems.css';
 import { downloadFile } from './dowload'
 import moment from 'moment';
 import {renameFile} from './rename'
+import {move} from './move'
 
 const counter = (number = 0) => {
   console.log(number)
@@ -52,7 +53,7 @@ const ListItems = (props) => {
              
             })
             .then(response => {
-              console.log(response.changes)
+              //console.log(response.changes)
              
              
                 props.pollChanges(counter)
@@ -115,7 +116,7 @@ const ListItems = (props) => {
        
       })
       .then(response => {
-        console.log(response.changes)
+        //console.log(response.changes)
        
        
           props.pollChanges(counter)
@@ -171,6 +172,9 @@ const ListItems = (props) => {
 
 
   const readableBytes = (bytes) => {
+    if (bytes === 0){
+      bytes = 1
+    }
     const index = Math.floor(Math.log(bytes) / Math.log(1024)),
     sizes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
   
@@ -263,8 +267,8 @@ const newNameInputFolder = (e) => {
 
 const addNewNameFolder = (e) => {
   
-  console.log(rename)
-  console.log(newUrl)
+  //console.log(rename)
+  //console.log(newUrl)
   renameFile(rename, newUrl)
   inputElFolder.current.style.display = "none"
   clearInputFolder.current.value = "";
@@ -283,7 +287,7 @@ const addNewNameCloseFolder = () =>{
 renameInputFolder = <div className="listRenameInput" ref={inputElFolder} style={{display: "none"}}><h3>Rename folder:</h3><span className="listRenameClose" onClick={addNewNameCloseFolder}>x</span><input className="listRenameInputText" style={{outline: "none"}} ref={clearInputFolder} placeholder="New filename..." type="text" onChange={newNameInputFolder} /><button className="listBtnRename" style={{outline: "none"}} onClick={addNewNameFolder}>Ok</button></div>
 /* ---------------- end renameFolder ----------------------------- */
 
-    
+console.log(data.size)
     if(data[".tag"] === 'file'){ //FILER
       let fileEnd = data["name"];
       fileEnd = fileEnd.substring(fileEnd.indexOf(".")  +1);
@@ -292,7 +296,7 @@ renameInputFolder = <div className="listRenameInput" ref={inputElFolder} style={
           
           for (let i=0; i<thumbnailArray.length; i++){
             
-
+            
           return (
             <tr
             //title={"Download: " + data.name} 
