@@ -21,14 +21,15 @@
     bottom: 70px;
     left: 50%;
     transform: translate(-50%, 0%);
-    width: 100px;
-    height: 25px;
+    width: 200px;
+    height: 35px;
     border:none;
     border-radius: 5px;
     color: white;
     background-color: #00AFD6;
     outline: none;
     cursor: pointer;
+    font-size: 20px;
 }
 .loginBtn:hover{
     background-color: #029BB5;
