@@ -17,12 +17,12 @@ export const deleteFiles = (filePath) => {
         path: filePath,
       })
       .then(response => {
-        let path = window.location.pathname
+       /*  let path = window.location.pathname
         setTimeout(startTimer, 700);
     function startTimer() {
       window.location.replace(path)
     }
-   clearTimeout(startTimer)
+   clearTimeout(startTimer) */
       })
       .catch(function(error) {
         console.log(error);
