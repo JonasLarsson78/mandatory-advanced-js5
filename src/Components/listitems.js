@@ -10,7 +10,11 @@ import {move} from './move'
 
 let thumbnailArray = [];
 
-const counter = (number = 0) => {
+const counter = (number) => {
+  console.log(number)
+  if(number === null){
+    number = 0;
+  }
   console.log(number)
   return number = number + 1;
   
