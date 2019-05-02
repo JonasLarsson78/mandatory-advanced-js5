@@ -38,8 +38,6 @@ const Auth = () => {
     });
   } */
 
-  
-
   useEffect(() => {
     
     updateToken(token);
@@ -48,9 +46,8 @@ const Auth = () => {
   
   }, [token])
 
- 
     if(isLoggedIn){
-          return  <Redirect to={{pathname:"/main", state: {isLoggedIn: isLoggedIn}}} />
+          return  <Redirect to={{pathname:"/home", state: {isLoggedIn: isLoggedIn}}} />
     }
   return(
    

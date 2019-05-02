@@ -9,17 +9,17 @@ import Modal from './modal';
 import Breadcrumbs from './breadcrumbs'
 import { deleteFiles } from './delete'
 import UploadFile from './uploadfile';
-import '../Css/main.css';
+import '../Css/home.css';
 
-const Main = (props) => {
+const Home = (props) => {
   
   //const [isLoggedIn, updateIsLoggedIn] = useState(props.location.state.isLoggedIn)
   const [token, updateTokenState] = useState(token$.value)
   const [search, updateSearch] = useState(null)
-  const [createF, updateCreateF] = useState(null)
+  //const [createF, updateCreateF] = useState(null)
   const [showModal, updateShowModal] = useState(false)
   const [delPath, updateDelPath] = useState(null)
-  const [uploadFile, updateUpload] = useState(null)
+  //const [uploadFile, updateUpload] = useState(null)
   const [changes, updateChanges] = useState(null)
 
   const logOut = () => {
@@ -39,19 +39,20 @@ const Main = (props) => {
 
 const pollChanges = (change) => {
   console.log(change)
-  updateChanges(change)
+
+    updateChanges(change)
   
 
 }
 
 /*  Function for create folder */
   const create = (folder) => {
-    updateCreateF(folder)
+   // updateCreateF(folder)
   }
 /* ----------- end create folder----------- */
   const upload = (file) => {
     
-    updateUpload(file)
+   // updateUpload(file)
   }
 
   /* Functions for del files/folders */
@@ -89,7 +90,7 @@ const pollChanges = (change) => {
         <button onClick={logOut}>logOut</button>
         <table className="mainTable">
           <tbody>
-            <ListItems folder={props.location.pathname} path={path} showModal={modalOnClick} search={search} createFolder={createF} uploadFile={uploadFile} pollChanges={pollChanges}></ListItems>
+            <ListItems folder={props.location.pathname} path={path} showModal={modalOnClick} search={search} /* createFolder={createF} */ /* uploadFile={uploadFile} */ pollChanges={pollChanges}></ListItems>
           </tbody>
         </table>
       </main>
@@ -103,4 +104,4 @@ const pollChanges = (change) => {
   )
 }
 
-export default Main;
+export default Home;
