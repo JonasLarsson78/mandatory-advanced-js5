@@ -80,6 +80,7 @@ useEffect(() => {
 
           dbx.filesListFolderLongpoll({
             cursor: response.cursor,
+            timeout: 30
            
           })
           .then(response => {
@@ -115,7 +116,7 @@ useEffect(() => {
      updateData(response.entries)
      dbx.filesListFolderLongpoll({
       cursor: response.cursor,
-     
+      timeout: 30
     })
     .then(response => {
       //console.log(response.changes)
