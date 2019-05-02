@@ -29,139 +29,121 @@ const ListItems = (props) => {
   let toll=-1; //Används för att rendera ut thumbnailArray.
 
 //===============================USEEFFECT=====================================
-  useEffect(() => {
+useEffect(() => {
     
-    const option = {
-      fetch: fetch,
-      accessToken: token$.value
-    };
-    const dbx = new Dropbox(
-      option,
-    );
+  const option = {
+    fetch: fetch,
+    accessToken: token$.value
+  };
+  const dbx = new Dropbox(
+    option,
+  );
 
-    if (props.folder === "/main"){
-      dbx.filesListFolder({
-        path: ''
-      })
-      .then(response => {
-        
-         dbx.filesGetThumbnailBatch({
-          entries: response.entries.map(entry => {
-            return{
-              path: entry.id,
-              format : {'.tag': 'jpeg'},
-              size: { '.tag': 'w64h64'},
-              mode: { '.tag': 'strict' }  
-            }
-          }) 
-        }) 
-         .then(response => {         
-          thumbnailArray=[];
-          const respEntry = response.entries;
-          console.log(respEntry)
-          for (let i=0; i<respEntry.length; i++){
-            
-            if (respEntry[i][".tag"] === "success") {          
-              let fileEnd = respEntry[i].metadata.name;
-              fileEnd = fileEnd.substring(fileEnd.indexOf(".")  +1);
+  if (props.folder === "/main"){
 
-      if (searchArr){
-        updateData(searchArr)
-      }
-        
-              if (fileEnd === "jpg"){
-                  thumbnailArray.push(respEntry[i].thumbnail);
-              }
-            }
-          }
-          console.log(thumbnailArray)
-        }) 
-
-
-        updateData(response.entries)
-        
-
-            dbx.filesListFolderLongpoll({
-              cursor: response.cursor,
-             
-            })
-            .then(response => {
-              //console.log(response.changes)
-             
-             
-                props.pollChanges(counter)
-                
-   
-            })
-            .catch(function(error) {
-             console.log(error);
-            });
-
-          if (searchArr){
-           updateData(searchArr)
-          }
-      })
-      /* .catch(function(error) {
-        console.log(error);
-      }); */
-    }
-    
-    else{
-
-      let newFolder = props.folder;
-      newFolder = newFolder.substring(5)
+    dbx.filesListFolder({
+      path: ''
+    })
+    .then(response => {
       
-      dbx.filesListFolder({
-        path: newFolder
-      })
-      .then(response => {
-       updateData(response.entries)
-       dbx.filesListFolderLongpoll({
-        cursor: response.cursor,
-       
-      })
-      .then(response => {
-        //console.log(response.changes)
-       
-       
-          props.pollChanges(counter)
-          
-          
-        })
-        .then(response => {
-          const thumbnailArray = [];
-          //updateData(response.entries)
-
-          const respEntry = response.entries;
-           for (let key of respEntry) {
-
-              const thumbnailCode = key.thumbnail
-              thumbnailArray.push(thumbnailCode)
-
-
-              //Vid useEFfect bör ovan kod köras, både vid första mappen(main) och vid rendering av ny mapp. 
-              //thumbnailArray måste skickas in i sitt eget state.
-          } 
+       dbx.filesGetThumbnailBatch({
+        entries: response.entries.map(entry => {
+          return{
+            path: entry.id,
+            format : {'.tag': 'jpeg'},
+            size: { '.tag': 'w64h64'},
+            mode: { '.tag': 'strict' }  
+          }
         }) 
-        
-      })
-      .catch(function(error) {
-       console.log(error);
-      });
+      }) 
+       .then(response => {         
+        thumbnailArray=[];
+        const respEntry = response.entries;
+        console.log(respEntry)
+        for (let i=0; i<respEntry.length; i++){
+          
+          if (respEntry[i][".tag"] === "success") {          
+            let fileEnd = respEntry[i].metadata.name;
+            fileEnd = fileEnd.substring(fileEnd.indexOf(".")  +1);
 
-
-       if (searchArr){
-        updateData(searchArr)
+            if (fileEnd === "jpg"){
+                thumbnailArray.push(respEntry[i].thumbnail);
+            }
+          }
         }
-      })
-    }
-    
-    
+        console.log(thumbnailArray)
+      }) 
+
+
+      updateData(response.entries)
+      
+
+          dbx.filesListFolderLongpoll({
+            cursor: response.cursor,
+           
+          })
+          .then(response => {
+            //console.log(response.changes)
+           
+           
+              props.pollChanges(counter)
+              
+ 
+          })
+          .catch(function(error) {
+           console.log(error);
+          });
+
+        if (searchArr){
+         updateData(searchArr)
+        }
+    })
+    /* .catch(function(error) {
+      console.log(error);
+    }); */
+  }
   
-  return
+  else{
+
+    let newFolder = props.folder;
+    newFolder = newFolder.substring(5)
     
-  }, [props.folder, props.search, searchArr, props.createFolder, props.uploadFile, props.pollChanges, props])
-  console.log(props)
+    dbx.filesListFolder({
+      path: newFolder
+    })
+    .then(response => {
+     updateData(response.entries)
+     dbx.filesListFolderLongpoll({
+      cursor: response.cursor,
+     
+    })
+    .then(response => {
+      //console.log(response.changes)
+     
+     
+        props.pollChanges(counter)
+        
+        
+      
+    })
+    .catch(function(error) {
+     console.log(error);
+    });
+
+
+     if (searchArr){
+      updateData(searchArr)
+      }
+    })
+  }
+  
+  
+
+return
+  
+}, [props.folder, props.search, searchArr, props.createFolder, props.uploadFile, props.pollChanges, props])
+console.log(props)
+
 
   //=================BYTESIZE SETTING======================
   const readableBytes = (bytes) => {

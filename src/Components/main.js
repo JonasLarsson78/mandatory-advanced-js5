@@ -84,7 +84,6 @@ const pollChanges = (change) => {
       </aside>
       <main className="mainMain">
         <Breadcrumbs /><br />
-        <p>Main</p>
         <UploadFile upload={upload} folder={props.location.pathname}></UploadFile><br></br><br></br>
         <CreateFolder folder={props.location.pathname} create={create}></CreateFolder>
         <button onClick={logOut}>logOut</button>
