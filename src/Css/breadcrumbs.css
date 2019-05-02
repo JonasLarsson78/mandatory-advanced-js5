@@ -1,0 +1,27 @@
+.breadcrumb-link {
+    text-decoration: none;
+    color: #4D4D4D;
+    font-size: 14px;
+
+}
+
+.breadcrumb-link:hover {
+    color: #000;
+}
+
+.breadcrumb {
+    color: #4D4D4D;
+    position: relative;
+    top: 7px;
+}
+
+.breadcrumb:hover {
+    color: #4D4D4D;
+}
+
+/*
+a:link - a normal, unvisited link
+a:visited - a link the user has visited
+a:hover - a link when the user mouses over it
+a:active - a link the moment it is clicked
+*/
