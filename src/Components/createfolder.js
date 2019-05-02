@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useRef} from 'react';
 import { Dropbox } from 'dropbox';
 import {token$} from './store.js';
 //import { BrowserRouter as Router, Route, Link, Redirect}from "react-router-dom";
@@ -8,6 +8,7 @@ const CreateFolder = (props) => {
   
 
   const [input, updateInput] = useState('')
+  const inputRef = useRef(null);
   let newFolder = props.folder
   newFolder = newFolder.substring(5);
 
@@ -43,13 +44,13 @@ const CreateFolder = (props) => {
     .catch(function(error) {
         console.log(error);
     });
-
+    inputRef.current.value = '';
   }
 
   return(
     <>
       <label>Type in new folder name</label>
-      <input type="text" onChange={changeInput}></input><br></br>
+      <input type="text" onChange={changeInput} ref={inputRef}></input><br></br>
       <button onClick={createFolder}>Create new Folder</button>
     </>
   )

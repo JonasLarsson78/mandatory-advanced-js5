@@ -42,7 +42,8 @@ useEffect(() => {
   if (props.folder === "/home"){
 
     dbx.filesListFolder({
-      path: ''
+      path: '',
+    
     })
     .then(response => {
       
@@ -110,7 +111,8 @@ useEffect(() => {
     newFolder = newFolder.substring(5)
     
     dbx.filesListFolder({
-      path: newFolder
+      path: newFolder,
+   
     })
     .then(response => {
      updateData(response.entries)
