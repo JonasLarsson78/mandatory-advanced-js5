@@ -1,60 +1,39 @@
 import React, {useEffect, useState} from 'react';
-import { Dropbox } from 'dropbox';
 import { updateToken } from './store.js'
-import {token$} from './store.js';
 import { BrowserRouter as Router, Route, Link, Redirect}from "react-router-dom";
-import fetch from 'isomorphic-fetch';
 import '../Css/auth.css';
 
 
 const Auth = () => {
   const [isLoggedIn, updateIsLoggedIn] = useState(false)
-  //const [data, updateData] = useState(null);
-  const hash = window.location.hash
-  const regex = /#(?:access_token)=([\S\s]*?)&/
-  const token = hash.match(regex)[1];
- 
-  const x = hash.lastIndexOf("=") + 1
-  const y = hash.substring(x)
-  console.log(y)
+  const [error, errorUpdate] = useState(false)
   
-  
-  
-  /* #access_token=I1SimuLD2lAAAAAAAAABP8xDpjG_pbYSbLbeO_zzEsIPIfgf446Q80HUQPNVu3W4&token_type=bearer&uid=2144783792&account_id=dbid%3AAAA_hvq5PWdCSs2FSuNyrrTJXVxaTOONMC0 */
-
-
-  /* const getToken = () => {
-    updateIsLoggedIn(true)
-    const option = {
-      fetch: fetch,
-      accessToken: token$.value
-    };
-    
-    const dbx = new Dropbox(
-      option,
-    );
-    dbx.filesListFolder({
-      path: ''
-    })
-    .then(response => {
-      //updateData(response)
-      updateIsLoggedIn(true)
-      
-      
-    })
-    .catch(function(error) {
-      console.log(error);
-    });
-  } */
-
   useEffect(() => {
+    const hash = window.location.hash
+    let errorHash = "#error_description=The+user+chose+not+to+give+your+app+access+to+their+Dropbox+account.&error=access_denied";
+    if (hash === errorHash){
+      errorUpdate(true)
+      return
+    }
     
+    const regex = /#(?:access_token)=([\S\s]*?)&/
+    const token = hash.match(regex)[1];
+
     updateToken(token);
     updateIsLoggedIn(true)
-    //getToken();
   
-  }, [token])
-
+  }, [])
+  if (error){
+    return(
+      <div className="authMainLoader">
+        <div className="authProgress">
+          <b><p>No access.<br/>Reload page.</p></b>
+          <Link to="/"><button className="modalBtn">Reload</button></Link>
+    </div>
+   </div>
+    )
+  }
+  
     if(isLoggedIn){
           return  <Redirect to={{pathname:"/home", state: {isLoggedIn: isLoggedIn}}} />
     }
@@ -67,6 +46,7 @@ const Auth = () => {
     </div>
    </div>
   )
+  
 }
 
 export default Auth;
