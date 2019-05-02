@@ -237,7 +237,7 @@ console.log(props)
       inputEl.current.style.display = "none"
     }
     
-    renameInput = <div className="listRenameInput" ref={inputEl} style={{display: "none"}}><h3>Rename file:</h3><span className="listRenameClose" onClick={addNewNameClose}>x</span><input className="listRenameInputText" style={{outline: "none"}} ref={clearInput} placeholder="New filename..." type="text" onChange={newNameInput} /><button style={{outline: "none"}} className="listBtnRename" onClick={addNewName}>Ok</button></div>
+    renameInput = <div className="listRenameInput" ref={inputEl} style={{display: "none"}}><div className="listRenameText"> Rename file:</div><span className="listRenameClose" onClick={addNewNameClose}><i className="material-icons">close</i></span><input className="listRenameInputText" style={{outline: "none"}} ref={clearInput} placeholder="New filename..." type="text" onChange={newNameInput} /><br/><button style={{outline: "none"}} className="listBtnRename" onClick={addNewName}>Ok</button></div>
 /* ---------------- end renameFiles ----------------------------- */
 
 
@@ -259,8 +259,6 @@ const newNameInputFolder = (e) => {
 
 const addNewNameFolder = (e) => {
   
-  //console.log(rename)
-  //console.log(newUrl)
   renameFile(rename, newUrl)
   inputElFolder.current.style.display = "none"
   clearInputFolder.current.value = "";
@@ -276,7 +274,7 @@ const addNewNameCloseFolder = () =>{
   inputElFolder.current.style.display = "none"
 }
 
-renameInputFolder = <div className="listRenameInput" ref={inputElFolder} style={{display: "none"}}><h3>Rename folder:</h3><span className="listRenameClose" onClick={addNewNameCloseFolder}>x</span><input className="listRenameInputText" style={{outline: "none"}} ref={clearInputFolder} placeholder="New filename..." type="text" onChange={newNameInputFolder} /><button className="listBtnRename" style={{outline: "none"}} onClick={addNewNameFolder}>Ok</button></div>
+renameInputFolder = <div className="listRenameInput" ref={inputElFolder} style={{display: "none"}}><div className="listRenameText">Rename folder:</div><span className="listRenameClose" onClick={addNewNameCloseFolder}><i className="material-icons">close</i></span><input className="listRenameInputText" style={{outline: "none"}} ref={clearInputFolder} placeholder="New filename..." type="text" onChange={newNameInputFolder} /><button className="listBtnRename" style={{outline: "none"}} onClick={addNewNameFolder}>Ok</button></div>
 /* ---------------- end renameFolder ----------------------------- */
 
     if(data[".tag"] === 'file'){ //FILER
@@ -343,7 +341,7 @@ renameInputFolder = <div className="listRenameInput" ref={inputElFolder} style={
             data-name={data.name} 
             data-folder={data.path_lower} 
             data-tag={data[".tag"]} onClick={downloadFile}>
-              <i className="material-icons-outlined">
+              <i className="material-icons-outlined filesFolders">
                 insert_drive_file
               </i>
           </td>
@@ -373,7 +371,7 @@ renameInputFolder = <div className="listRenameInput" ref={inputElFolder} style={
       return( //FOLDERS
         <tr key={data.id} className="listFiles" to={data.path_lower} data-name={data.name} data-folder={data.path_lower} data-tag={data[".tag"]}>
           <td>
-          <i className="material-icons">
+          <i className="material-icons filesFolders">
             folder
           </i>
           </td>
@@ -403,19 +401,13 @@ renameInputFolder = <div className="listRenameInput" ref={inputElFolder} style={
       
       const listData = data.map(renderList)
       
-   let button = "" 
-  
-   if (searchArr){
-    button = <><br/><button className="listBackBtn" onClick={replace}>⟲ Back to files..</button></>
-   }
-  
+     
   return(
     <>
       {listData}
       
       <tr style={{background: "white"}}>
       <td>
-        {button}
         {renameInput}
         {renameInputFolder}
       </td>
