@@ -14,8 +14,8 @@ const Auth = () => {
   const regex = /#(?:access_token)=([\S\s]*?)&/
   const token = hash.match(regex)[1];
 
-  const getToken = () => {
-
+  /* const getToken = () => {
+    updateIsLoggedIn(true)
     const option = {
       fetch: fetch,
       accessToken: token$.value
@@ -36,14 +36,15 @@ const Auth = () => {
     .catch(function(error) {
       console.log(error);
     });
-  }
+  } */
 
   
 
   useEffect(() => {
     
     updateToken(token);
-    getToken();
+    updateIsLoggedIn(true)
+    //getToken();
   
   }, [token])
 

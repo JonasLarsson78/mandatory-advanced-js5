@@ -46,7 +46,7 @@ const ListItems = (props) => {
       })
       .then(response => {
         updateData(response.entries)
-     
+        
 
             dbx.filesListFolderLongpoll({
               cursor: response.cursor,
@@ -136,7 +136,7 @@ const ListItems = (props) => {
         updateData(searchArr)
  }
 
-        /* dbx.filesGetThumbnailBatch({
+       /*  dbx.filesGetThumbnailBatch({
           entries: response.entries.map(entry => {
             return{
               path: entry.id,
@@ -145,19 +145,9 @@ const ListItems = (props) => {
               mode: { '.tag': 'strict' }  
             }
           } )
-        }) */
-        /* .then(response => {
-          const thumbnailArray = [];
-          const respEntry = response.entries;
-           for (let key of respEntry) {
-            if (key.thumbnail !== undefined){
-              let thumbnailCode = key.thumbnail
-              thumbnailArray.push(thumbnailCode)
-               //Sätter statet ett steg efter. Här innehåller dock statet rätt information/index. 
-            }
-              //Vid useEFfect bör ovan kod köras, både vid första mappen(main) och vid rendering av ny mapp. 
-              //thumbnailArray måste skickas in i sitt eget state.
-          } 
+        })
+        .then(response => {
+          console.log(response)
         })  */
       })
       /* .catch(function(error) {
@@ -168,8 +158,9 @@ const ListItems = (props) => {
     
   
   return
-  }, [props.folder, props.search, searchArr, props.createFolder, props.uploadFile, props.pollChanges])
-
+    
+  }, [props.folder, props.search, searchArr, props.createFolder, props.uploadFile, props.pollChanges, props])
+  console.log(props)
 
   const readableBytes = (bytes) => {
     if (bytes === 0){
@@ -295,7 +286,7 @@ renameInputFolder = <div className="listRenameInput" ref={inputElFolder} style={
         if (fileEnd === "jpg") {
           
           for (let i=0; i<thumbnailArray.length; i++){
-            
+            console.log(i)
             
           return (
             <tr
