@@ -19,8 +19,6 @@ const ListItems = (props) => {
   const searchArr = props.search;
 
   useEffect(() => {
-    
-   
     const option = {
       fetch: fetch,
       accessToken: token$.value
@@ -30,17 +28,15 @@ const ListItems = (props) => {
     );
 
     if (props.folder === "/main"){
-
       dbx.filesListFolder({
         path: ''
       })
       .then(response => {
         updateData(response.entries)
 
-        
-          if (searchArr){
-           updateData(searchArr)
-    }
+      if (searchArr){
+        updateData(searchArr)
+      }
         
       })
       .catch(function(error) {
@@ -52,8 +48,6 @@ const ListItems = (props) => {
 
 let newFolder = props.folder;
       newFolder = newFolder.substring(5)
-
-      
       dbx.filesListFolder({
         path: newFolder
       })
@@ -79,15 +73,13 @@ let newFolder = props.folder;
         .then(response => {
           const thumbnailArray = [];
           //updateData(response.entries)
-          console.log(response.entries)
+
           const respEntry = response.entries;
            for (let key of respEntry) {
-            console.log("THUMBNAIL: ")
-            console.log(key.thumbnail)
+
               const thumbnailCode = key.thumbnail
               thumbnailArray.push(thumbnailCode)
-              console.log("THUMBNAILS: ")
-              console.log(thumbnailArray) //Håller nu respektive thumbnailkod på varje index
+
 
               //Vid useEFfect bör ovan kod köras, både vid första mappen(main) och vid rendering av ny mapp. 
               //thumbnailArray måste skickas in i sitt eget state.
@@ -145,7 +137,6 @@ let newFolder = props.folder;
     }
     
     if(data[".tag"] === 'file'){ //FILER
-         console.log(data)  
       return(
         <tr
             //title={"Download: " + data.name} 
@@ -181,7 +172,7 @@ let newFolder = props.folder;
             {lastEdited(data.server_modified)}
           </td>
           <td>
-            <button className="listDelBtn" data-path={data.path_lower} onClick={del}> <i class="material-icons">delete_outline</i></button>
+            <button className="listDelBtn" data-path={data.path_lower} onClick={del}> <i className="material-icons">delete_outline</i></button>
           </td>
         </tr>
       )

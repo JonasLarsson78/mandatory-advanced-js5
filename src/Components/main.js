@@ -6,6 +6,7 @@ import ListItems from './listitems'
 import CreateFolder from './createfolder'
 import Search from './search'
 import Modal from './modal';
+import Breadcrumbs from './breadcrumbs'
 import { deleteFiles } from './delete'
 import '../Css/main.css';
 
@@ -55,8 +56,6 @@ const Main = (props) => {
   if(token === null){
     return <Redirect to="/" />
   }
-
-  //const modalRender = ((showModal) ? <Modal showModal2={modalOnClick} delPath={delPath} showModal={showModal} del={del}/> : false);
   
   return(
     <>
@@ -70,7 +69,7 @@ const Main = (props) => {
         <div className="left-link-wrap"><a href="http://www.example.com" className="left-link">link</a> </div>
       </aside>
       <main className="mainMain">
-        <p>Main</p>
+        <Breadcrumbs /><br />
         <CreateFolder folder={props.location.pathname} create={create}></CreateFolder>
         <button onClick={logOut}>logOut</button>
         <table>
