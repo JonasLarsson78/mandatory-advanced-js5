@@ -19,6 +19,18 @@
     color: #4D4D4D;
 }
 
+.breadcrumb-home {
+    color: #4D4D4D;
+    position: relative;
+    top: 4px;
+    font-size: 20px;
+}
+
+.breadcrumb-home:hover {
+    color: #4D4D4D;
+}
+
+
 /*
 a:link - a normal, unvisited link
 a:visited - a link the user has visited
