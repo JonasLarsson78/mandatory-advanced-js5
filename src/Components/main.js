@@ -88,7 +88,7 @@ const pollChanges = (change) => {
         <UploadFile upload={upload} folder={props.location.pathname}></UploadFile><br></br><br></br>
         <CreateFolder folder={props.location.pathname} create={create}></CreateFolder>
         <button onClick={logOut}>logOut</button>
-        <table>
+        <table className="mainTable">
           <tbody>
             <ListItems folder={props.location.pathname} path={path} showModal={modalOnClick} search={search} createFolder={createF} uploadFile={uploadFile} pollChanges={pollChanges}></ListItems>
           </tbody>

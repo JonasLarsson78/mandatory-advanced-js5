@@ -1,7 +1,4 @@
-input[type=text]{
-    border-radius: 5px;
-    margin-right: 5px;
-}
+
 .listBtnRename{
     margin-right: 5px;
     height: 25px;
@@ -61,6 +58,10 @@ input[type=text]{
     border-radius: 10px;
     box-shadow: 10px 10px 5px 0px #000000bf;
 }
+.listRenameInputText{
+    border-radius: 5px;
+    margin-right: 5px;
+}
 .listRenameClose{
     position: absolute;
     top: 0px;
@@ -69,7 +70,7 @@ input[type=text]{
     font-size: 20px;
 }
 .material-icons, .material-icons-outlined{
-    color: #00AFD6
+    color: #00AFD6;
 }
 .material-icons:hover, .material-icons-outlined:hover{
     color: #029BB5;
