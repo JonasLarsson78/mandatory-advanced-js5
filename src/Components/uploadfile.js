@@ -12,11 +12,13 @@ const UploadFile = (props) => {
   let newFolder = props.folder
   newFolder = newFolder.substring(5);
   //console.log(newFolder)
-  const inputRef = useRef(null)
+  const inputRef = useRef(null);
+  //const inputClearRef = useRef(null)
   const upload = (e) => {
     e.preventDefault();
     
     const fileNodeList = inputRef.current.files;
+    
     const filesiZeLimit = 150 * 1024 * 1024;
 
 
@@ -75,7 +77,7 @@ const UploadFile = (props) => {
             // Starting multipart upload of file
             return acc.then(function() {
               console.log('start')
-              updateMessage('Upload in progress...')
+              updateMessage(<><div>Upload in progress</div><div className="lds-ring"><div></div><div></div><div></div><div></div></div></>)
          
 
               return dbx.filesUploadSessionStart({ close: false, contents: blob})
@@ -113,18 +115,10 @@ const UploadFile = (props) => {
         
       }
         
-        
-      
-      
-
 
     } 
     
-   
-
-
-
-
+   inputRef.current.value = '';
 
 
   }

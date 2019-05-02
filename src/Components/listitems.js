@@ -287,7 +287,7 @@ const addNewNameCloseFolder = () =>{
 renameInputFolder = <div className="listRenameInput" ref={inputElFolder} style={{display: "none"}}><h3>Rename folder:</h3><span className="listRenameClose" onClick={addNewNameCloseFolder}>x</span><input className="listRenameInputText" style={{outline: "none"}} ref={clearInputFolder} placeholder="New filename..." type="text" onChange={newNameInputFolder} /><button className="listBtnRename" style={{outline: "none"}} onClick={addNewNameFolder}>Ok</button></div>
 /* ---------------- end renameFolder ----------------------------- */
 
-console.log(data.size)
+
     if(data[".tag"] === 'file'){ //FILER
       let fileEnd = data["name"];
       fileEnd = fileEnd.substring(fileEnd.indexOf(".")  +1);
