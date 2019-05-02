@@ -13,6 +13,15 @@ const Auth = () => {
   const hash = window.location.hash
   const regex = /#(?:access_token)=([\S\s]*?)&/
   const token = hash.match(regex)[1];
+ 
+  const x = hash.lastIndexOf("=") + 1
+  const y = hash.substring(x)
+  console.log(y)
+  
+  
+  
+  /* #access_token=I1SimuLD2lAAAAAAAAABP8xDpjG_pbYSbLbeO_zzEsIPIfgf446Q80HUQPNVu3W4&token_type=bearer&uid=2144783792&account_id=dbid%3AAAA_hvq5PWdCSs2FSuNyrrTJXVxaTOONMC0 */
+
 
   /* const getToken = () => {
     updateIsLoggedIn(true)
