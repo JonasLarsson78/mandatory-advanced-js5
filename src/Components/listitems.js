@@ -6,7 +6,6 @@ import '../Css/listitems.css';
 import { downloadFile } from './dowload'
 import moment from 'moment';
 import {renameFile} from './rename'
-import {move} from './move'
 
 let thumbnailArray = [];
 
@@ -153,7 +152,6 @@ useEffect(() => {
 return
   
 }, [props.folder, props.search, searchArr, props.createFolder, props.uploadFile, props.pollChanges, props])
-console.log(props)
 
 
   //=================BYTESIZE SETTING======================
@@ -225,14 +223,8 @@ console.log(props)
       renameFile(rename, newUrl)
       inputEl.current.style.display = "none"
       clearInput.current.value = "";
-
-      /* let path = window.location.pathname
-      setTimeout(startTimer, 700);
-        function startTimer() {
-          window.location.replace(path)
-        }
-       clearTimeout(startTimer) */
     }
+
     const addNewNameClose = () =>{
       inputEl.current.style.display = "none"
     }
@@ -262,13 +254,7 @@ const addNewNameFolder = (e) => {
   renameFile(rename, newUrl)
   inputElFolder.current.style.display = "none"
   clearInputFolder.current.value = "";
- /*  let path = window.location.pathname
-  setTimeout(startTimer, 700);
-    function startTimer() {
-      window.location.replace(path)
-    }
-   clearTimeout(startTimer) */
-
+ 
 }
 const addNewNameCloseFolder = () =>{
   inputElFolder.current.style.display = "none"
