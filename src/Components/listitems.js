@@ -76,7 +76,7 @@ const ListItems = (props) => {
 
 
         updateData(response.entries)
-
+        
 
             dbx.filesListFolderLongpoll({
               cursor: response.cursor,
@@ -140,12 +140,9 @@ const ListItems = (props) => {
     
   
   return
-  }, [props.folder, props.search, searchArr, props.createFolder, props.uploadFile, props.pollChanges])
-
-  //==================END OF USEEFFECT======================
-
-
-
+    
+  }, [props.folder, props.search, searchArr, props.createFolder, props.uploadFile, props.pollChanges, props])
+  console.log(props)
 
   //=================BYTESIZE SETTING======================
   const readableBytes = (bytes) => {
@@ -270,7 +267,6 @@ const addNewNameCloseFolder = () =>{
 renameInputFolder = <div className="listRenameInput" ref={inputElFolder} style={{display: "none"}}><h3>Rename folder:</h3><span className="listRenameClose" onClick={addNewNameCloseFolder}>x</span><input className="listRenameInputText" style={{outline: "none"}} ref={clearInputFolder} placeholder="New filename..." type="text" onChange={newNameInputFolder} /><button className="listBtnRename" style={{outline: "none"}} onClick={addNewNameFolder}>Ok</button></div>
 /* ---------------- end renameFolder ----------------------------- */
 
-//console.log(data.size)
     if(data[".tag"] === 'file'){ //FILER
 
       let fileEnd = data["name"];
