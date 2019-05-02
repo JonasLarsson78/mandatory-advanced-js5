@@ -16,7 +16,6 @@ const Search = (props) => {
       const dbx = new Dropbox(
         option,
       );
-      console.log(newFolder)
       dbx.filesSearch({
        
         path: newFolder,
@@ -24,7 +23,6 @@ const Search = (props) => {
       })
       .then(response => {
 
-        console.log(response.matches.length)
         if (response.matches.length === 0){
             props.updateSearch(null)
         }

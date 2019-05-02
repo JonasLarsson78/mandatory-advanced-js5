@@ -1,7 +1,7 @@
 import { Dropbox } from 'dropbox';
 import {token$} from './store.js';
 
-export const renameFile = (name, newName) => {
+export const move = () => {
 
     const option = {
         fetch: fetch,
@@ -12,10 +12,10 @@ export const renameFile = (name, newName) => {
         option,
       );
 
-      dbx.filesMoveV2({
-        from_path: name,
-        to_path: newName,
-        autorename: true
+      dbx.filesListRevisions({
+        path: "",
+        mode: ""
+        
       })
       .then(response => {
         console.log(response)

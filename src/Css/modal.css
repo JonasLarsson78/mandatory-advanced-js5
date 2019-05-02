@@ -5,13 +5,12 @@
     transform: translate(-50%, -50%);
     width: 300px;
     height: 200px;
-    border: 1px solid black;
+    border: 5px solid #029BB5;
     background-color: white;
     border-radius: 10px;
     text-align: center;
     box-shadow: 10px 10px 5px 0px #000000bf;
     z-index: 1000;
-    pointer-events: auto;
 }
 .modalBack{
     opacity: 0;
@@ -23,5 +22,17 @@
     background-color: black;
     background-color: #00000078;
     z-index: 0;
-    pointer-events: none;
+}
+.modalBtn{
+    margin-right: 5px;
+    height: 25px;
+    border:none;
+    border-radius: 5px;
+    color: white;
+    background-color: #00AFD6;
+    outline: none;
+    cursor: pointer;
+}
+.modalBtn:hover{
+    background-color: #029BB5;
 }

@@ -7,13 +7,13 @@
     height: 350px;
     transform: translate(-50%, 0%);
     background-color: white;
-    border: 1px solid black;
+    border: 5px solid #029BB5;
     border-radius: 10px;
-    background-image: url(../Img/box_logo.png);
-    background-size: 60%;
+    background-image: url(../Img/Logo_mybox.png);
+    background-size: 70%;
     background-repeat: no-repeat;
     background-position-x: 50%;
-    background-position-x: 50%;
+    background-position-y: 40%;
     box-shadow: 10px 10px 5px 0px #000000bf;
 }
 .loginBtn{
@@ -21,17 +21,18 @@
     bottom: 70px;
     left: 50%;
     transform: translate(-50%, 0%);
-    width: 100px;
-    height: 25px;
+    width: 200px;
+    height: 35px;
     border:none;
     border-radius: 5px;
     color: white;
-    background-color: black;
+    background-color: #00AFD6;
     outline: none;
     cursor: pointer;
+    font-size: 20px;
 }
 .loginBtn:hover{
-    background-color: #444444;
+    background-color: #029BB5;
 }
 .loginLink{
     text-decoration: none;

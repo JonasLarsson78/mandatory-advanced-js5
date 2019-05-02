@@ -4,6 +4,8 @@ import { updateToken } from './store.js'
 import {token$} from './store.js';
 import { BrowserRouter as Router, Route, Link, Redirect}from "react-router-dom";
 import fetch from 'isomorphic-fetch';
+import '../Css/auth.css';
+
 
 const Auth = () => {
   const [isLoggedIn, updateIsLoggedIn] = useState(false)
@@ -12,8 +14,8 @@ const Auth = () => {
   const regex = /#(?:access_token)=([\S\s]*?)&/
   const token = hash.match(regex)[1];
 
-  const getToken = () => {
-
+  /* const getToken = () => {
+    updateIsLoggedIn(true)
     const option = {
       fetch: fetch,
       accessToken: token$.value
@@ -34,25 +36,30 @@ const Auth = () => {
     .catch(function(error) {
       console.log(error);
     });
-  }
+  } */
 
   
 
   useEffect(() => {
     
     updateToken(token);
-    getToken();
+    updateIsLoggedIn(true)
+    //getToken();
   
   }, [token])
 
  
     if(isLoggedIn){
-      return  <Redirect to={{pathname:"/main", state: {isLoggedIn: isLoggedIn}}} />
-      
+          return  <Redirect to={{pathname:"/main", state: {isLoggedIn: isLoggedIn}}} />
     }
   return(
    
-   <p>Loggar in...</p>
+   <div className="authMainLoader">
+    <div className="authProgress">
+        <div className="lds-ring"><div></div><div></div><div></div><div></div></div>
+        <p>Loading page...</p>
+    </div>
+   </div>
   )
 }
 

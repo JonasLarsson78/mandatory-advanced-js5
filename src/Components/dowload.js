@@ -13,15 +13,11 @@ export const downloadFile = (e) => {
     };
     
      const dbx = new Dropbox(option);
-     dbx.filesDownload({ 
+     dbx.filesGetTemporaryLink({ 
        path: e.target.dataset.folder})
         .then(response => {
-          
-         let fileName = response.name
-         let blob = response.fileBlob
-          const link = document.createElement('a');
-          link.href = URL.createObjectURL(blob);
-          link.download = fileName;
+          let link = document.createElement("a");
+          link.href = response.link;
           document.body.appendChild(link);
           link.click();
           document.body.removeChild(link);
