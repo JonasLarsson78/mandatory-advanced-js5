@@ -9,9 +9,9 @@ import Modal from './modal';
 import Breadcrumbs from './breadcrumbs'
 import { deleteFiles } from './delete'
 import UploadFile from './uploadfile';
-import '../Css/main.css';
+import '../Css/home.css';
 
-const Main = (props) => {
+const Home = (props) => {
   
   //const [isLoggedIn, updateIsLoggedIn] = useState(props.location.state.isLoggedIn)
   const [token, updateTokenState] = useState(token$.value)
@@ -104,4 +104,4 @@ const pollChanges = (change) => {
   )
 }
 
-export default Main;
+export default Home;

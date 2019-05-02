@@ -2,7 +2,7 @@ import React from 'react';
 //import './App.css';
 import Login from './Components/login';
 import Auth from './Components/auth';
-import Main from './Components/main';
+import Home from './Components/home';
 
 import { BrowserRouter as Router, Route, Link, Switch}from "react-router-dom";
 
@@ -15,7 +15,7 @@ function App() {
     
     <Route exact path='/' component={Login} />
     <Route path='/auth' component={Auth} />
-    <Route path='/main' component={Main} />
+    <Route path='/home' component={Home} />
    
     </Router>
   );

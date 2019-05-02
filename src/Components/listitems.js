@@ -39,7 +39,7 @@ useEffect(() => {
     option,
   );
 
-  if (props.folder === "/main"){
+  if (props.folder === "/home"){
 
     dbx.filesListFolder({
       path: ''
@@ -368,7 +368,7 @@ renameInputFolder = <div className="listRenameInput" ref={inputElFolder} style={
           </i>
           </td>
           <td>
-            <Link className="listFolderLink" to={"/main" + data.path_lower}>{data.name}</Link>
+            <Link className="listFolderLink" to={"/home" + data.path_lower}>{data.name}</Link>
           </td>
           <td>
             ...
@@ -388,7 +388,7 @@ renameInputFolder = <div className="listRenameInput" ref={inputElFolder} style={
     //==================END LIST RENDERING==================
 
     const replace = () =>{
-      window.location.replace("/main")
+      window.location.replace("/home")
     }
       
       const listData = data.map(renderList)
