@@ -11,7 +11,7 @@ import {move} from './move'
 let thumbnailArray = [];
 
 const counter = (number) => {
-  console.log(number)
+  
   if(number === null){
     number = 0;
   }
@@ -85,14 +85,16 @@ useEffect(() => {
 
           dbx.filesListFolderLongpoll({
             cursor: response.cursor,
-            timeout: 30
+            timeout: 480
            
           })
           .then(response => {
-            //console.log(response.changes)
+            console.log(response.changes)
+              if(response.changes){
+                props.pollChanges(counter)
+              }
            
-           
-              props.pollChanges(counter)
+              
               
  
           })
@@ -122,13 +124,15 @@ useEffect(() => {
      updateData(response.entries)
      dbx.filesListFolderLongpoll({
       cursor: response.cursor,
-      timeout: 30
+      timeout: 480
     })
     .then(response => {
       //console.log(response.changes)
      
      
+      if(response.changes){
         props.pollChanges(counter)
+      }
         
         
       
