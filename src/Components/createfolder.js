@@ -1,6 +1,7 @@
-import React, {useState} from 'react';
+import React, {useState, useRef } from 'react';
 import { Dropbox } from 'dropbox';
 import {token$} from './store.js';
+import '../Css/createfolder.css';
 //import { BrowserRouter as Router, Route, Link, Redirect}from "react-router-dom";
 
 
@@ -10,6 +11,10 @@ const CreateFolder = (props) => {
   const [input, updateInput] = useState('')
   let newFolder = props.folder
   newFolder = newFolder.substring(5);
+
+  let uploadFolder = '';
+  const inputRef = useRef(null);
+  const uploadModal = useRef(null);
 
 
   const changeInput = (e) => {
@@ -27,33 +32,56 @@ const CreateFolder = (props) => {
       option,
     );
     dbx.filesCreateFolderV2({
-      
       path: newFolder + '/'+ input,
       autorename: true
-     
     })
-    .then(response => {
-
-        
+    .then(response => { 
        console.log(response)
        props.create(response)
-
-        
+       setTimeout(() => {
+         closeModal();
+       }, 2000);
     })
     .catch(function(error) {
         console.log(error);
     });
-
   }
+
+  //inputRef.current.value = '';   
+
+  const closeModal = () => {
+    uploadModal.current.style.display = 'none';
+  }
+
+  const startModal = () => {
+    uploadModal.current.style.display = 'block';
+  }
+
+  uploadFolder = 
+    <div className="upload-modal-folder" ref={ uploadModal }>
+      <label htmlFor="folder" className="upload-folder-label">Type in new folder name</label>
+      <input className="upload-folder-input" type="text" id="folder" onChange={changeInput} ref={inputRef}></input>
+      <i className="material-icons upload-close" onClick={ closeModal }>close</i>
+      <br /><button className="upload-folder-modal-button" onClick={createFolder}>Create new Folder</button>
+    </div>
+
+
 
   return(
     <>
-      <label>Type in new folder name</label>
-      <input type="text" onChange={changeInput}></input><br></br>
-      <button onClick={createFolder}>Create new Folder</button>
+      
+      <button className="upload-folder-button" onClick={ startModal }><i className="material-icons-outlined folder-icon-create-folder"> create_new_folder</i>Create new folder</button>
+      { uploadFolder }
+      
     </>
   )
 }
 
 
 export default CreateFolder 
+
+/*
+<label>Type in new folder name</label>
+      <input type="text" onChange={changeInput}></input><br></br>
+      <button onClick={createFolder}>Create new Folder</button>
+      */

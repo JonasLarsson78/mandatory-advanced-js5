@@ -77,17 +77,23 @@ const pollChanges = (change) => {
     <Modal showModal2={modalOnClick} delPath={delPath} showModal={showModal} del={del}/>
     <header className="mainHeader">
       <div className="header-logo-wrap"><img id="header-logo" src={ require('../Img/Logo_mybox.png') } alt="My Box logo"/> </div>
+      <div>
       <Search folder={props.location.pathname} search={searchResults} updateSearch={updateSearch}></Search>
+        <span>
+          <span>här ska vara foto</span>
+          <button onClick={logOut}>logOut</button>
+        </span>
+      </div>
     </header>
     <div className="mainWrapper">
       <aside className="leftSide">
-        <div className="left-link-wrap"><a href="http://www.example.com" className="left-link">link</a> </div>
+        
+        <div className="left-link-wrap"><UploadFile upload={upload} folder={props.location.pathname}></UploadFile><br></br><br></br>
+        <CreateFolder folder={props.location.pathname} create={create}></CreateFolder></div>
       </aside>
       <main className="mainMain">
         <Breadcrumbs /><br />
-        <UploadFile upload={upload} folder={props.location.pathname}></UploadFile><br></br><br></br>
-        <CreateFolder folder={props.location.pathname} create={create}></CreateFolder>
-        <button onClick={logOut}>logOut</button>
+        
         <table className="mainTable">
           <tbody>
             <ListItems folder={props.location.pathname} path={path} showModal={modalOnClick} search={search} /* createFolder={createF} */ /* uploadFile={uploadFile} */ pollChanges={pollChanges}></ListItems>
