@@ -45,7 +45,7 @@ useEffect(() => {
    
   }, 480000);
   
-    console.log(timerToShowModal)
+    //console.log(timerToShowModal)
   
 
 

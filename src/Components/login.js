@@ -1,5 +1,6 @@
 import React from 'react';
 import { Dropbox } from 'dropbox';
+import { Helmet } from "react-helmet";
 import '../Css/login.css';
 const appkey =  'bvtwa87o7e9bfk6';
 
@@ -14,8 +15,10 @@ const dbx = new Dropbox({
 
   
   return(
-
     <>
+    <Helmet>
+      <title>MyBOX Connect</title>
+    </Helmet>
     <div className="loginMain">
       <a className="loginLink" href={dbx.getAuthenticationUrl('http://localhost:3000/auth')}><button className="loginBtn">Connect</button></a>
     </div>

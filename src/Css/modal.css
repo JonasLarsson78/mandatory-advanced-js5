@@ -36,3 +36,18 @@
 .modalBtn:hover{
     background-color: #029BB5;
 }
+.modalBtn2{
+    position: relative;
+    bottom: 10px;
+    margin-right: 5px;
+    height: 25px;
+    border:none;
+    border-radius: 5px;
+    color: white;
+    background-color: #00AFD6;
+    outline: none;
+    cursor: pointer;
+}
+.modalBtn2:hover{
+    background-color: #029BB5;
+}

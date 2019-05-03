@@ -25,7 +25,6 @@ const [country, updateCountry] = useState("us");
     dbx.usersGetCurrentAccount(
     )
     .then(response => {
-      console.log(response)
       updateName(response.name.display_name)
       updateMail(response.email)
       updatePhotUrl(response.profile_photo_url)
@@ -35,7 +34,6 @@ const [country, updateCountry] = useState("us");
     .catch(error => {
       console.log(error);
     });
-    
 
    },[])
 
@@ -50,19 +48,16 @@ const onMouseOutPhoto = (e) => {
   let y = mail.substring(x);
   let url = "https://www." + y;
   let countryFlag = country.toLowerCase();
-  console.log(countryFlag)
 
 return(
-  
   <div className="userMain">
   <div className="userFlag"><ReactCountryFlag code={countryFlag} svg /></div>
   <span className="userName">{name}</span>
-  <span className="userMail"><a className="userMailAtag" href={url} target="_blank">( {mail} )</a></span>
-  <img onMouseOver={onMouseOverPhoto} onMouseOut={onMouseOutPhoto} className="userPhoto" src={photoUrl}/>
-  <img ref={photoRef} className="userPhotoBig" src={photoUrl}/>
+  <span className="userMail"><a className="userMailAtag" href={url} target="_blank" without="true" rel="noopener noreferrer">( {mail} )</a></span>
+  <img alt="userPhoto" onMouseOver={onMouseOverPhoto} onMouseOut={onMouseOutPhoto} className="userPhoto" src={photoUrl}/>
+  <img alt="userPhotoBig" ref={photoRef} className="userPhotoBig" src={photoUrl}/>
   </div>
 )
-
 
 }
 export default UserAccount;

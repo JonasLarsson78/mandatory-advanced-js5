@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import { updateToken } from './store.js'
+import { Helmet } from "react-helmet";
 import { BrowserRouter as Router, Route, Link, Redirect}from "react-router-dom";
 import '../Css/auth.css';
 
@@ -38,13 +39,17 @@ const Auth = () => {
           return  <Redirect to={{pathname:"/home", state: {isLoggedIn: isLoggedIn}}} />
     }
   return(
-   
+    <>
+    <Helmet>
+      <title>MyBOX Auth</title>
+    </Helmet>
    <div className="authMainLoader">
     <div className="authProgress">
         <div className="lds-ring"><div></div><div></div><div></div><div></div></div>
         <p>Loading page...</p>
     </div>
    </div>
+   </>
   )
   
 }
