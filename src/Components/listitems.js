@@ -69,8 +69,9 @@ useEffect(() => {
     
     })
     .then(response => {
-      updateData(response.entries)
 
+      updateData(response.entries)
+      updateThumbnails([]);
         dbx.filesGetThumbnailBatch({
           entries: response.entries.map(entry => {
           return{
@@ -126,6 +127,10 @@ useEffect(() => {
    
     })
     .then(response => {
+      
+     updateData(response.entries)
+     updateThumbnails([]);
+     
       dbx.filesGetThumbnailBatch({
         entries: response.entries.map(entry => {
           return{
@@ -140,7 +145,6 @@ useEffect(() => {
           updateThumbnails(response.entries)
         }) 
 
-     updateData(response.entries)
      dbx.filesListFolderLongpoll({
       cursor: response.cursor,
       timeout: 480
