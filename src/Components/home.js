@@ -9,6 +9,7 @@ import Modal from './modal';
 import Breadcrumbs from './breadcrumbs'
 import { deleteFiles } from './delete'
 import UploadFile from './uploadfile';
+import UserAccount from './userAccount'
 import '../Css/home.css';
 import TimeOutModal from './timeoutmodal.js';
 
@@ -87,6 +88,7 @@ const pollChanges = (change) => {
     <Modal showModal2={modalOnClick} delPath={delPath} showModal={showModal} del={del}/>
     <TimeOutModal showModal3={tiemoutModalClick} showTimeout={timeOutModal} resetTime={ResetTime}></TimeOutModal>
     <header className="mainHeader">
+    <UserAccount/>
       <div className="header-logo-wrap"><img id="header-logo" src={ require('../Img/Logo_mybox.png') } alt="My Box logo"/> </div>
       <Search folder={props.location.pathname} search={searchResults} updateSearch={updateSearch}></Search>
     </header>

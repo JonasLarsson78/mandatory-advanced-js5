@@ -5,7 +5,7 @@ import '../Css/breadcrumbs.css';
 
 const Breadcrumbs = withBreadcrumbs([{ path: '/', breadcrumb: null }])(({ breadcrumbs }) => (
     <>
-    <i class="material-icons-outlined breadcrumb-home">home</i>
+    <i className="material-icons-outlined breadcrumb-home">home</i>
     <React.Fragment>
       {breadcrumbs.map(({
         match,
