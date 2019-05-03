@@ -332,7 +332,10 @@ renameInputFolder = <div className="listRenameInput" ref={inputElFolder} style={
             {lastEdited(data.server_modified)}
           </td>
           <td>
-          <button className="listDelBtn" data-path={data.path_lower} onClick={del}> <i className="material-icons">delete_outline</i></button>
+          <button className="listBtn" data-path={data.path_lower} onClick={del}> <i className="material-icons">delete_outline</i></button>
+          </td>
+          <td>
+            <button className="listBtn" data-path={data.path_lower} onClick={reName}><i data-path={data.path_lower} className="material-icons">edit</i></button>
           </td>
         </tr>
           ) 
