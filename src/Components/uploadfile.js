@@ -8,11 +8,13 @@ import '../Css/upload.css';
 const UploadFile = (props) => {
 
   const [uploadMessage, updateMessage] = useState(null)
+  let uploadFile = '';
 
   let newFolder = props.folder
   newFolder = newFolder.substring(5);
   
   const inputRef = useRef(null);
+  const uploadModal = useRef(null);
   
   const upload = (e) => {
     e.preventDefault();
@@ -47,6 +49,7 @@ const UploadFile = (props) => {
               .then(function(response) {
                 updateMessage('Upload done')
                 setTimeout(() => {
+                  closeModal();
                   updateMessage(null)
                 }, 3000);
                 
@@ -78,8 +81,7 @@ const UploadFile = (props) => {
             return acc.then(function() {
               console.log('start')
               updateMessage(<><div>Upload in progress</div><div className="uploadLds-ring"><div></div><div></div><div></div><div></div></div></>)
-         
-
+              
               return dbx.filesUploadSessionStart({ close: false, contents: blob})
                         .then(response => response.session_id)
             });          
@@ -105,6 +107,7 @@ const UploadFile = (props) => {
           //props.upload(result)
           updateMessage('Upload done')
           setTimeout(() => {
+            closeModal();
             updateMessage(null)
           }, 3000);
           console.log(result)
@@ -119,15 +122,29 @@ const UploadFile = (props) => {
     } 
     
    inputRef.current.value = '';
-
-
   }
+    const closeModal = () => {
+      uploadModal.current.style.display = 'none';
+    }
+
+    const startModal = () => {
+      uploadModal.current.style.display = 'block';
+    }
+
+  
+
+      uploadFile = <div className="upload-modal-files" ref={ uploadModal }>
+      <input type="file" className="upload-input" multiple ref={inputRef}></input>
+      <i className="material-icons upload-close" onClick={ closeModal }>close</i>
+      <br /><input type="submit" className="upload-submit" onClick={upload} value="Upload files"></input>
+      <label className="upload-label">{uploadMessage}</label></div>
+
+
 
   return(
     <>
-    <input type="file" multiple ref={inputRef}></input>
-    <input type="submit" onClick={upload}></input>
-    <label>{uploadMessage}</label>
+    <button className="upload-file-button" onClick={ startModal }>Upload files</button>
+    { uploadFile }
     </>
   )
   
