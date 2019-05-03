@@ -90,15 +90,12 @@ const pollChanges = (change) => {
     <Modal showModal2={modalOnClick} delPath={delPath} showModal={showModal} del={del}/>
     <TimeOutModal showModal3={tiemoutModalClick} showTimeout={timeOutModal} resetTime={ResetTime}></TimeOutModal>
     <header className="mainHeader">
-    <UserAccount/>
       <div className="header-logo-wrap"><img id="header-logo" src={ require('../Img/Logo_mybox.png') } alt="My Box logo"/> </div>
-      <div>
-      <Search folder={props.location.pathname} search={searchResults} updateSearch={updateSearch}></Search>
-        <span>
-          <span>här ska vara foto</span>
-          <button onClick={logOut}>logOut</button>
+        <span className="headerContent">
+          <Search folder={props.location.pathname} search={searchResults} updateSearch={updateSearch}></Search>
+          <span><UserAccount/></span>
+          <span><button className="headerLogOutBtn" onClick={logOut}>LogOut</button></span>
         </span>
-      </div>
     </header>
     <div className="mainWrapper">
       <aside className="leftSide">

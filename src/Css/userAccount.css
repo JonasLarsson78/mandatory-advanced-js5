@@ -1,7 +1,6 @@
 .userMain{
-    position: absolute;
-    top: -18px;
-    right: 10px;
+    position: relative;
+    
 }
 .userFlag{
     position: relative;
