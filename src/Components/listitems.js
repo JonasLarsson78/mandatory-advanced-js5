@@ -8,14 +8,10 @@ import moment from 'moment';
 import {renameFile} from './rename'
 import {move} from './move'
 
-let thumbnailArray = [];
-
 const counter = (number) => {
-  console.log(number)
   if(number === null){
     number = 0;
   }
-  console.log(number)
   return number = number + 1;
   
 }
@@ -28,9 +24,10 @@ const ListItems = (props) => {
   const [data, updateData] = useState([])
   const [rename, updateRename] = useState("")
   const [newUrl, updateNewUrl] = useState("")
+  const [thumbnails, updateThumbnails] = useState([])
 
   const searchArr = props.search;
-  let toll=-1; //Används för att rendera ut thumbnailArray.
+  let toll= -1; //Används för att rendera ut thumbnailArray.
 
 //===============================USEEFFECT=====================================
 useEffect(() => {
@@ -50,38 +47,21 @@ useEffect(() => {
     
     })
     .then(response => {
-      
-       dbx.filesGetThumbnailBatch({
-        entries: response.entries.map(entry => {
+      updateData(response.entries)
+
+        dbx.filesGetThumbnailBatch({
+          entries: response.entries.map(entry => {
           return{
             path: entry.id,
             format : {'.tag': 'jpeg'},
-            size: { '.tag': 'w64h64'},
+            size: { '.tag': 'w32h32'},
             mode: { '.tag': 'strict' }  
-          }
-        }) 
-      }) 
-       .then(response => {         
-        thumbnailArray=[];
-        const respEntry = response.entries;
-        console.log(respEntry)
-        for (let i=0; i<respEntry.length; i++){
-          
-          if (respEntry[i][".tag"] === "success") {          
-            let fileEnd = respEntry[i].metadata.name;
-            fileEnd = fileEnd.substring(fileEnd.indexOf(".")  +1);
-
-            if (fileEnd === "jpg"){
-                thumbnailArray.push(respEntry[i].thumbnail);
             }
-          }
-        }
-        console.log(thumbnailArray)
-      }) 
-
-
-      updateData(response.entries)
-      
+          }) 
+        }) 
+        .then(response => {                
+          updateThumbnails(response.entries)
+          })
 
           dbx.filesListFolderLongpoll({
             cursor: response.cursor,
@@ -119,6 +99,20 @@ useEffect(() => {
    
     })
     .then(response => {
+      dbx.filesGetThumbnailBatch({
+        entries: response.entries.map(entry => {
+          return{
+            path: entry.id,
+            format : {'.tag': 'jpeg'},
+            size: { '.tag': 'w32h32'},
+            mode: { '.tag': 'strict' }  
+            }
+            }) 
+          }) 
+        .then(response => {         
+          updateThumbnails(response.entries)
+        }) 
+
      updateData(response.entries)
      dbx.filesListFolderLongpoll({
       cursor: response.cursor,
@@ -149,7 +143,7 @@ useEffect(() => {
 return
   
 }, [props.folder, props.search, searchArr, props.createFolder, props.uploadFile, props.pollChanges, props])
-console.log(props)
+
 
 
   //=================BYTESIZE SETTING======================
@@ -274,16 +268,14 @@ const addNewNameCloseFolder = () =>{
 
 renameInputFolder = <div className="listRenameInput" ref={inputElFolder} style={{display: "none"}}><h3>Rename folder:</h3><span className="listRenameClose" onClick={addNewNameCloseFolder}>x</span><input className="listRenameInputText" style={{outline: "none"}} ref={clearInputFolder} placeholder="New filename..." type="text" onChange={newNameInputFolder} /><button className="listBtnRename" style={{outline: "none"}} onClick={addNewNameFolder}>Ok</button></div>
 /* ---------------- end renameFolder ----------------------------- */
-
+  console.log("Data");
+  console.log(data)
+  console.log("Data");
+  console.log(thumbnails)
+ 
     if(data[".tag"] === 'file'){ //FILER
-
-      let fileEnd = data["name"];
-      fileEnd = fileEnd.substring(fileEnd.indexOf(".")  +1);
-
-       if (fileEnd === "jpg") {
-        toll++;
-        for (let i=toll; i<thumbnailArray.length;){
-               console.log(i)
+      toll++;
+        for (let i=toll; i<thumbnails.length;){
           return (
             <tr
             //title={"Download: " + data.name} 
@@ -300,7 +292,7 @@ renameInputFolder = <div className="listRenameInput" ref={inputElFolder} style={
             data-folder={data.path_lower} 
             data-tag={data[".tag"]} onClick={downloadFile}
             >
-              <img src={"data:image/jpeg;base64," + thumbnailArray[i]} />
+              <img src={"data:image/jpeg;base64," + thumbnails[toll].thumbnail} />
           </td>
           <td
             title={"Download: " + data.name} 
@@ -322,7 +314,7 @@ renameInputFolder = <div className="listRenameInput" ref={inputElFolder} style={
           </td>
         </tr>
           ) 
-      } 
+       
     }
     
       return( //FILES
@@ -366,6 +358,8 @@ renameInputFolder = <div className="listRenameInput" ref={inputElFolder} style={
         </tr>
       )
     }
+    if(data[".tag"] === 'folder'){ //FOLDER
+      toll++;
       return( //FOLDERS
         <tr key={data.id} className="listFiles" to={data.path_lower} data-name={data.name} data-folder={data.path_lower} data-tag={data[".tag"]}>
           <td>
@@ -391,6 +385,7 @@ renameInputFolder = <div className="listRenameInput" ref={inputElFolder} style={
         </tr>
       )
     }
+  }
     //==================END LIST RENDERING==================
 
     const replace = () =>{
