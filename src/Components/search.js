@@ -31,7 +31,13 @@ const Search = (props) => {
         }
       })
       .catch(function(error) {
-        console.log(error);
+        if (error.response.status === 400){
+          console.log("Wrong input.")
+        }
+        if (error.response.status === 409){
+          console.log("Wrong search path.")
+        }
+           
       });
  }
 
