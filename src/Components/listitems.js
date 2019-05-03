@@ -130,7 +130,7 @@ useEffect(() => {
       
      updateData(response.entries)
      updateThumbnails([]);
-     
+
       dbx.filesGetThumbnailBatch({
         entries: response.entries.map(entry => {
           return{
@@ -293,96 +293,99 @@ const addNewNameCloseFolder = () =>{
 
 renameInputFolder = <div className="listRenameInput" ref={inputElFolder} style={{display: "none"}}><div className="listRenameText">Rename folder:</div><span className="listRenameClose" onClick={addNewNameCloseFolder}><i className="material-icons">close</i></span><input className="listRenameInputText" style={{outline: "none"}} ref={clearInputFolder} placeholder="New filename..." type="text" onChange={newNameInputFolder} /><button className="listBtnRename" style={{outline: "none"}} onClick={addNewNameFolder}>Ok</button></div>
 /* ---------------- end renameFolder ----------------------------- */
- 
     if(data[".tag"] === 'file'){ //FILER
       toll++;
-        for (let i=toll; i<thumbnails.length;){
-          return (
-            <tr
-            
-            //title={"Download: " + data.name} 
-            key={data.id} 
-            //className="listFiles" 
-            //data-name={data.name} 
-            //data-folder={data.path_lower} 
-            //data-tag={data[".tag"]}
-            >
-          <td 
-            title={"Download: " + data.name} 
-            className="listFiles" 
-            data-name={data.name} 
-            data-folder={data.path_lower} 
-            data-tag={data[".tag"]} onClick={downloadFile}
-            >
-              <img src={"data:image/jpeg;base64," + thumbnails[toll].thumbnail} />
-          </td>
-          <td
-            title={"Download: " + data.name} 
-            className="listFiles" 
-            data-name={data.name} 
-            data-folder={data.path_lower} 
-            data-tag={data[".tag"]} onClick={downloadFile}
-          >
-            {data.name} 
-          </td>
-          <td>
-            {readableBytes(data.size)}
-          </td>
-          <td>
-            {lastEdited(data.server_modified)}
-          </td>
-          <td>
-          <button className="listBtn" data-path={data.path_lower} onClick={del}> <i className="material-icons">delete_outline</i></button>
-          </td>
-          <td>
-            <button className="listBtn" data-path={data.path_lower} onClick={reName}><i data-path={data.path_lower} className="material-icons">edit</i></button>
-          </td>
-        </tr>
-          ) 
-       
-    }
-    
-      return( //FILES
-        <tr
       
-            key={data.id} 
-            className="listFiles" 
-            data-name={data.name} 
-            data-folder={data.path_lower} 
-            data-tag={data[".tag"]}
+        for (let i=toll; i<thumbnails.length;){
+
+          if (thumbnails[i][".tag"] === "success"){
+            console.log("Success")
+            return (
+              <tr
+              
+              //title={"Download: " + data.name} 
+              key={data.id} 
+              //className="listFiles" 
+              //data-name={data.name} 
+              //data-folder={data.path_lower} 
+              //data-tag={data[".tag"]}
+              >
+            <td 
+              title={"Download: " + data.name} 
+              className="listFiles" 
+              data-name={data.name} 
+              data-folder={data.path_lower} 
+              data-tag={data[".tag"]} onClick={downloadFile}
+              >
+                <img src={"data:image/jpeg;base64," + thumbnails[toll].thumbnail} />
+            </td>
+            <td
+              title={"Download: " + data.name} 
+              className="listFiles" 
+              data-name={data.name} 
+              data-folder={data.path_lower} 
+              data-tag={data[".tag"]} onClick={downloadFile}
             >
-          <td 
-            title={"Download: " + data.name} 
-            data-name={data.name} 
-            data-folder={data.path_lower} 
-            data-tag={data[".tag"]} onClick={downloadFile}>
-              <i className="material-icons-outlined filesFolders">
-                insert_drive_file
-              </i>
-          </td>
-          <td
-            title={"Download: " + data.name} 
-            data-name={data.name} 
-            data-folder={data.path_lower} 
-            data-tag={data[".tag"]} onClick={downloadFile}
-          >
-          {data.name}
-          </td>
-          <td>
-            {readableBytes(data.size)}
-          </td>
-          <td>
-            {lastEdited(data.server_modified)}
-          </td>
-          <td>
-            <button className="listBtn" onClick={del}> <i data-path={data.path_lower} className="material-icons">delete_outline</i></button>
-          </td>
-          <td>
-            <button className="listBtn" data-path={data.path_lower} onClick={reName}><i data-path={data.path_lower} className="material-icons">edit</i></button>
-          </td>
-        </tr>
-      )
-    }
+              {data.name} 
+            </td>
+            <td>
+              {readableBytes(data.size)}
+            </td>
+            <td>
+              {lastEdited(data.server_modified)}
+            </td>
+            <td>
+            <button className="listDelBtn" data-path={data.path_lower} onClick={del}> <i className="material-icons">delete_outline</i></button>
+            </td>
+          </tr>
+            ) 
+
+          } else {
+            console.log("failure")
+            return( //FILES
+              <tr
+            
+                  key={data.id} 
+                  className="listFiles" 
+                  data-name={data.name} 
+                  data-folder={data.path_lower} 
+                  data-tag={data[".tag"]}
+                  >
+                <td 
+                  title={"Download: " + data.name} 
+                  data-name={data.name} 
+                  data-folder={data.path_lower} 
+                  data-tag={data[".tag"]} onClick={downloadFile}>
+                    <i className="material-icons-outlined filesFolders">
+                      insert_drive_file
+                    </i>
+                </td>
+                <td
+                  title={"Download: " + data.name} 
+                  data-name={data.name} 
+                  data-folder={data.path_lower} 
+                  data-tag={data[".tag"]} onClick={downloadFile}
+                >
+                {data.name}
+                </td>
+                <td>
+                  {readableBytes(data.size)}
+                </td>
+                <td>
+                  {lastEdited(data.server_modified)}
+                </td>
+                <td>
+                  <button className="listBtn" onClick={del}> <i data-path={data.path_lower} className="material-icons">delete_outline</i></button>
+                </td>
+                <td>
+                  <button className="listBtn" data-path={data.path_lower} onClick={reName}><i data-path={data.path_lower} className="material-icons">edit</i></button>
+                </td>
+              </tr>
+            )
+          } 
+    } //Här slutar for-loopen för thumbnails    
+    } //Här slutar if data=file
+    
     if(data[".tag"] === 'folder'){ //FOLDER
       toll++;
       return( //FOLDERS
@@ -409,7 +412,7 @@ renameInputFolder = <div className="listRenameInput" ref={inputElFolder} style={
           </td>
         </tr>
       )
-    }
+    } //Här slutar if-folder
   }
     //==================END LIST RENDERING==================
 
