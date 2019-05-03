@@ -37,6 +37,7 @@ const Search = (props) => {
 
 return (
     <>
+    <i className="material-icons header-serach-icon">search</i>
     <input className="header-search" placeholder="Search..." type="text" onChange={makeSerch} />
     </>
     )
