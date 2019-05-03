@@ -295,20 +295,17 @@ renameInputFolder = <div className="listRenameInput" ref={inputElFolder} style={
 /* ---------------- end renameFolder ----------------------------- */
     if(data[".tag"] === 'file'){ //FILER
       toll++;
-      
+/*         console.log(data)
         for (let i=toll; i<thumbnails.length;){
-
-          if (thumbnails[i][".tag"] === "success"){
-            console.log("Success")
+            
             return (
-              <tr
-              
-              //title={"Download: " + data.name} 
+              <tr             
+              title={"Download: " + data.name} 
               key={data.id} 
-              //className="listFiles" 
-              //data-name={data.name} 
-              //data-folder={data.path_lower} 
-              //data-tag={data[".tag"]}
+              className="listFiles" 
+              data-name={data.name} 
+              data-folder={data.path_lower} 
+              data-tag={data[".tag"]}
               >
             <td 
               title={"Download: " + data.name} 
@@ -343,11 +340,10 @@ renameInputFolder = <div className="listRenameInput" ref={inputElFolder} style={
           </tr>
             ) 
 
-          } else {
-            console.log("failure")
+          } */
+
             return( //FILES
               <tr
-            
                   key={data.id} 
                   className="listFiles" 
                   data-name={data.name} 
@@ -386,8 +382,8 @@ renameInputFolder = <div className="listRenameInput" ref={inputElFolder} style={
               </tr>
             )
           } 
-    } //Här slutar for-loopen för thumbnails    
-    } //Här slutar if data=file
+     //Här slutar for-loopen för thumbnails    
+     //Här slutar if data=file
     
     if(data[".tag"] === 'folder'){ //FOLDER
       toll++;
