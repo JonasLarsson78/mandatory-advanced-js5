@@ -295,6 +295,7 @@ renameInputFolder = <div className="listRenameInput" ref={inputElFolder} style={
 /* ---------------- end renameFolder ----------------------------- */
  
     if(data[".tag"] === 'file'){ //FILER
+      console.log(thumbnails)
       toll++;
         for (let i=toll; i<thumbnails.length;){
           return (
