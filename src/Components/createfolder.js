@@ -14,7 +14,6 @@ const CreateFolder = (props) => {
   newFolder = newFolder.substring(5);
 
   let uploadFolder = '';
-  const inputRef = useRef(null);
   const uploadModal = useRef(null);
 
 
