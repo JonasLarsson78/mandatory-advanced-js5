@@ -1,10 +1,11 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import ReactCountryFlag from 'react-country-flag';
 import { Dropbox } from 'dropbox';
 import {token$} from './store.js';
 import '../Css/userAccount.css';
 
 const UserAccount = () => {
+const photoRef = useRef(null);  
 const [name, updateName] = useState("");
 const [mail, updateMail] = useState("");
 const [photoUrl, updatePhotUrl] = useState("");
@@ -37,6 +38,14 @@ const [country, updateCountry] = useState("us");
     
 
    },[])
+
+const onMouseOverPhoto = (e) => {
+  photoRef.current.style.display = "block";
+}
+const onMouseOutPhoto = (e) => {
+  photoRef.current.style.display = "none";
+}
+
   let x = mail.lastIndexOf("@") + 1;
   let y = mail.substring(x);
   let url = "https://www." + y;
@@ -49,7 +58,8 @@ return(
   <div className="userFlag"><ReactCountryFlag code={countryFlag} svg /></div>
   <span className="userName">{name}</span>
   <span className="userMail"><a className="userMailAtag" href={url} target="_blank">( {mail} )</a></span>
-  <img className="userPhoto" src={photoUrl}/>
+  <img onMouseOver={onMouseOverPhoto} onMouseOut={onMouseOutPhoto} className="userPhoto" src={photoUrl}/>
+  <img ref={photoRef} className="userPhotoBig" src={photoUrl}/>
   </div>
 )
 
