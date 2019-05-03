@@ -8,7 +8,7 @@ const UserAccount = () => {
 const [name, updateName] = useState("");
 const [mail, updateMail] = useState("");
 const [photoUrl, updatePhotUrl] = useState("");
-const [country, updateCountry] = useState("");
+const [country, updateCountry] = useState("us");
 
 
   useEffect(() => {
@@ -40,13 +40,13 @@ const [country, updateCountry] = useState("");
   let x = mail.lastIndexOf("@") + 1;
   let y = mail.substring(x);
   let url = "https://www." + y;
-  
-  console.log(country)
+  let countryFlag = country.toLowerCase();
+  console.log(countryFlag)
 
 return(
   
   <div className="userMain">
-  <div className="userFlag"><ReactCountryFlag code={country} svg /></div>
+  <div className="userFlag"><ReactCountryFlag code={countryFlag} svg /></div>
   <span className="userName">{name}</span>
   <span className="userMail"><a className="userMailAtag" href={url} target="_blank">( {mail} )</a></span>
   <img className="userPhoto" src={photoUrl}/>
