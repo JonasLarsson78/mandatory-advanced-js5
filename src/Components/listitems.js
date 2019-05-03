@@ -48,7 +48,7 @@ useEffect(() => {
     props.showModal3(true)
     //props.resetTime('modal')
    
-  }, 30000);
+  }, 480000);
   
     console.log(timerToShowModal)
   
@@ -110,7 +110,7 @@ useEffect(() => {
 
           dbx.filesListFolderLongpoll({
             cursor: response.cursor,
-            timeout: 30
+            timeout: 480
            
           })
           .then(response => {
@@ -152,7 +152,7 @@ useEffect(() => {
      updateData(response.entries)
      dbx.filesListFolderLongpoll({
       cursor: response.cursor,
-      timeout: 30
+      timeout: 480
     })
     .then(response => {
       //console.log(response.changes)
