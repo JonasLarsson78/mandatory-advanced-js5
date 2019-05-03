@@ -7,8 +7,11 @@ import { downloadFile } from './dowload'
 import moment from 'moment';
 import {renameFile} from './rename'
 import {move} from './move'
+import TimeOutModal from './timeoutmodal'
+import { timer } from 'rxjs';
 
 let thumbnailArray = [];
+
 
 const counter = (number) => {
   
@@ -28,12 +31,35 @@ const ListItems = (props) => {
   const [data, updateData] = useState([])
   const [rename, updateRename] = useState("")
   const [newUrl, updateNewUrl] = useState("")
+  
 
   const searchArr = props.search;
   let toll=-1; //Används för att rendera ut thumbnailArray.
 
 //===============================USEEFFECT=====================================
+
+
+
 useEffect(() => {
+  
+  
+  
+  const timerToShowModal = window.setTimeout(() => {
+    console.log('5 second has passed');
+    
+    props.showModal3(true)
+    //props.resetTime('modal')
+   
+  }, 30000);
+  
+    console.log(timerToShowModal)
+  
+
+
+
+
+
+ 
     
   const option = {
     fetch: fetch,
@@ -50,6 +76,7 @@ useEffect(() => {
     
     })
     .then(response => {
+    
       
        dbx.filesGetThumbnailBatch({
         entries: response.entries.map(entry => {
@@ -64,7 +91,7 @@ useEffect(() => {
        .then(response => {         
         thumbnailArray=[];
         const respEntry = response.entries;
-        console.log(respEntry)
+  
         for (let i=0; i<respEntry.length; i++){
           
           if (respEntry[i][".tag"] === "success") {          
@@ -76,7 +103,7 @@ useEffect(() => {
             }
           }
         }
-        console.log(thumbnailArray)
+     
       }) 
 
 
@@ -85,15 +112,18 @@ useEffect(() => {
 
           dbx.filesListFolderLongpoll({
             cursor: response.cursor,
-            timeout: 480
+            timeout: 30
            
           })
           .then(response => {
-            console.log(response.changes)
+              console.log(response)
               if(response.changes){
                 props.pollChanges(counter)
               }
-           
+              else if(response.changes === false){
+                //props.showModal3(true)
+                console.log('root')
+              }
               
               
  
@@ -124,7 +154,7 @@ useEffect(() => {
      updateData(response.entries)
      dbx.filesListFolderLongpoll({
       cursor: response.cursor,
-      timeout: 480
+      timeout: 30
     })
     .then(response => {
       //console.log(response.changes)
@@ -132,6 +162,10 @@ useEffect(() => {
      
       if(response.changes){
         props.pollChanges(counter)
+      }
+      else if(response.changes === false){
+        console.log('folder')
+        //props.showModal3(true)
       }
         
         
@@ -150,11 +184,12 @@ useEffect(() => {
   
   
 
-return
+return () => {
+  window.clearTimeout(timerToShowModal);
+} 
   
-}, [props.folder, props.search, searchArr, props.createFolder, props.uploadFile, props.pollChanges, props])
-console.log(props)
-
+}, [props.folder, props.search, searchArr, props.createFolder, props.uploadFile, props.pollChanges, props, ])
+  
 
   //=================BYTESIZE SETTING======================
   const readableBytes = (bytes) => {
@@ -173,7 +208,7 @@ console.log(props)
    
     const year = date.substring(0, 4);
     let month = date.substring(5, 7)
-    const day = date.substring(8, 10)
+    let day = date.substring(8, 10)
     const hour = date.substring(11, 13)
     const minute = date.substring(14, 16)
     const second = date.substring(17, 19)
@@ -186,7 +221,8 @@ console.log(props)
       "November", "December"
     ];
     
-    month = month.replace(/^0+/, '')
+    month = month.replace(/^0+/, '');
+    day = day.replace(/^0+/, '')
     let monthInText = months[month-1];
     
 
@@ -200,7 +236,7 @@ console.log(props)
 
  //===================RENDER LIST====================
   const renderList = (data) => {
-
+    
     const del = (e) => {
       props.path(e.target.dataset.path) 
       props.showModal(true)
@@ -287,9 +323,10 @@ renameInputFolder = <div className="listRenameInput" ref={inputElFolder} style={
        if (fileEnd === "jpg") {
         toll++;
         for (let i=toll; i<thumbnailArray.length;){
-               console.log(i)
+        
           return (
             <tr
+            
             //title={"Download: " + data.name} 
             key={data.id} 
             //className="listFiles" 
@@ -322,7 +359,7 @@ renameInputFolder = <div className="listRenameInput" ref={inputElFolder} style={
             {lastEdited(data.server_modified)}
           </td>
           <td>
-            <button className="listDelBtn" data-path={data.path_lower} onClick={del}> <i className="material-icons">delete_outline</i></button>
+          <button className="listDelBtn" data-path={data.path_lower} onClick={del}> <i className="material-icons">delete_outline</i></button>
           </td>
         </tr>
           ) 
@@ -331,7 +368,7 @@ renameInputFolder = <div className="listRenameInput" ref={inputElFolder} style={
     
       return( //FILES
         <tr
-             
+      
             key={data.id} 
             className="listFiles" 
             data-name={data.name} 
@@ -390,7 +427,7 @@ renameInputFolder = <div className="listRenameInput" ref={inputElFolder} style={
             <button className="listBtn" onClick={del}> <i data-path={data.path_lower} className="material-icons">delete_outline</i></button>
           </td>
           <td>
-            <button className="listBtn" onClick={reNameFolder}><i data-path={data.path_lower} className="material-icons">edit</i></button>
+            <button className="listBtn" onClick={reNameFolder}><i data-path={data.path_lower} className="material-icons">edit</i></button> 
           </td>
         </tr>
       )
