@@ -1,0 +1,64 @@
+.upload-folder-button {
+    border: 0;
+    width: 210px;
+    height: 35px;
+    border-radius: 5px;
+    background-color: transparent;
+    position: relative;
+    color: #4D4D4D;
+    text-transform: uppercase;
+    cursor: pointer;
+    outline: 0;
+}
+
+.upload-folder-button:hover {
+    color: #000;
+}
+
+.folder-icon-create-folder {
+    position: absolute;
+    left: 2px;
+    top: 2px;
+    color: #4D4D4D;
+    font-size: 26px;
+    -webkit-text-stroke: 1px white;
+}
+
+.upload-modal-folder {
+    position: absolute;
+    display: none;
+    width: 300px;
+    height: 150px;
+    padding: 15px;
+    border-radius: 5px;
+    background-color: #efefef;
+    left: 180px;
+    top: 310px;
+    transform: translate(-50%, -50%);
+    z-index: 500;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  }
+
+  .upload-folder-label {
+      font-size: 14px;
+  }
+
+  .upload-folder-input {
+      margin: 3px 0 10px 0;
+      width: 200px;
+      height: 20px;
+  }
+  
+  .upload-folder-modal-button {
+    position: relative;
+    width: 200px;
+    height: 25px;
+    border-radius: 5px;
+    border: 0;
+    background-color: #00AFD6;
+    color: white;
+    text-transform: uppercase;
+    font-size: 12px;
+    cursor: pointer;
+    outline: 0;
+  }

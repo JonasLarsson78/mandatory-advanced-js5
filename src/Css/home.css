@@ -46,23 +46,23 @@ Textgrå #4D4D4D
     flex-grow: 0;
     flex-basis: 250px;
     height: 500px;
-    border: 0px solid black;
+    padding: 0 20px 0;
 }
 
 .left-link-wrap {
     display: inline-block;
-    margin-left: 20px;
-    margin-top: 20px;
-    width: 200px;
-    background-color: #00AFD6;
+    width: 230px;
     height: 200px;
-    border-radius: 20px;
 }
+/*
+    border-radius: 20px;
+    margin-left: 20px;
+    background-color: #00AFD6;
+*/
 
 .left-link{
     position: relative;
-    top: 25px;
-    margin: 20px;
+    top: 10px;
     color: #fff;
     border: 0px solid red;
 }
