@@ -29,6 +29,10 @@ Textgrå #4D4D4D
     margin-right: 50px;
     border-radius: 5px;
     outline: none;
+    border: 1px solid #4D4D4D4D;
+    padding: 3px;
+    font-size: 18px;
+
 }
 
 /* ========== MAIN ============ */

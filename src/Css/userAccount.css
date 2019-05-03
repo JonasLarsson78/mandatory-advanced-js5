@@ -1,0 +1,35 @@
+.userMain{
+    position: absolute;
+    top: -18px;
+    right: 10px;
+}
+.userFlag{
+    position: relative;
+    top: 29px;
+    left: -25px;
+}
+.userName{
+    position: relative;
+    top: -8px;
+    margin-right: 5px;
+    font-weight: bold;
+    color: #4d4d4d;
+}
+.userMail{
+    position: relative;
+    top: -8px;
+    margin-right: 5px;
+    color: #4d4d4d;
+    
+}
+.userMailAtag{
+    text-decoration: none;
+    color: #4d4d4d;
+}
+.userPhoto{
+    position: relative;
+    top: 4px;
+    width: 35px;
+    height: 35px;
+    border-radius: 35px;
+}

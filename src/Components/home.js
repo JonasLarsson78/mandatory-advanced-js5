@@ -9,7 +9,11 @@ import Modal from './modal';
 import Breadcrumbs from './breadcrumbs'
 import { deleteFiles } from './delete'
 import UploadFile from './uploadfile';
+import UserAccount from './userAccount'
 import '../Css/home.css';
+import TimeOutModal from './timeoutmodal.js';
+
+
 
 const Home = (props) => {
   
@@ -20,7 +24,14 @@ const Home = (props) => {
   const [showModal, updateShowModal] = useState(false)
   const [delPath, updateDelPath] = useState(null)
   //const [uploadFile, updateUpload] = useState(null)
-  const [changes, updateChanges] = useState(null)
+  const [changes, updateChanges] = useState(null);
+  const [timeOutModal, updateTimeOutModal] = useState(null)
+  const [setTime, updateTime] = useState(null)
+
+
+  const ResetTime = (change) => {
+    updateTime(change)
+  }
 
   const logOut = () => {
     updateToken(null);
@@ -42,7 +53,6 @@ const pollChanges = (change) => {
 
     updateChanges(change)
   
-
 }
 
 /*  Function for create folder */
@@ -62,6 +72,9 @@ const pollChanges = (change) => {
   const modalOnClick = (x) =>{
     updateShowModal(x)
   }
+  const tiemoutModalClick = (change) => {
+    updateTimeOutModal(change)
+  }
 
   const path = (path) => {
     updateDelPath(path)
@@ -75,7 +88,9 @@ const pollChanges = (change) => {
   return(
     <>
     <Modal showModal2={modalOnClick} delPath={delPath} showModal={showModal} del={del}/>
+    <TimeOutModal showModal3={tiemoutModalClick} showTimeout={timeOutModal} resetTime={ResetTime}></TimeOutModal>
     <header className="mainHeader">
+    <UserAccount/>
       <div className="header-logo-wrap"><img id="header-logo" src={ require('../Img/Logo_mybox.png') } alt="My Box logo"/> </div>
       <div>
       <Search folder={props.location.pathname} search={searchResults} updateSearch={updateSearch}></Search>
@@ -96,7 +111,7 @@ const pollChanges = (change) => {
         
         <table className="mainTable">
           <tbody>
-            <ListItems folder={props.location.pathname} path={path} showModal={modalOnClick} search={search} /* createFolder={createF} */ /* uploadFile={uploadFile} */ pollChanges={pollChanges}></ListItems>
+            <ListItems folder={props.location.pathname} path={path} showModal={modalOnClick} showModal3={tiemoutModalClick} search={search} /* createFolder={createF} */ /* uploadFile={uploadFile} */ pollChanges={pollChanges} setTime={setTime} resetTime={ResetTime}></ListItems>
           </tbody>
         </table>
       </main>

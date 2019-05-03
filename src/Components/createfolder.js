@@ -9,6 +9,7 @@ const CreateFolder = (props) => {
   
 
   const [input, updateInput] = useState('')
+  const inputRef = useRef(null);
   let newFolder = props.folder
   newFolder = newFolder.substring(5);
 
@@ -55,6 +56,7 @@ const CreateFolder = (props) => {
 
   const startModal = () => {
     uploadModal.current.style.display = 'block';
+    inputRef.current.value = '';
   }
 
   uploadFolder = 
@@ -69,10 +71,8 @@ const CreateFolder = (props) => {
 
   return(
     <>
-      
       <button className="upload-folder-button" onClick={ startModal }><i className="material-icons-outlined folder-icon-create-folder"> create_new_folder</i>Create new folder</button>
       { uploadFolder }
-      
     </>
   )
 }

@@ -1,15 +1,22 @@
-import React from 'react';
+
+import React, {useState, useEffect,useRef} from 'react';
 //import './App.css';
 import Login from './Components/login';
 import Auth from './Components/auth';
 import Home from './Components/home';
 
-import { BrowserRouter as Router, Route, Link, Switch}from "react-router-dom";
+
+import { BrowserRouter as Router, Route, Link}from "react-router-dom";
+
+
+
 
 function App() {
+ 
   return (
     <Router>
     <div className="App">
+
     
     </div>
     
