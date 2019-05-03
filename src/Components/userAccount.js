@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import ReactCountryFlag from "react-country-flag";
+import ReactCountryFlag from 'react-country-flag';
 import { Dropbox } from 'dropbox';
 import {token$} from './store.js';
 import '../Css/userAccount.css';
@@ -8,7 +8,7 @@ const UserAccount = () => {
 const [name, updateName] = useState("");
 const [mail, updateMail] = useState("");
 const [photoUrl, updatePhotUrl] = useState("");
-const [country, updateCountry] = useState("");
+const [country, updateCountry] = useState("us");
 
 
   useEffect(() => {
@@ -28,7 +28,7 @@ const [country, updateCountry] = useState("");
       updateName(response.name.display_name)
       updateMail(response.email)
       updatePhotUrl(response.profile_photo_url)
-      updateCountry(response.locale)
+      updateCountry(response.country)
       
     })
     .catch(error => {
@@ -40,13 +40,13 @@ const [country, updateCountry] = useState("");
   let x = mail.lastIndexOf("@") + 1;
   let y = mail.substring(x);
   let url = "https://www." + y;
-  let flagCode = country.substring(3);
-  console.log(url)
+  let countryFlag = country.toLowerCase();
+  console.log(countryFlag)
 
 return(
   
   <div className="userMain">
-  <div className="userFlag"><ReactCountryFlag code={flagCode} svg /></div>
+  <div className="userFlag"><ReactCountryFlag code={countryFlag} svg /></div>
   <span className="userName">{name}</span>
   <span className="userMail"><a className="userMailAtag" href={url} target="_blank">( {mail} )</a></span>
   <img className="userPhoto" src={photoUrl}/>
