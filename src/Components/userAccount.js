@@ -8,7 +8,7 @@ const UserAccount = () => {
 const photoRef = useRef(null);  
 const [name, updateName] = useState("");
 const [mail, updateMail] = useState("");
-const [photoUrl, updatePhotUrl] = useState("");
+const [photoUrl, updatePhotUrl] = useState(null);
 const [country, updateCountry] = useState("us");
 
 
@@ -48,14 +48,30 @@ const onMouseOutPhoto = (e) => {
   let y = mail.substring(x);
   let url = "https://www." + y;
   let countryFlag = country.toLowerCase();
+  let checkPhoto;
+  if (!photoUrl){
+    checkPhoto = 
+    <>
+    <img alt="userPhoto" onMouseOver={onMouseOverPhoto} onMouseOut={onMouseOutPhoto} className="userPhoto" src={ require("../Img/profile-img-none.png")}/>
+    <img alt="userPhotoBig" ref={photoRef} className="userPhotoBig" src={ require("../Img/profile-img-none.png")}/>
+    </>
+  }
+  else{
+    checkPhoto = 
+    <>
+    <img alt="userPhoto" onMouseOver={onMouseOverPhoto} onMouseOut={onMouseOutPhoto} className="userPhoto" src={photoUrl}/>
+    <img alt="userPhotoBig" ref={photoRef} className="userPhotoBig" src={photoUrl}/>
+    </>
+  }
+
+  
 
 return(
   <div className="userMain">
   <div className="userFlag"><ReactCountryFlag code={countryFlag} svg /></div>
   <span className="userName">{name}</span>
   <span className="userMail"><a className="userMailAtag" href={url} target="_blank" without="true" rel="noopener noreferrer">( {mail} )</a></span>
-  <img alt="userPhoto" onMouseOver={onMouseOverPhoto} onMouseOut={onMouseOutPhoto} className="userPhoto" src={photoUrl}/>
-  <img alt="userPhotoBig" ref={photoRef} className="userPhotoBig" src={photoUrl}/>
+  {checkPhoto}
   </div>
 )
 
