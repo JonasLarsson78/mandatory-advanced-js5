@@ -25,14 +25,40 @@ Textgrå #4D4D4D
 .header-search {
     width: 200px;
     height: 25px;
-    margin-top: 50px;
+    margin-top: 28px;
     margin-right: 50px;
     border-radius: 5px;
     outline: none;
     border: 1px solid #4D4D4D4D;
     padding: 3px;
     font-size: 18px;
-
+}
+.header-serach-icon{
+    position: relative;
+    top: 32px;
+    color: #4d4d4d;
+}
+.headerContent{
+    display: flex;
+    position: relative;
+    right: 0px;
+    top: 0px;
+}
+.headerLogOutBtn{
+    position: relative;
+    top: 30px;
+    margin-right: 20px;
+    margin-left: 10px;
+    height: 25px;
+    border:none;
+    border-radius: 5px;
+    color: white;
+    background-color: #00AFD6;
+    outline: none;
+    cursor: pointer;
+}
+.headerLogOutBtn:hover{
+    background-color: #029BB5;
 }
 
 /* ========== MAIN ============ */

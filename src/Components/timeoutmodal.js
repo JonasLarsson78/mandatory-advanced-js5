@@ -27,9 +27,9 @@ const TimeOutModal = (props) => {
         <div style={{pointerEvents: pointerEvent}} ref={element} className="modalBack">
             <div style={{pointerEvents: pointerEvent}} className="modal">
                 <div style={{pointerEvents: pointerEvent}} className="mainModal">
-                    <h1>You have been inactive too long</h1>
-                    <p>Press Reload to reload MyBox</p>
-                    <button className="modalBtn" onClick={reload}>Reload</button>
+                    <h4>You have been inactive too long !!</h4>
+                    <p className="modalText" style={{marginTop: "40px"}}>Press Reload to reload MyBox</p>
+                    <button className="modalBtn2" onClick={reload}>Reload</button>
                 </div>
             </div>
         </div>

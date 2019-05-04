@@ -31,12 +31,19 @@ const Search = (props) => {
         }
       })
       .catch(function(error) {
-        console.log(error);
+        if (error.response.status === 400){
+          console.log("Wrong input.")
+        }
+        if (error.response.status === 409){
+          console.log("Wrong search path.")
+        }
+           
       });
  }
 
 return (
     <>
+    <i className="material-icons header-serach-icon">search</i>
     <input className="header-search" placeholder="Search..." type="text" onChange={makeSerch} />
     </>
     )

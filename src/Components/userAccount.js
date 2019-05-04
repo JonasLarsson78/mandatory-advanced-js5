@@ -1,14 +1,15 @@
-import React, {useState, useEffect} from 'react';
-import ReactCountryFlag from "react-country-flag";
+import React, {useState, useEffect, useRef} from 'react';
+import ReactCountryFlag from 'react-country-flag';
 import { Dropbox } from 'dropbox';
 import {token$} from './store.js';
 import '../Css/userAccount.css';
 
 const UserAccount = () => {
+const photoRef = useRef(null);  
 const [name, updateName] = useState("");
 const [mail, updateMail] = useState("");
-const [photoUrl, updatePhotUrl] = useState("");
-const [country, updateCountry] = useState("");
+const [photoUrl, updatePhotUrl] = useState(null);
+const [country, updateCountry] = useState("us");
 
 
   useEffect(() => {
@@ -24,35 +25,55 @@ const [country, updateCountry] = useState("");
     dbx.usersGetCurrentAccount(
     )
     .then(response => {
-      console.log(response)
       updateName(response.name.display_name)
       updateMail(response.email)
       updatePhotUrl(response.profile_photo_url)
-      updateCountry(response.locale)
+      updateCountry(response.country)
       
     })
     .catch(error => {
       console.log(error);
     });
-    
 
    },[])
+
+const onMouseOverPhoto = (e) => {
+  photoRef.current.style.display = "block";
+}
+const onMouseOutPhoto = (e) => {
+  photoRef.current.style.display = "none";
+}
+
   let x = mail.lastIndexOf("@") + 1;
   let y = mail.substring(x);
   let url = "https://www." + y;
-  let flagCode = country.substring(3);
-  console.log(url)
+  let countryFlag = country.toLowerCase();
+  let checkPhoto;
+  if (!photoUrl){
+    checkPhoto = 
+    <>
+    <img alt="userPhoto" onMouseOver={onMouseOverPhoto} onMouseOut={onMouseOutPhoto} className="userPhoto" src={ require("../Img/profile-img-none.png")}/>
+    <img alt="userPhotoBig" ref={photoRef} className="userPhotoBig" src={ require("../Img/profile-img-none.png")}/>
+    </>
+  }
+  else{
+    checkPhoto = 
+    <>
+    <img alt="userPhoto" onMouseOver={onMouseOverPhoto} onMouseOut={onMouseOutPhoto} className="userPhoto" src={photoUrl}/>
+    <img alt="userPhotoBig" ref={photoRef} className="userPhotoBig" src={photoUrl}/>
+    </>
+  }
+
+  
 
 return(
-  
   <div className="userMain">
-  <div className="userFlag"><ReactCountryFlag code={flagCode} svg /></div>
-  <span className="userName">{name}</span>
-  <span className="userMail"><a className="userMailAtag" href={url} target="_blank">( {mail} )</a></span>
+  <div className="userFlag"><ReactCountryFlag code={countryFlag} svg /></div>
+  <span className="userName">{name}</span>  
+  <span className="userMail"><a className="userMailAtag" href={url} target="_blank" without="true" rel="noopener noreferrer">( {mail} )</a></span>
   <img className="userPhoto" alt={photoUrl} src={photoUrl}/>
   </div>
 )
-
 
 }
 export default UserAccount;

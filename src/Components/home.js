@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { BrowserRouter as Router, Route, Link, Redirect} from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import { updateToken } from './store.js'
 import {token$} from './store.js';
 import ListItems from './listitems'
@@ -10,6 +10,7 @@ import Breadcrumbs from './breadcrumbs'
 import { deleteFiles } from './delete'
 import UploadFile from './uploadfile';
 import UserAccount from './userAccount'
+import { Helmet } from "react-helmet";
 import '../Css/home.css';
 import TimeOutModal from './timeoutmodal.js';
 
@@ -24,7 +25,7 @@ const Home = (props) => {
   const [showModal, updateShowModal] = useState(false)
   const [delPath, updateDelPath] = useState(null)
   //const [uploadFile, updateUpload] = useState(null)
-  const [changes, updateChanges] = useState(null);
+  const [, updateChanges] = useState(null);
   const [timeOutModal, updateTimeOutModal] = useState(null)
   const [setTime, updateTime] = useState(null)
 
@@ -87,17 +88,18 @@ const pollChanges = (change) => {
   
   return(
     <>
+    <Helmet>
+      <title>MyBOX Home</title>
+    </Helmet>
     <Modal showModal2={modalOnClick} delPath={delPath} showModal={showModal} del={del}/>
     <TimeOutModal showModal3={tiemoutModalClick} showTimeout={timeOutModal} resetTime={ResetTime}></TimeOutModal>
     <header className="mainHeader">
-    <UserAccount/>
       <div className="header-logo-wrap"><img id="header-logo" src={ require('../Img/Logo_mybox.png') } alt="My Box logo"/> </div>
-      <div>
-      <Search folder={props.location.pathname} search={searchResults} updateSearch={updateSearch}></Search>
-        <span>
-          <button onClick={logOut}>logOut</button>
+        <span className="headerContent">
+          <Search folder={props.location.pathname} search={searchResults} updateSearch={updateSearch}></Search>
+          <span><UserAccount/></span>
+          <span><button className="headerLogOutBtn" onClick={logOut}>LogOut</button></span>
         </span>
-      </div>
     </header>
     <div className="mainWrapper">
       <aside className="leftSide">

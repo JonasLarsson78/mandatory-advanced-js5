@@ -1,7 +1,6 @@
 .userMain{
-    position: absolute;
-    top: -18px;
-    right: 10px;
+    position: relative;
+    
 }
 .userFlag{
     position: relative;
@@ -32,4 +31,14 @@
     width: 35px;
     height: 35px;
     border-radius: 35px;
+}
+.userPhotoBig{
+    display: none;
+    position: absolute;
+    top: 4px;
+    right: -10px;
+    width: 80px;
+    height: 80px;
+    border-radius: 80px;
+    pointer-events: none;
 }

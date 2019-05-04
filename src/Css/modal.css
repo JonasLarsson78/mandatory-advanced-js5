@@ -1,16 +1,15 @@
 .modal{
     position: absolute;
     left: 50%;
-    top: 50%;
+    top: 40%;
     transform: translate(-50%, -50%);
     width: 300px;
-    height: 200px;
-    border: 5px solid #029BB5;
-    background-color: white;
-    border-radius: 10px;
-    text-align: center;
-    box-shadow: 10px 10px 5px 0px #000000bf;
+    height: 180px;
+    background-color:#efefef;;
+    border-radius: 5px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
     z-index: 1000;
+    padding: 15px;
 }
 .modalBack{
     opacity: 0;
@@ -34,5 +33,32 @@
     cursor: pointer;
 }
 .modalBtn:hover{
+    background-color: #646464;
+}
+.modalText{
+    font-size: 14px;
+}
+.modalBtn2{
+    position: relative;
+    bottom: 10px;
+    margin-right: 5px;
+    height: 25px;
+    border:none;
+    border-radius: 5px;
+    color: white;
+    background-color: #00AFD6;
+    outline: none;
+    cursor: pointer;
+}
+.modalBtn2:hover{
     background-color: #029BB5;
+}
+.yes{
+    background: red;
+}
+.yes:hover{
+    background: darkred;
+}
+.no:hover{
+    background: darkgreen;
 }

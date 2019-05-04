@@ -29,9 +29,9 @@ const Modal = (props) => {
         <div style={{pointerEvents: pointerEvent}} ref={element} className="modalBack">
             <div style={{pointerEvents: pointerEvent}} className="modal">
                 <div style={{pointerEvents: pointerEvent}} className="mainModal">
-                    <h1>Delete</h1>
-                    <p>Vill du ta bort filen/mappen ??</p>
-                    <button className="modalBtn" onClick={ja}>Ja</button><button className="modalBtn" onClick={nej}>Nej</button>
+                    <h2>Delete ! ! !</h2>
+                    <p className="modalText">Do you want to delete the file / folder ??</p>
+                    <button className="modalBtn yes"  onClick={ja}>YES</button><button className="modalBtn no" onClick={nej}>NO</button>
                 </div>
             </div>
         </div>
