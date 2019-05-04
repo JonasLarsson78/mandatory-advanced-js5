@@ -283,24 +283,6 @@ if(data === undefined){
             >
               {data.name} 
             </td>
-            <td
-            title={"Download: " + data.name} 
-              className="listFiles" 
-              data-name={data.name} 
-              data-folder={data.path_lower} 
-              data-tag={data[".tag"]}
-            >
-              <img src={"data:image/jpeg;base64," + thumbnails[toll].thumbnail} />
-          </td>
-          <td
-            title={"Download: " + data.name} 
-            className="listFiles" 
-            data-name={data.name} 
-            data-folder={data.path_lower} 
-            data-tag={data[".tag"]} onClick={downloadFile}
-          >
-            {data.name} 
-          </td>
           <td>
             {readableBytes(data.size)}
           </td>
@@ -311,7 +293,7 @@ if(data === undefined){
           <button className="listBtn" data-path={data.path_lower} onClick={del}> <i className="material-icons">delete_outline</i></button>
           </td>
           <td>
-            <button className="listBtn" data-path={data.path_lower} onClick={reName}><i data-path={data.path_lower} className="material-icons">edit</i></button>
+            <button className="listBtn" data-path={data.path_lower} onClick={props.rename}><i data-path={data.path_lower} className="material-icons">edit</i></button>
           </td>
           <td>
             <button className="listBtn"> <i className="material-icons">swap_horiz</i></button>
@@ -357,7 +339,7 @@ if(data === undefined){
             <button className="listBtn" onClick={del}> <i data-path={data.path_lower} className="material-icons">delete_outline</i></button>
           </td>
           <td>
-            <button className="listBtn" data-path={data.path_lower} onClick={reName}><i data-path={data.path_lower} className="material-icons">edit</i></button>
+            <button className="listBtn" data-path={data.path_lower} onClick={props.rename}><i data-path={data.path_lower} className="material-icons">edit</i></button>
           </td>
           <td>
             <button className="listBtn"> <i className="material-icons">swap_horiz</i></button>
@@ -369,9 +351,7 @@ if(data === undefined){
       return( //FOLDERS
         <tr key={data.id} className="listFiles" to={data.path_lower} data-name={data.name} data-folder={data.path_lower} data-tag={data[".tag"]}>
           <td>
-          <i className="material-icons filesFolders">
-            folder
-          </i>
+          <i className="material-icons filesFolders">folder</i>
           </td>
           <td>
             <Link className="listFolderLink" to={"/home" + data.path_lower}>{data.name}</Link>
