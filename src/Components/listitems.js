@@ -298,80 +298,86 @@ renameInputFolder = <div className="listRenameInput" ref={inputElFolder} style={
 //GOAL: Put a thumbnail key to the data.
 //Then set the value of that key either to thumbnailCode or  
 //the correct default icon.
+/* 
 const setThumbnails = (dataObj, thumbnailsCode) => {
-  if (thumbnails.length === 0) {
-    return;
-  }
-
-  toll++;
-
-  for (let i=0; i<thumbnailsCode.length; i++) {
-    if (thumbnailsCode[toll].thumbnail === undefined) {
-      thumbnailsCode[toll].thumbnail = "./icon.jpg" 
-    }
-  } 
   
-  let thumbObj = {thumbnail: thumbnailsCode[toll].thumbnail}
+    if (thumbnails.length === 0) {
+      return;
+    }
 
-  dataObj = {...dataObj, ...thumbObj}
+    if (thumbnailsCode[toll] !== undefined){
 
+        toll++;
+
+            for (let i=0; i<thumbnailsCode.length; i++) {
+              
+              if (thumbnailsCode[toll].thumbnail === undefined) {
+                thumbnailsCode[toll].thumbnail = "./icon.jpg" 
+              }
+
+            }
+            
+          let thumbObj = {thumbnail: thumbnailsCode[toll].thumbnail}
+
+          dataObj = {...dataObj, ...thumbObj}
+    } 
   return dataObj
 }
 
-let data1 = setThumbnails(data, thumbnails);
+let data1 = setThumbnails(data, thumbnails); */
 
 //===================================
 
-if(data1 === undefined){
+if(data === undefined){
   return;
 } 
 
-     if(data1[".tag"] === 'file'){ //FILER
+     if(data[".tag"] === 'file'){ //FILER
              
               return (
               <tr             
-              title={"Download: " + data1.name} 
-              key={data1.id} 
+              title={"Download: " + data.name} 
+              key={data.id} 
               className="listFiles" 
-              data-name={data1.name} 
-              data-folder={data1.path_lower} 
-              data-tag={data1[".tag"]}
+              data-name={data.name} 
+              data-folder={data.path_lower} 
+              data-tag={data[".tag"]}
               >
             <td 
-              title={"Download: " + data1.name} 
+              title={"Download: " + data.name} 
               className="listFiles" 
-              data-name={data1.name} 
-              data-folder={data1.path_lower} 
-              data-tag={data1[".tag"]} onClick={downloadFile}
+              data-name={data.name} 
+              data-folder={data.path_lower} 
+              data-tag={data[".tag"]} onClick={downloadFile}
               >
-                <img src={"data:image/jpeg;base64," + data1.thumbnail} width="32" height="32"/>
+                <img src={"data:image/jpeg;base64," + data.thumbnail} width="32" height="32"/>
             </td>
             <td
-              title={"Download: " + data1.name} 
+              title={"Download: " + data.name} 
               className="listFiles" 
-              data-name={data1.name} 
-              data-folder={data1.path_lower} 
-              data-tag={data1[".tag"]} onClick={downloadFile}
+              data-name={data.name} 
+              data-folder={data.path_lower} 
+              data-tag={data[".tag"]} onClick={downloadFile}
             >
               {data.name} 
             </td>
             <td
-            title={"Download: " + data1.name} 
+            title={"Download: " + data.name} 
               className="listFiles" 
-              data-name={data1.name} 
-              data-folder={data1.path_lower} 
-              data-tag={data1[".tag"]}
+              data-name={data.name} 
+              data-folder={data.path_lower} 
+              data-tag={data[".tag"]}
             >
-              {readableBytes(data1.size)}
+              {readableBytes(data.size)}
             </td>
             <td>
-              {lastEdited(data1.server_modified)}
+              {lastEdited(data.server_modified)}
             </td>
             <td>
-            <button className="listBtn" data-path={data1.path_lower} onClick={del}> <i className="material-icons">delete_outline</i></button>
+            <button className="listBtn" data-path={data.path_lower} onClick={del}> <i className="material-icons">delete_outline</i></button>
             </td>
             <td>
-                  <button className="listBtn" data-path={data1.path_lower} onClick={reName}><i data-path={data1.path_lower} className="material-icons">edit</i></button>
+                  <button className="listBtn" data-path={data.path_lower} onClick={reName}><i data-path={data.path_lower} className="material-icons">edit</i></button>
                 </td>
           </tr>
             )   
