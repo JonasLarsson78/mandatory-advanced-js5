@@ -73,7 +73,7 @@ useEffect(() => {
     .then(response => {
 
       updateData(response.entries)
-      updateThumbnails([]);
+      /* updateThumbnails([]);
         dbx.filesGetThumbnailBatch({
           entries: response.entries.map(entry => {
           return{
@@ -86,7 +86,7 @@ useEffect(() => {
         }) 
         .then(response => {                
           updateThumbnails(response.entries)
-          })
+          }) */
 
           dbx.filesListFolderLongpoll({
             cursor: response.cursor,
@@ -131,7 +131,7 @@ useEffect(() => {
     .then(response => {
       
      updateData(response.entries)
-     updateThumbnails([]);
+     /* updateThumbnails([]);
 
       dbx.filesGetThumbnailBatch({
         entries: response.entries.map(entry => {
@@ -145,7 +145,7 @@ useEffect(() => {
           }) 
         .then(response => {         
           updateThumbnails(response.entries)
-        }) 
+        })  */
 
      dbx.filesListFolderLongpoll({
       cursor: response.cursor,
@@ -272,7 +272,7 @@ if(data === undefined){
               data-folder={data.path_lower} 
               data-tag={data[".tag"]} onClick={downloadFile}
               >
-                <img src={"data:image/jpeg;base64," + data.thumbnail} width="32" height="32"/>
+                {/* <img src={"data:image/jpeg;base64," + data.thumbnail} width="32" height="32"/> */}
             </td>
             <td
               title={"Download: " + data.name} 
@@ -290,7 +290,7 @@ if(data === undefined){
             {lastEdited(data.server_modified)}
           </td>
           <td>
-          <button className="listBtn" data-path={data.path_lower} onClick={del}> <i className="material-icons">delete_outline</i></button>
+          <button className="listBtn" data-path={data.path_lower} onClick={del}> <i className="material-icons" data-path={data.path_lower}>delete_outline</i></button>
           </td>
           <td>
             <button className="listBtn" data-path={data.path_lower} onClick={props.rename}><i data-path={data.path_lower} className="material-icons">edit</i></button>

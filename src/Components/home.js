@@ -52,8 +52,7 @@ const Home = (props) => {
 /* ------------ end serarch -------------- */
 
 const pollChanges = (change) => {
-  console.log(change)
-
+  //console.log(change)
     updateChanges(change)
   
 }
