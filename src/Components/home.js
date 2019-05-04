@@ -28,8 +28,8 @@ const Home = (props) => {
   const [, updateChanges] = useState(null);
   const [timeOutModal, updateTimeOutModal] = useState(null)
   const [setTime, updateTime] = useState(null)
-  const [renFile, updateRenFile] = useState("")
-  const [renFolder, updateRenFolder] = useState("")
+  const [renFile, updateRenFile] = useState(null)
+  const [renFolder, updateRenFolder] = useState(null)
 
 
   const ResetTime = (change) => {
@@ -84,6 +84,7 @@ const pollChanges = (change) => {
   /* ----------- end del ----------------- */
 
   const renamefile = (e) => {
+    console.log(e.target)
     updateRenFile(e.target.dataset.path)
   }
   const renamefolder = (e) => {
