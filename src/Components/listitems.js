@@ -50,12 +50,6 @@ useEffect(() => {
     //console.log(timerToShowModal)
   
 
-
-
-
-
- 
-    
   const option = {
     fetch: fetch,
     accessToken: token$.value
@@ -277,7 +271,7 @@ return () => {
               <button className="listBtn" onClick={del}> <i data-path={data.path_lower} className="material-icons">delete_outline</i></button>
             </td>
             <td>
-              <button className="listBtn" data-path={data.path_lower} onClick={props.reName}><i data-path={data.path_lower} className="material-icons">edit</i></button>
+              <button className="listBtn" data-path={data.path_lower} onClick={props.rename}><i data-path={data.path_lower} className="material-icons">edit</i></button>
             </td>
           </tr>
         ) 
