@@ -27,7 +27,7 @@ const ListItems = (props) => {
   const [thumbnails, updateThumbnails] = useState([])
 
   const searchArr = props.search;
-  let toll= -1; //Används för att rendera ut thumbnailArray.
+  let toll=-1; //Används för att rendera ut thumbnailArray.
 
 //===============================USEEFFECT=====================================
 
@@ -35,7 +35,7 @@ const ListItems = (props) => {
 
 useEffect(() => {
   
-  toll = -1;
+  //toll = -1;
   
   const timerToShowModal = window.setTimeout(() => {
     console.log('5 second has passed');
@@ -92,13 +92,13 @@ useEffect(() => {
            
           })
           .then(response => {
-              console.log(response)
+              //console.log(response)
               if(response.changes){
                 props.pollChanges(counter)
               }
               else if(response.changes === false){
                 //props.showModal3(true)
-                console.log('root')
+                //console.log('root')
               }
               
               
@@ -293,40 +293,76 @@ const addNewNameCloseFolder = () =>{
 
 renameInputFolder = <div className="listRenameInput" ref={inputElFolder} style={{display: "none"}}><div className="listRenameText">Rename folder</div><span className="listRenameClose" onClick={addNewNameCloseFolder}><i className="material-icons">close</i></span><input placeholder="New foldername..." className="listRenameInputText" style={{outline: "none"}} ref={clearInputFolder} type="text" onChange={newNameInputFolder} /><button className="listBtnRename" style={{outline: "none"}} onClick={addNewNameFolder}>Ok</button></div>
 /* ---------------- end renameFolder ----------------------------- */
-    if(data[".tag"] === 'file'){ //FILER
-      toll++;
-/*         console.log(data)
-        for (let i=toll; i<thumbnails.length;){
-            
-            return (
+
+//========SET thumbnails===============
+//GOAL: Put a thumbnail key to the data.
+//Then set the value of that key either to thumbnailCode or  
+//the correct default icon.
+const setThumbnails = (dataObj, thumbnailsCode) => {
+  if (thumbnails.length === 0) {
+    return;
+  }
+
+  toll++;
+
+  for (let i=0; i<thumbnailsCode.length; i++) {
+    if (thumbnailsCode[toll].thumbnail === undefined) {
+      thumbnailsCode[toll].thumbnail = "./icon.jpg" 
+    }
+  } 
+  
+  let thumbObj = {thumbnail: thumbnailsCode[toll].thumbnail}
+
+  dataObj = {...dataObj, ...thumbObj}
+
+  return dataObj
+}
+
+let data1 = setThumbnails(data, thumbnails);
+
+//===================================
+
+if(data1 === undefined){
+  return;
+} 
+
+     if(data1[".tag"] === 'file'){ //FILER
+             console.log(data1);
+              return (
               <tr             
-              title={"Download: " + data.name} 
-              key={data.id} 
+              title={"Download: " + data1.name} 
+              key={data1.id} 
               className="listFiles" 
-              data-name={data.name} 
-              data-folder={data.path_lower} 
-              data-tag={data[".tag"]}
+              data-name={data1.name} 
+              data-folder={data1.path_lower} 
+              data-tag={data1[".tag"]}
               >
             <td 
-              title={"Download: " + data.name} 
+              title={"Download: " + data1.name} 
               className="listFiles" 
-              data-name={data.name} 
-              data-folder={data.path_lower} 
-              data-tag={data[".tag"]} onClick={downloadFile}
+              data-name={data1.name} 
+              data-folder={data1.path_lower} 
+              data-tag={data1[".tag"]} onClick={downloadFile}
               >
-                <img src={"data:image/jpeg;base64," + thumbnails[toll].thumbnail} />
+                <img src={"data:image/jpeg;base64," + data1.thumbnail} width="32" height="32"/>
             </td>
             <td
-              title={"Download: " + data.name} 
+              title={"Download: " + data1.name} 
               className="listFiles" 
-              data-name={data.name} 
-              data-folder={data.path_lower} 
-              data-tag={data[".tag"]} onClick={downloadFile}
+              data-name={data1.name} 
+              data-folder={data1.path_lower} 
+              data-tag={data1[".tag"]} onClick={downloadFile}
             >
               {data.name} 
             </td>
-            <td>
-              {readableBytes(data.size)}
+            <td
+            title={"Download: " + data1.name} 
+              className="listFiles" 
+              data-name={data1.name} 
+              data-folder={data1.path_lower} 
+              data-tag={data1[".tag"]}
+            >
+              {readableBytes(data1.size)}
             </td>
             <td>
               {lastEdited(data.server_modified)}
@@ -338,9 +374,8 @@ renameInputFolder = <div className="listRenameInput" ref={inputElFolder} style={
                   <button className="listBtn" data-path={data.path_lower} onClick={reName}><i data-path={data.path_lower} className="material-icons">edit</i></button>
                 </td>
           </tr>
-            ) 
-
-          } */
+            )   
+          
 
             return( //FILES
               <tr
@@ -380,13 +415,11 @@ renameInputFolder = <div className="listRenameInput" ref={inputElFolder} style={
                   <button className="listBtn" data-path={data.path_lower} onClick={reName}><i data-path={data.path_lower} className="material-icons">edit</i></button>
                 </td>
               </tr>
-            )
-          } 
-     //Här slutar for-loopen för thumbnails    
-     //Här slutar if data=file
+            ) 
+          }  
+        
     
     if(data[".tag"] === 'folder'){ //FOLDER
-      toll++;
       return( //FOLDERS
         <tr key={data.id} className="listFiles" to={data.path_lower} data-name={data.name} data-folder={data.path_lower} data-tag={data[".tag"]}>
           <td>
@@ -411,7 +444,7 @@ renameInputFolder = <div className="listRenameInput" ref={inputElFolder} style={
           </td>
         </tr>
       )
-    } //Här slutar if-folder
+    } //Här slutar if-folder */
   }
     //==================END LIST RENDERING==================
 
