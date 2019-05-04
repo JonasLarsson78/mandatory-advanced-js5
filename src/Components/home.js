@@ -28,8 +28,6 @@ const Home = (props) => {
   const [, updateChanges] = useState(null);
   const [timeOutModal, updateTimeOutModal] = useState(null)
   const [setTime, updateTime] = useState(null)
-  const [renFile, updateRenFile] = useState(null)
-  const [renFolder, updateRenFolder] = useState(null)
 
 
   const ResetTime = (change) => {
@@ -83,13 +81,7 @@ const pollChanges = (change) => {
   }
   /* ----------- end del ----------------- */
 
-  const renamefile = (e) => {
-    console.log(e.target)
-    updateRenFile(e.target.dataset.path)
-  }
-  const renamefolder = (e) => {
-    updateRenFolder(e.target.dataset.path)
-  }
+  
   
 
 
@@ -123,7 +115,7 @@ const pollChanges = (change) => {
         
         <table className="mainTable">
           <tbody>
-            <ListItems renFolder={renFolder} renFile={renFile} rename={renamefile} rename2={renamefolder} folder={props.location.pathname} path={path} showModal={modalOnClick} showModal3={tiemoutModalClick} search={search} /* createFolder={createF} */ /* uploadFile={uploadFile} */ pollChanges={pollChanges} setTime={setTime} resetTime={ResetTime}></ListItems>
+            <ListItems folder={props.location.pathname} path={path} showModal={modalOnClick} showModal3={tiemoutModalClick} search={search} /* createFolder={createF} */ /* uploadFile={uploadFile} */ pollChanges={pollChanges} setTime={setTime} resetTime={ResetTime}></ListItems>
           </tbody>
         </table>
       </main>
