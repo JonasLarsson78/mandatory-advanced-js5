@@ -327,7 +327,7 @@ if(data1 === undefined){
 } 
 
      if(data1[".tag"] === 'file'){ //FILER
-             console.log(data1);
+             
               return (
               <tr             
               title={"Download: " + data1.name} 
@@ -365,13 +365,13 @@ if(data1 === undefined){
               {readableBytes(data1.size)}
             </td>
             <td>
-              {lastEdited(data.server_modified)}
+              {lastEdited(data1.server_modified)}
             </td>
             <td>
-            <button className="listBtn" data-path={data.path_lower} onClick={del}> <i className="material-icons">delete_outline</i></button>
+            <button className="listBtn" data-path={data1.path_lower} onClick={del}> <i className="material-icons">delete_outline</i></button>
             </td>
             <td>
-                  <button className="listBtn" data-path={data.path_lower} onClick={reName}><i data-path={data.path_lower} className="material-icons">edit</i></button>
+                  <button className="listBtn" data-path={data1.path_lower} onClick={reName}><i data-path={data1.path_lower} className="material-icons">edit</i></button>
                 </td>
           </tr>
             )   
