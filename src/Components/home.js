@@ -85,6 +85,7 @@ const pollChanges = (change) => {
 
   const renamefile = (e) => {
     updateRenFile(e.target.dataset.path)
+    console.log(e.target.dataset.path)
   }
   const renamefolder = (e) => {
     updateRenFolder(e.target.dataset.path)

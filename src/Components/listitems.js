@@ -182,7 +182,7 @@ return () => {
   window.clearTimeout(timerToShowModal);
 } 
   
-}, [props.folder, props.search, searchArr, props.createFolder, props.uploadFile, props.pollChanges, props, ])
+}, [props.folder, props.search, searchArr, props.createFolder, props.uploadFile, props.pollChanges, props])
   
 
   //=================BYTESIZE SETTING======================
