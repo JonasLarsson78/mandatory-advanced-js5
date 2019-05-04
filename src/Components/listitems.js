@@ -6,6 +6,7 @@ import '../Css/listitems.css';
 import { downloadFile } from './dowload'
 import moment from 'moment';
 import RenderRename from './rename'
+import { Helmet } from "react-helmet";
 
 
 
@@ -383,6 +384,9 @@ if(data === undefined){
      
   return(
     <>
+    <Helmet>
+      <title>MyBOX</title>
+    </Helmet>
       {listData}
       <RenderRename rename={props.rename} rename2={props.rename2} renFolder={props.renFolder} renFile={props.renFile}  />
     </>

@@ -26,12 +26,17 @@ const Auth = () => {
   }, [])
   if (error){
     return(
+      <>
+      <Helmet>
+      <title>MyBOX Auth</title>
+      </Helmet>
       <div className="authMainLoader">
         <div className="authProgress">
           <b><p>No access.<br/>Reload page.</p></b>
           <Link to="/"><button className="modalBtn">Reload</button></Link>
     </div>
    </div>
+   </>
     )
   }
   

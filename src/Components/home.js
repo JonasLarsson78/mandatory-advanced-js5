@@ -99,7 +99,7 @@ const pollChanges = (change) => {
   return(
     <>
     <Helmet>
-      <title>MyBOX Home</title>
+      <title>MyBOX</title>
     </Helmet>
     <Modal showModal2={modalOnClick} delPath={delPath} showModal={showModal} del={del}/>
     <TimeOutModal showModal3={tiemoutModalClick} showTimeout={timeOutModal} resetTime={ResetTime}></TimeOutModal>
