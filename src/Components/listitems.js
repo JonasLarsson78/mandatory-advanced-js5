@@ -273,6 +273,9 @@ return () => {
             <td>
               <button className="listBtn" data-path={data.path_lower} onClick={props.rename}><i data-path={data.path_lower} className="material-icons">edit</i></button>
             </td>
+            <td>
+            <button className="listBtn"> <i className="material-icons">swap_horiz</i></button>
+          </td>
           </tr>
         ) 
       }  
@@ -312,6 +315,9 @@ return () => {
             <td>
               <button className="listBtn" data-path={data.path_lower} onClick={props.rename}><i data-path={data.path_lower} className="material-icons">edit</i></button>
             </td>
+            <td>
+            <button className="listBtn"> <i className="material-icons">swap_horiz</i></button>
+          </td>
           </tr>
         ) 
 
@@ -345,6 +351,9 @@ return( //FOLDERS
     </td>
     <td>
       <button className="listBtn" onClick={props.rename2}><i data-path={data.path_lower} className="material-icons">edit</i></button> 
+    </td>
+    <td>
+      <button className="listBtn"> <i className="material-icons">swap_horiz</i></button>
     </td>
   </tr>
 )
