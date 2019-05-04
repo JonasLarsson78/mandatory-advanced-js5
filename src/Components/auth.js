@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import { updateToken } from './store.js'
 import { Helmet } from "react-helmet";
-import { BrowserRouter as Router, Route, Link, Redirect}from "react-router-dom";
+import { Link, Redirect}from "react-router-dom";
 import '../Css/auth.css';
 
 

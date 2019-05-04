@@ -1,11 +1,10 @@
-import React, {useState, useEffect,useRef} from 'react';
+import React, {useState, useEffect} from 'react';
 import {token$} from './store.js';
 import { Dropbox } from 'dropbox';
-import { BrowserRouter as Router, Route, Link, Redirect}from "react-router-dom";
+import {Link}from "react-router-dom";
 import '../Css/listitems.css';
 import { downloadFile } from './dowload'
 import moment from 'moment';
-import {renameFile} from './rename'
 import RenderRename from './renamefunk'
 
 
@@ -26,10 +25,10 @@ const ListItems = (props) => {
   const [data, updateData] = useState([])
   //const [renameFile, updateRenameFile] = useState(false)
   //const [newUrl, updateNewUrl] = useState("")
-  const [thumbnails, updateThumbnails] = useState([])
+  //const [thumbnails, updateThumbnails] = useState([])
 
   const searchArr = props.search;
-  let toll=-1; //Används för att rendera ut thumbnailArray.
+  //let toll=-1; //Används för att rendera ut thumbnailArray.
 
 //===============================USEEFFECT=====================================
 
@@ -204,9 +203,9 @@ return () => {
     const year = date.substring(0, 4);
     let month = date.substring(5, 7)
     let day = date.substring(8, 10)
-    const hour = date.substring(11, 13)
-    const minute = date.substring(14, 16)
-    const second = date.substring(17, 19)
+    //const hour = date.substring(11, 13)
+    //const minute = date.substring(14, 16)
+    //const second = date.substring(17, 19)
   
 
     const months = [
@@ -235,7 +234,7 @@ return () => {
     }
 
     if(data[".tag"] === 'file'){ //FILER
-      toll++;
+      //toll++;
 /*         console.log(data)
         for (let i=toll; i<thumbnails.length;){
             
@@ -377,10 +376,7 @@ if(data === undefined){
   }
     //==================END LIST RENDERING==================
 
-    const replace = () =>{
-      window.location.replace("/home")
-    }
-      
+    
       const listData = data.map(renderList)
   
      

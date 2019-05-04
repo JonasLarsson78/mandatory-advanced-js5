@@ -1,12 +1,12 @@
 
-import React, {useState, useEffect,useRef} from 'react';
+import React from 'react';
 //import './App.css';
 import Login from './Components/login';
 import Auth from './Components/auth';
 import Home from './Components/home';
 
 
-import { BrowserRouter as Router, Route, Link}from "react-router-dom";
+import { BrowserRouter as Router, Route}from "react-router-dom";
 
 
 

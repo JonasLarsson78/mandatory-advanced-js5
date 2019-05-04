@@ -71,7 +71,7 @@ return(
   <div className="userFlag"><ReactCountryFlag code={countryFlag} svg /></div>
   <span className="userName">{name}</span>  
   <span className="userMail"><a className="userMailAtag" href={url} target="_blank" without="true" rel="noopener noreferrer">( {mail} )</a></span>
-  <img className="userPhoto" alt={photoUrl} src={photoUrl}/>
+  {checkPhoto}
   </div>
 )
 
