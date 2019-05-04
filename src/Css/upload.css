@@ -1,0 +1,125 @@
+.uploadLds-ring {
+  display: inline-block;
+  position: relative;
+  width: 32px;
+  height: 32px;
+}
+.uploadLds-ring div {
+  box-sizing: border-box;
+  display: block;
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  margin: 6px;
+  border: 3px solid #00AFD6;
+  border-radius: 50%;
+  animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  border-color: #00AFD6 transparent transparent transparent;
+}
+.uploadLds-ring div:nth-child(1) {
+  animation-delay: -0.45s;
+}
+.uploadLds-ring div:nth-child(2) {
+  animation-delay: -0.3s;
+}
+.uploadLds-ring div:nth-child(3) {
+  animation-delay: -0.15s;
+}
+@keyframes lds-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.upload-file-button {
+  border: 0;
+  width: 210px;
+  height: 35px;
+  border-radius: 5px;
+  position: relative;
+  top: 10px;
+  background-color: #00D01D;
+  color: white;
+  text-transform: uppercase;
+  cursor: pointer;
+  outline: 0;
+}
+
+.upload-file-button:hover { 
+  background-color: rgb(1, 196, 27)
+}
+
+.upload-submit {
+  position: relative;
+  margin-top: 30px;
+  width: 130px;
+  height: 25px;
+  border-radius: 5px;
+  border: 0;
+  background-color: #00AFD6;
+  color: white;
+  text-transform: uppercase;
+  font-size: 12px;
+  cursor: pointer;
+  outline: 0;
+}
+
+
+/*
+.upload-input::-webkit-file-upload-button {
+  visibility: hidden;
+}
+.upload-input::before {
+  content: 'Select some files';
+  display: inline-block;
+  background: linear-gradient(top, #f9f9f9, #e3e3e3);
+  border: 1px solid #999;
+  border-radius: 3px;
+  padding: 5px 8px;
+  outline: none;
+  white-space: nowrap;
+  -webkit-user-select: none;
+  cursor: pointer;
+  font-size: 12px;
+}
+.upload-input:hover::before {
+  border-color: black;
+}
+.upload-input:active::before {
+  background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9);
+}
+
+*/
+
+
+.upload-modal-files {
+  position: absolute;
+  display: none;
+  width: 300px;
+  height: 150px;
+  padding: 15px;
+  border-radius: 5px;
+  background-color: #efefef;
+  left: 180px;
+  top: 268px;
+  transform: translate(-50%, -50%);
+  z-index: 500;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
+
+.upload-close {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  font-size: 20px;
+  color: #4D4D4D;
+  cursor: pointer;
+}
+
+.upload-close:hover {
+  color: #4D4D4D;
+}
+

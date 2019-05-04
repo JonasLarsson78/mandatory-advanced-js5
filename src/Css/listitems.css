@@ -1,0 +1,86 @@
+
+.listBtnRename{
+    position: relative;
+   
+    
+    
+    margin-right: 5px;
+    height: 25px;
+    border:none;
+    border-radius: 5px;
+    color: white;
+    background-color: #00AFD6;
+    outline: none;
+    cursor: pointer;
+}
+.listBtnRename:hover{
+    background-color: #029BB5;
+}
+
+.listFiles{
+    cursor: pointer;
+    list-style-type: none;
+}
+.listFiles:hover{
+    color: #029BB5;
+}
+.listFolderLink{
+    text-decoration: none;
+    color: #4D4D4D;
+    font-weight: 500;
+}
+.listFolderLink:hover{
+    color: #029BB5;
+}
+.listBackBtn{
+    border: none;
+    background: transparent;
+    color: #4D4D4D;
+    cursor: pointer;
+    outline: none;
+}
+.listBackBtn:hover{
+    color: #029BB5;
+}
+.listBtn{
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    outline: none;
+    color: #4d4d4d;
+}
+.listBtn:hover{
+    color: #029BB5;
+}
+.listRenameInput{
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 250px;
+    height: 110px;
+    background-color: #efefef;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
+.listRenameInputText{
+    margin-right: 5px;
+    height: 20px;
+    margin-top: 5px;
+    padding: 2px;
+}
+.listRenameClose{
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    cursor: pointer;
+    font-size: 20px;
+}
+.filesFolders{
+    color: #00AFD6;
+}
+.listRenameText{
+    font-size: 14px;
+    color: #4D4D4D;
+}

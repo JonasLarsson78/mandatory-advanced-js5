@@ -1,0 +1,116 @@
+/* ========== COLORS ===========
+Mörkblå #029BB5
+blå #00AFD6
+grön #00D01D
+Textgrå #4D4D4D
+*/
+
+
+/* ========== HEADER ============ */
+
+.mainHeader{
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    width: 100%;
+    height: 150px;
+    border: 0px solid black;
+}
+
+#header-logo {
+    width: 200px;
+    margin: 50px 0 0 40px;
+}
+
+.header-search {
+    width: 200px;
+    height: 25px;
+    margin-top: 28px;
+    margin-right: 50px;
+    border-radius: 5px;
+    outline: none;
+    border: 1px solid #4D4D4D4D;
+    padding: 3px;
+    font-size: 18px;
+}
+.header-serach-icon{
+    position: relative;
+    top: 32px;
+    color: #4d4d4d;
+}
+.headerContent{
+    display: flex;
+    position: relative;
+    right: 0px;
+    top: 0px;
+}
+.headerLogOutBtn{
+    position: relative;
+    top: 30px;
+    margin-right: 20px;
+    margin-left: 10px;
+    height: 25px;
+    border:none;
+    border-radius: 5px;
+    color: white;
+    background-color: #00AFD6;
+    outline: none;
+    cursor: pointer;
+}
+.headerLogOutBtn:hover{
+    background-color: #029BB5;
+}
+
+/* ========== MAIN ============ */
+
+.mainWrapper {
+    display: flex;
+    flex-flow: row wrap;
+}
+
+.leftSide{
+    flex-grow: 0;
+    flex-basis: 250px;
+    height: 500px;
+    padding: 0 20px 0;
+}
+
+.left-link-wrap {
+    display: inline-block;
+    width: 230px;
+    height: 200px;
+}
+/*
+    border-radius: 20px;
+    margin-left: 20px;
+    background-color: #00AFD6;
+*/
+
+.left-link{
+    position: relative;
+    top: 10px;
+    color: #fff;
+    border: 0px solid red;
+}
+
+.mainMain{
+    flex-grow: 2;
+    width: 60%;
+    border: 0px solid red;
+}
+
+
+.rightSide {
+    width: 250px;
+    border: 0px solid green;
+}
+.mainTable{
+    width: 100%;
+    border-collapse: collapse;
+}
+tr:nth-child(even) {
+    background: #ffffff;
+}
+tr:nth-child(odd) {
+    background: #f5f5f5;
+}
