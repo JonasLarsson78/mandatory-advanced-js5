@@ -60,7 +60,7 @@ const RenderRename = (props) => {
       renameFile(rename, newUrl)
       inputEl.current.style.display = "none"
       clearInput.current.value = "";
-      //props.rename(e)
+      props.rename(e)
       
     }
 
