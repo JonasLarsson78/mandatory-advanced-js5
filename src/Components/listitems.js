@@ -26,7 +26,7 @@ const ListItems = (props) => {
   const [data, updateData] = useState([])
   //const [renameFile, updateRenameFile] = useState(false)
   //const [newUrl, updateNewUrl] = useState("")
-  //const [thumbnails, updateThumbnails] = useState([])
+  const [thumbnails, updateThumbnails] = useState([])
 
   const searchArr = props.search;
   //let toll=-1; //Används för att rendera ut thumbnailArray.
@@ -71,10 +71,11 @@ useEffect(() => {
     
     })
     .then(response => {
-
-      updateData(response.entries)
-      /* updateThumbnails([]);
+      updateThumbnails([]);
+       updateData(response.entries)
+      
         dbx.filesGetThumbnailBatch({
+          
           entries: response.entries.map(entry => {
           return{
             path: entry.id,
@@ -84,9 +85,10 @@ useEffect(() => {
             }
           }) 
         }) 
-        .then(response => {                
+        .then(response => {   
+          
           updateThumbnails(response.entries)
-          }) */
+          })
 
           dbx.filesListFolderLongpoll({
             cursor: response.cursor,
@@ -94,13 +96,12 @@ useEffect(() => {
            
           })
           .then(response => {
-              //console.log(response)
+            
               if(response.changes){
                 props.pollChanges(counter)
               }
               else if(response.changes === false){
-                //props.showModal3(true)
-                //console.log('root')
+        
               }
               
               
@@ -114,9 +115,7 @@ useEffect(() => {
          updateData(searchArr)
         }
     })
-    /* .catch(function(error) {
-      console.log(error);
-    }); */
+
   }
   
   else{
@@ -129,9 +128,9 @@ useEffect(() => {
    
     })
     .then(response => {
-      
+      updateThumbnails([]);
      updateData(response.entries)
-     /* updateThumbnails([]);
+     
 
       dbx.filesGetThumbnailBatch({
         entries: response.entries.map(entry => {
@@ -143,9 +142,15 @@ useEffect(() => {
             }
             }) 
           }) 
-        .then(response => {         
-          updateThumbnails(response.entries)
-        })  */
+        .then(response => {  
+          
+
+          
+         updateThumbnails(response.entries)
+        })
+        .catch(function(error) {
+          console.log(error);
+         });
 
      dbx.filesListFolderLongpoll({
       cursor: response.cursor,
@@ -160,7 +165,7 @@ useEffect(() => {
       }
       else if(response.changes === false){
         console.log('folder')
-        //props.showModal3(true)
+
       }
         
         
@@ -227,38 +232,18 @@ return () => {
 
 
  //===================RENDER LIST====================
-  const renderList = (data) => {
-    
+  const renderList = (data, index) => {
+    const thumbs = thumbnails[index]
     const del = (e) => {
       props.path(e.target.dataset.path) 
       props.showModal(true)
     }
 
     if(data[".tag"] === 'file'){ //FILER
-      //toll++;
-/*         console.log(data)
-        for (let i=toll; i<thumbnails.length;){
-            
-          let thumbObj = {thumbnail: thumbnailsCode[toll].thumbnail}
+      if(thumbs === undefined){
 
-          dataObj = {...dataObj, ...thumbObj}
-    } 
-  return dataObj
-}
-
-let data1 = setThumbnails(data, thumbnails); */
-
-//===================================
-
-if(data === undefined){
-  return;
-} 
-
-     if(data[".tag"] === 'file'){ //FILER
-             
-              return (
-              <tr             
-               
+        return( //FILES
+          <tr
               key={data.id} 
               className="listFiles" 
               data-name={data.name} 
@@ -266,115 +251,112 @@ if(data === undefined){
               data-tag={data[".tag"]}
               >
             <td 
-              
-              className="listFiles" 
+              title={"Download: " + data.name} 
               data-name={data.name} 
               data-folder={data.path_lower} 
-              data-tag={data[".tag"]} onClick={downloadFile}
-              >
-                {/* <img src={"data:image/jpeg;base64," + data.thumbnail} width="32" height="32"/> */}
+              data-tag={data[".tag"]} onClick={downloadFile}>
+                <i className="material-icons-outlined filesFolders">
+                  insert_drive_file
+                </i>
             </td>
             <td
               title={"Download: " + data.name} 
-              className="listFiles" 
               data-name={data.name} 
               data-folder={data.path_lower} 
               data-tag={data[".tag"]} onClick={downloadFile}
             >
-              {data.name} 
+            {data.name}
             </td>
-          <td>
-            {readableBytes(data.size)}
-          </td>
-          <td>
-            {lastEdited(data.server_modified)}
-          </td>
-          <td>
-          <button className="listBtn" data-path={data.path_lower} onClick={del}> <i className="material-icons" data-path={data.path_lower}>delete_outline</i></button>
-          </td>
-          <td>
-            <button className="listBtn" data-path={data.path_lower} onClick={props.rename}><i data-path={data.path_lower} className="material-icons">edit</i></button>
-          </td>
-          <td>
-            <button className="listBtn"> <i className="material-icons">swap_horiz</i></button>
-          </td>
-        </tr>
-          ) 
-       
-    }
-    
-      return( //FILES
-        <tr
-      
-            key={data.id} 
-            className="listFiles" 
-            data-name={data.name} 
-            data-folder={data.path_lower} 
-            data-tag={data[".tag"]}
+            <td>
+              {readableBytes(data.size)}
+            </td>
+            <td>
+              {lastEdited(data.server_modified)}
+            </td>
+            <td>
+              <button className="listBtn" onClick={del}> <i data-path={data.path_lower} className="material-icons">delete_outline</i></button>
+            </td>
+            <td>
+              <button className="listBtn" data-path={data.path_lower} onClick={props.reName}><i data-path={data.path_lower} className="material-icons">edit</i></button>
+            </td>
+          </tr>
+        ) 
+      }  
+      else{
+        return( //FILES
+          <tr
+              key={data.id} 
+              className="listFiles" 
+              data-name={data.name} 
+              data-folder={data.path_lower} 
+              data-tag={data[".tag"]}
+              >
+            <td 
+              title={"Download: " + data.name} 
+              data-name={data.name} 
+              data-folder={data.path_lower} 
+              data-tag={data[".tag"]} onClick={downloadFile}>
+                <img src={"data:image/jpeg;base64," + thumbs.thumbnail} alt=""/>
+            </td>
+            <td
+              title={"Download: " + data.name} 
+              data-name={data.name} 
+              data-folder={data.path_lower} 
+              data-tag={data[".tag"]} onClick={downloadFile}
             >
-          <td 
-            
-            data-name={data.name} 
-            data-folder={data.path_lower} 
-            data-tag={data[".tag"]} onClick={downloadFile}>
-              <i className="material-icons-outlined filesFolders">
-                insert_drive_file
-              </i>
-          </td>
-          <td
-            title={"Download: " + data.name} 
-            data-name={data.name} 
-            data-folder={data.path_lower} 
-            data-tag={data[".tag"]} onClick={downloadFile}
-          >
-          {data.name}
-          </td>
-          <td>
-            {readableBytes(data.size)}
-          </td>
-          <td>
-            {lastEdited(data.server_modified)}
-          </td>
-          <td>
-            <button className="listBtn" onClick={del}> <i data-path={data.path_lower} className="material-icons">delete_outline</i></button>
-          </td>
-          <td>
-            <button className="listBtn" data-path={data.path_lower} onClick={props.rename}><i data-path={data.path_lower} className="material-icons">edit</i></button>
-          </td>
-          <td>
-            <button className="listBtn"> <i className="material-icons">swap_horiz</i></button>
-          </td>
-        </tr>
-      )
-    }
-    if(data[".tag"] === 'folder'){ //FOLDER
-      return( //FOLDERS
-        <tr key={data.id} className="listFiles" to={data.path_lower} data-name={data.name} data-folder={data.path_lower} data-tag={data[".tag"]}>
-          <td>
-          <i className="material-icons filesFolders">folder</i>
-          </td>
-          <td>
-            <Link className="listFolderLink" to={"/home" + data.path_lower}>{data.name}</Link>
-          </td>
-          <td>
-            ...
-          </td>
-          <td>
-            ...
-          </td>
-          <td>
-            <button className="listBtn" onClick={del}> <i data-path={data.path_lower} className="material-icons">delete_outline</i></button>
-          </td>
-          <td>
-            <button className="listBtn" ><i data-path={data.path_lower} className="material-icons" onClick={props.rename2}>edit</i></button> 
-          </td>
-          <td>
-            <button className="listBtn"> <i className="material-icons">swap_horiz</i></button>
-          </td>
-        </tr>
-      )
-    } //Här slutar if-folder */
-  }
+            {data.name}
+            </td>
+            <td>
+              {readableBytes(data.size)}
+            </td>
+            <td>
+              {lastEdited(data.server_modified)}
+            </td>
+            <td>
+              <button className="listBtn" onClick={del}> <i data-path={data.path_lower} className="material-icons">delete_outline</i></button>
+            </td>
+            <td>
+              <button className="listBtn" data-path={data.path_lower} onClick={props.rename}><i data-path={data.path_lower} className="material-icons">edit</i></button>
+            </td>
+          </tr>
+        ) 
+
+      }
+
+
+
+      }
+      
+  
+
+if(data[".tag"] === 'folder'){ //FOLDER
+return( //FOLDERS
+  <tr key={data.id} className="listFiles" to={data.path_lower} data-name={data.name} data-folder={data.path_lower} data-tag={data[".tag"]}>
+    <td>
+    <i className="material-icons filesFolders">
+      folder
+    </i>
+    </td>
+    <td>
+      <Link className="listFolderLink" to={"/home" + data.path_lower}>{data.name}</Link>
+    </td>
+    <td>
+      ...
+    </td>
+    <td>
+      ...
+    </td>
+    <td>
+      <button className="listBtn" onClick={del}> <i data-path={data.path_lower} className="material-icons">delete_outline</i></button>
+    </td>
+    <td>
+      <button className="listBtn" onClick={props.rename2}><i data-path={data.path_lower} className="material-icons">edit</i></button> 
+    </td>
+  </tr>
+)
+} //Här slutar if-folder */
+}
+//==================END LIST RENDERING==================
     //==================END LIST RENDERING==================
 
     
