@@ -69,9 +69,9 @@ const onMouseOutPhoto = (e) => {
 return(
   <div className="userMain">
   <div className="userFlag"><ReactCountryFlag code={countryFlag} svg /></div>
-  <span className="userName">{name}</span>
+  <span className="userName">{name}</span>  
   <span className="userMail"><a className="userMailAtag" href={url} target="_blank" without="true" rel="noopener noreferrer">( {mail} )</a></span>
-  {checkPhoto}
+  <img className="userPhoto" alt={photoUrl} src={photoUrl}/>
   </div>
 )
 
