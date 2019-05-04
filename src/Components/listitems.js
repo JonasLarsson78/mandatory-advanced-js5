@@ -257,7 +257,7 @@ if(data === undefined){
              
               return (
               <tr             
-              title={"Download: " + data.name} 
+               
               key={data.id} 
               className="listFiles" 
               data-name={data.name} 
@@ -265,7 +265,7 @@ if(data === undefined){
               data-tag={data[".tag"]}
               >
             <td 
-              title={"Download: " + data.name} 
+              
               className="listFiles" 
               data-name={data.name} 
               data-folder={data.path_lower} 
@@ -312,7 +312,7 @@ if(data === undefined){
             data-tag={data[".tag"]}
             >
           <td 
-            title={"Download: " + data.name} 
+            
             data-name={data.name} 
             data-folder={data.path_lower} 
             data-tag={data[".tag"]} onClick={downloadFile}>
