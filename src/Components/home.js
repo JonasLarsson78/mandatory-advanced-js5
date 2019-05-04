@@ -95,7 +95,6 @@ const pollChanges = (change) => {
       <div>
       <Search folder={props.location.pathname} search={searchResults} updateSearch={updateSearch}></Search>
         <span>
-          <span>här ska vara foto</span>
           <button onClick={logOut}>logOut</button>
         </span>
       </div>

@@ -6,7 +6,7 @@ import '../Css/listitems.css';
 import { downloadFile } from './dowload'
 import moment from 'moment';
 import {renameFile} from './rename'
-
+import {moveFiles} from './movefiles.js'
 
 const counter = (number) => {
   if(number === null){
@@ -260,7 +260,11 @@ return () => {
       inputEl.current.style.display = "none"
     }
     
-    renameInput = <div className="listRenameInput" ref={inputEl} style={{display: "none"}}><div className="listRenameText"> Rename file:</div><span className="listRenameClose" onClick={addNewNameClose}><i className="material-icons">close</i></span><input className="listRenameInputText" style={{outline: "none"}} ref={clearInput} placeholder="New filename..." type="text" onChange={newNameInput} /><br/><button style={{outline: "none"}} className="listBtnRename" onClick={addNewName}>Ok</button></div>
+    renameInput = <div className="listRenameInput" ref={inputEl} style={{display: "none"}}><div className="listRenameText"> Rename file:</div>
+    <span className="listRenameClose" onClick={addNewNameClose}><i className="material-icons">close</i></span>
+    <input className="listRenameInputText" style={{outline: "none"}} ref={clearInput} placeholder="New filename..." type="text" onChange={newNameInput} /><br/>
+    <button style={{outline: "none"}} className="listBtnRename" onClick={addNewName}>Ok</button></div>
+
 /* ---------------- end renameFiles ----------------------------- */
 
 
@@ -291,7 +295,10 @@ const addNewNameCloseFolder = () =>{
   inputElFolder.current.style.display = "none"
 }
 
-renameInputFolder = <div className="listRenameInput" ref={inputElFolder} style={{display: "none"}}><div className="listRenameText">Rename folder:</div><span className="listRenameClose" onClick={addNewNameCloseFolder}><i className="material-icons">close</i></span><input className="listRenameInputText" style={{outline: "none"}} ref={clearInputFolder} placeholder="New filename..." type="text" onChange={newNameInputFolder} /><button className="listBtnRename" style={{outline: "none"}} onClick={addNewNameFolder}>Ok</button></div>
+renameInputFolder = <div className="listRenameInput" ref={inputElFolder} style={{display: "none"}}><div className="listRenameText">Rename folder:</div>
+<span className="listRenameClose" onClick={addNewNameCloseFolder}><i className="material-icons">close</i></span>
+<input className="listRenameInputText" style={{outline: "none"}} ref={clearInputFolder} placeholder="New filename..." type="text" onChange={newNameInputFolder} />
+<button className="listBtnRename" style={{outline: "none"}} onClick={addNewNameFolder}>Ok</button></div>
 /* ---------------- end renameFolder ----------------------------- */
  
     if(data[".tag"] === 'file'){ //FILER
@@ -337,6 +344,9 @@ renameInputFolder = <div className="listRenameInput" ref={inputElFolder} style={
           <td>
             <button className="listBtn" data-path={data.path_lower} onClick={reName}><i data-path={data.path_lower} className="material-icons">edit</i></button>
           </td>
+          <td>
+            <button className="listBtn"> <i className="material-icons">swap_horiz</i></button>
+          </td>
         </tr>
           ) 
        
@@ -380,6 +390,9 @@ renameInputFolder = <div className="listRenameInput" ref={inputElFolder} style={
           <td>
             <button className="listBtn" data-path={data.path_lower} onClick={reName}><i data-path={data.path_lower} className="material-icons">edit</i></button>
           </td>
+          <td>
+            <button className="listBtn"> <i className="material-icons">swap_horiz</i></button>
+          </td>
         </tr>
       )
     }
@@ -406,6 +419,9 @@ renameInputFolder = <div className="listRenameInput" ref={inputElFolder} style={
           </td>
           <td>
             <button className="listBtn" onClick={reNameFolder}><i data-path={data.path_lower} className="material-icons">edit</i></button> 
+          </td>
+          <td>
+            <button className="listBtn"> <i className="material-icons">swap_horiz</i></button>
           </td>
         </tr>
       )

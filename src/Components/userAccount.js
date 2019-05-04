@@ -49,7 +49,7 @@ return(
   <div className="userFlag"><ReactCountryFlag code={flagCode} svg /></div>
   <span className="userName">{name}</span>
   <span className="userMail"><a className="userMailAtag" href={url} target="_blank">( {mail} )</a></span>
-  <img className="userPhoto" src={photoUrl}/>
+  <img className="userPhoto" alt={photoUrl} src={photoUrl}/>
   </div>
 )
 
