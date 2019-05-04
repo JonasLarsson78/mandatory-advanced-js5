@@ -5,7 +5,7 @@ import {Link}from "react-router-dom";
 import '../Css/listitems.css';
 import { downloadFile } from './dowload'
 import moment from 'moment';
-import RenderRename from './renamefunk'
+import RenderRename from './rename'
 
 
 
