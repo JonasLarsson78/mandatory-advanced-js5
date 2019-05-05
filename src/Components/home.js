@@ -21,6 +21,7 @@ const Home = (props) => {
   const [data, updateData] = useState([]);
   const [thumbnails, updateThumbnails] = useState([])
   const [search, updateSearch] = useState(null)
+  const [poll, updatePoll] = useState(null)
   //const searchArr = props.search;
 
   useEffect(() => {
@@ -38,8 +39,13 @@ const Home = (props) => {
       
       })
       .then(response => {
+        
+       
+       
         updateThumbnails([]);
         updateData(response.entries)
+        
+
 
 
         dbx.filesGetThumbnailBatch({
@@ -102,6 +108,7 @@ const Home = (props) => {
       .catch(function(error) {
         console.log(error);
        });
+       
     }
 
    
