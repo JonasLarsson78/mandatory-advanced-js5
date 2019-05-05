@@ -52,15 +52,15 @@ const onMouseOutPhoto = (e) => {
   if (!photoUrl){
     checkPhoto = 
     <>
-    <img alt="userPhoto" onMouseOver={onMouseOverPhoto} onMouseOut={onMouseOutPhoto} className="userPhoto" src={ require("../Img/profile-img-none.png")}/>
-    <img alt="userPhotoBig" ref={photoRef} className="userPhotoBig" src={ require("../Img/profile-img-none.png")}/>
+    <img style={{border: "1px solid black"}} alt="userPhoto" onMouseOver={onMouseOverPhoto} onMouseOut={onMouseOutPhoto} className="userPhoto" src={ require("../Img/profile-img-none.png")}/>
+    <img style={{border: "1px solid black"}} alt="userPhotoBig" ref={photoRef} className="userPhotoBig" src={ require("../Img/profile-img-none.png")}/>
     </>
   }
   else{
     checkPhoto = 
     <>
-    <img alt="userPhoto" onMouseOver={onMouseOverPhoto} onMouseOut={onMouseOutPhoto} className="userPhoto" src={photoUrl}/>
-    <img alt="userPhotoBig" ref={photoRef} className="userPhotoBig" src={photoUrl}/>
+    <img style={{border: "1px solid black"}} alt="userPhoto" onMouseOver={onMouseOverPhoto} onMouseOut={onMouseOutPhoto} className="userPhoto" src={photoUrl}/>
+    <img style={{border: "1px solid black"}} alt="userPhotoBig" ref={photoRef} className="userPhotoBig" src={photoUrl}/>
     </>
   }
 

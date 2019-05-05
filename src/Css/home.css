@@ -35,6 +35,7 @@ Textgrå #4D4D4D
 }
 .header-serach-icon{
     position: relative;
+    height: 50px;
     top: 32px;
     color: #4d4d4d;
 }
