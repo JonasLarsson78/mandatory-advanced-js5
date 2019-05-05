@@ -256,6 +256,11 @@ const newNameInput = (e) => {
   let newPath = rename.substring(0, rename.lastIndexOf("/"));
   let fixNewname = newPath + "/" + target + newIdx;
   updateNewUrl(fixNewname);
+  setTimeout(() => {
+    props.editIsDone(true)
+  }, 2000);
+
+
 }
 
 const addNewName = (e) => {
@@ -264,9 +269,7 @@ const addNewName = (e) => {
   inputEl.current.style.display = "none"
   clearInput.current.value = "";
   
-  setTimeout(() => {
-    props.editIsDone(true)
-  }, 2000);
+  
 
  
 }
@@ -300,7 +303,10 @@ const addNewNameFolder = (e) => {
 renameFile(rename, newUrl)
 inputElFolder.current.style.display = "none"
 clearInputFolder.current.value = "";
-props.editIsDone(true)
+
+setTimeout(() => {
+  props.editIsDone(true)
+}, 2000);
 
 }
 const addNewNameCloseFolder = () =>{
