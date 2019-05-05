@@ -21,14 +21,27 @@ const Home = (props) => {
   //const [isLoggedIn, updateIsLoggedIn] = useState(props.location.state.isLoggedIn)
   const [token, updateTokenState] = useState(token$.value)
   const [search, updateSearch] = useState(null)
-  //const [createF, updateCreateF] = useState(null)
+  const [createF, updateCreateF] = useState(null)
   const [showModal, updateShowModal] = useState(false)
   const [delPath, updateDelPath] = useState(null)
-  //const [uploadFile, updateUpload] = useState(null)
+  const [uploadFile, updateUpload] = useState(null)
   const [, updateChanges] = useState(null);
   const [timeOutModal, updateTimeOutModal] = useState(null)
-  const [setTime, updateTime] = useState(null)
+  const [setTime, updateTime] = useState(null);
+  const [deleteDone, updateDeleteDone] = useState(false);
+  const [editDone, updateEditDone] = useState(false)
 
+  const editIsDone = (change) => {
+    updateEditDone(change)
+    updateEditDone(false)
+  }
+
+  console.log(deleteDone)
+  const deleteIsDone = (change) => {
+    console.log(change)
+    updateDeleteDone(change)
+    updateDeleteDone(false)
+  }
 
   const ResetTime = (change) => {
     updateTime(change)
@@ -57,12 +70,12 @@ const pollChanges = (change) => {
 
 /*  Function for create folder */
   const create = (folder) => {
-   // updateCreateF(folder)
+    updateCreateF(folder)
   }
 /* ----------- end create folder----------- */
   const upload = (file) => {
     
-   // updateUpload(file)
+   updateUpload(file)
   }
 
   /* Functions for del files/folders */
@@ -94,7 +107,7 @@ const pollChanges = (change) => {
     <Helmet>
       <title>MyBOX</title>
     </Helmet>
-    <Modal showModal2={modalOnClick} delPath={delPath} showModal={showModal} del={del}/>
+    <Modal showModal2={modalOnClick} delPath={delPath} showModal={showModal} del={del} deleteIsDone={deleteIsDone}/>
     <TimeOutModal showModal3={tiemoutModalClick} showTimeout={timeOutModal} resetTime={ResetTime}></TimeOutModal>
     <header className="mainHeader">
       <div className="header-logo-wrap"><img id="header-logo" src={ require('../Img/Logo_mybox.png') } alt="My Box logo"/> </div>
@@ -115,7 +128,7 @@ const pollChanges = (change) => {
         
         <table className="mainTable">
           <tbody>
-            <ListItems folder={props.location.pathname} path={path} showModal={modalOnClick} showModal3={tiemoutModalClick} search={search} /* createFolder={createF} */ /* uploadFile={uploadFile} */ pollChanges={pollChanges} setTime={setTime} resetTime={ResetTime}></ListItems>
+            <ListItems folder={props.location.pathname} path={path} showModal={modalOnClick} showModal3={tiemoutModalClick} search={search} createFolder={createF}  uploadFile={uploadFile} pollChanges={pollChanges} setTime={setTime} resetTime={ResetTime} delPath={delPath} deleteDone={deleteDone} editIsDone={editIsDone} editDone={editDone}></ListItems>
           </tbody>
         </table>
       </main>

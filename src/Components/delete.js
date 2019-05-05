@@ -17,6 +17,8 @@ export const deleteFiles = (filePath) => {
         path: filePath,
       })
       .then(response => {
+        console.log(response)
+      
        /*  let path = window.location.pathname
         setTimeout(startTimer, 700);
     function startTimer() {

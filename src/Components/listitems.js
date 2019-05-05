@@ -45,7 +45,7 @@ useEffect(() => {
     props.showModal3(true)
     //props.resetTime('modal')
    
-  }, 480000);
+  },  480000);
   
     //console.log(timerToShowModal)
   
@@ -83,6 +83,16 @@ useEffect(() => {
           
           updateThumbnails(response.entries)
           })
+          /* const path = response.entries.map(x => x.path_display)
+          console.log(path)
+          dbx.filesGetThumbnail({
+            "path": path[6]
+          })
+          .then(response => {
+            console.log(response)
+          }) */
+          
+
 
           dbx.filesListFolderLongpoll({
             cursor: response.cursor,
@@ -137,6 +147,7 @@ useEffect(() => {
             }) 
           }) 
         .then(response => {  
+         
           
 
           
@@ -177,13 +188,15 @@ useEffect(() => {
   }
   
   
-
+  console.log(props)
 return () => {
   window.clearTimeout(timerToShowModal);
 } 
   
-}, [ props.search, searchArr, props.createFolder, props.uploadFile, props.pollChanges, props])
-  
+}, /* [ props.search, searchArr, props.createFolder, props.uploadFile, rename, ] */
+
+[props.createFolder, props.uploadFile, props.folder, props.search, props.deleteDone, props.editDone])
+//[props.createFolder, props.uploadFile, props.folder, props.search, props.deleteDone, props.editDone, props]
 
   //=================BYTESIZE SETTING======================
   const readableBytes = (bytes) => {
@@ -231,6 +244,7 @@ let renameInput;
 let renameInputFolder;
 
 const reName = (e) => {
+  
   let old = e.target.dataset.path
   updateRename(old)
   inputEl.current.style.display = "block"
@@ -249,6 +263,12 @@ const addNewName = (e) => {
   renameFile(rename, newUrl)
   inputEl.current.style.display = "none"
   clearInput.current.value = "";
+  
+  setTimeout(() => {
+    props.editIsDone(true)
+  }, 2000);
+
+ 
 }
 
 const addNewNameClose = () =>{
@@ -280,6 +300,7 @@ const addNewNameFolder = (e) => {
 renameFile(rename, newUrl)
 inputElFolder.current.style.display = "none"
 clearInputFolder.current.value = "";
+props.editIsDone(true)
 
 }
 const addNewNameCloseFolder = () =>{
@@ -304,6 +325,7 @@ const renameModal =
 
  //===================RENDER LIST====================
   const renderList = (data, index) => {
+    
     const thumbs = thumbnails[index]
     const del = (e) => {
       props.path(e.target.dataset.path) 
@@ -326,9 +348,10 @@ const renameModal =
               data-name={data.name} 
               data-folder={data.path_lower} 
               data-tag={data[".tag"]} onClick={downloadFile}>
-                <i className="material-icons-outlined filesFolders">
+                 <i className="material-icons-outlined filesFolders">
                   insert_drive_file
                 </i>
+                
             </td>
             <td
               title={"Download: " + data.name} 

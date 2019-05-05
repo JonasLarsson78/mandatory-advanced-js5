@@ -4,7 +4,7 @@ import '../Css/modal.css'
 const Modal = (props) => {
     const element = useRef(null);
     let pointerEvent = "none"
-
+    console.log(props)
     if (props.showModal === true){
         pointerEvent = "auto"
         element.current.style.opacity = "1";
@@ -17,6 +17,12 @@ const Modal = (props) => {
         element.current.style.opacity = "0";
         element.current.style.zIndex = "0";
         props.showModal2(false)
+
+        setTimeout(() => {
+            props.deleteIsDone(true)
+        }, 2000);
+
+        
     }
 
     const nej = () => {
