@@ -53,9 +53,47 @@ const UploadFile = (props) => {
                   updateMessage(null)
                 }, 3000);
                 
-                props.upload(response)
+               // props.upload(response)
                 console.log(props)
+                                
                 console.log(response);
+
+                dbx.filesListFolder({
+                  path: newFolder,
+                
+                })
+                .then(response => {
+                  console.log(response)
+          
+                  props.thumbnailUpdate([]);
+                  props.dataUpdate(response.entries)
+          
+                  dbx.filesGetThumbnailBatch({
+                    
+                    entries: response.entries.map(entry => {
+                    return{
+                      path: entry.id,
+                      format : {'.tag': 'jpeg'},
+                      size: { '.tag': 'w32h32'},
+                      mode: { '.tag': 'strict' }  
+                      }
+                    }) 
+                  }) 
+                  .then(response => {   
+                    
+                    props.thumbnailUpdate(response.entries)
+                    })
+                    .catch(function(error) {
+                      console.log(error);
+                     });
+                })
+                .catch(function(error) {
+                  console.log(error);
+                 });
+
+
+
+
               })
               .catch(function(error) {
                 console.error(error);
@@ -111,6 +149,38 @@ const UploadFile = (props) => {
             updateMessage(null)
           }, 3000);
           console.log(result)
+          dbx.filesListFolder({
+            path: newFolder,
+          
+          })
+          .then(response => {
+            console.log(response)
+    
+            props.thumbnailUpdate([]);
+            props.dataUpdate(response.entries)
+    
+            dbx.filesGetThumbnailBatch({
+              
+              entries: response.entries.map(entry => {
+              return{
+                path: entry.id,
+                format : {'.tag': 'jpeg'},
+                size: { '.tag': 'w32h32'},
+                mode: { '.tag': 'strict' }  
+                }
+              }) 
+            }) 
+            .then(response => {   
+              
+              props.thumbnailUpdate(response.entries)
+              })
+              .catch(function(error) {
+                console.log(error);
+               });
+          })
+          .catch(function(error) {
+            console.log(error);
+           });
         })
         .catch(function(error) {
           console.error(error);

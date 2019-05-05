@@ -8,7 +8,7 @@ import CreateFolder from './createfolder'
 import Search from './search'
 import Breadcrumbs from './breadcrumbs'
 import { deleteFiles } from './delete'
-//import UploadFile from './uploadfile';
+import UploadFile from './uploadfile';
 import UserAccount from './userAccount'
 import { Helmet } from "react-helmet";
 import '../Css/home.css';
@@ -237,7 +237,7 @@ const Home = (props) => {
     <div className="mainWrapper">
       <aside className="leftSide">
         
-        <div className="left-link-wrap">{/* <UploadFile upload={upload} folder={props.location.pathname}></UploadFile><br></br><br></br> */}
+        <div className="left-link-wrap"><UploadFile folder={props.location.pathname} dataUpdate={dataUpdate} thumbnailUpdate={thumbnailUpdate}></UploadFile><br></br><br></br>
         <CreateFolder folder={props.location.pathname} dataUpdate={dataUpdate} thumbnailUpdate={thumbnailUpdate}></CreateFolder></div>
       </aside>
       <main className="mainMain">
