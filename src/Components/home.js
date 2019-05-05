@@ -5,7 +5,6 @@ import {token$} from './store.js';
 import ListItems from './listitems'
 import CreateFolder from './createfolder'
 import Search from './search'
-import Modal from './modal';
 import Breadcrumbs from './breadcrumbs'
 import { deleteFiles } from './delete'
 import UploadFile from './uploadfile';
@@ -107,7 +106,6 @@ const pollChanges = (change) => {
     <Helmet>
       <title>MyBOX</title>
     </Helmet>
-    <Modal showModal2={modalOnClick} delPath={delPath} showModal={showModal} del={del} deleteIsDone={deleteIsDone}/>
     <TimeOutModal showModal3={tiemoutModalClick} showTimeout={timeOutModal} resetTime={ResetTime}></TimeOutModal>
     <header className="mainHeader">
       <div className="header-logo-wrap"><img id="header-logo" src={ require('../Img/Logo_mybox.png') } alt="My Box logo"/> </div>
