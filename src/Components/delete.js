@@ -17,6 +17,7 @@ export const deleteFiles = (filePath) => {
         path: filePath,
       })
       .then(response => {
+        console.log(response)
       })
       .catch(function(error) {
         console.log(error);

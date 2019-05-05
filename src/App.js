@@ -4,6 +4,7 @@ import React from 'react';
 import Login from './Components/login';
 import Auth from './Components/auth';
 import Home from './Components/home';
+import Folder from './Components/home';
 
 
 import { BrowserRouter as Router, Route}from "react-router-dom";
@@ -23,6 +24,7 @@ function App() {
     <Route exact path='/' component={Login} />
     <Route path='/auth' component={Auth} />
     <Route path='/home' component={Home} />
+
    
     </Router>
   );

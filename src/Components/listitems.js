@@ -3,278 +3,85 @@ import {token$} from './store.js';
 import { Dropbox } from 'dropbox';
 import {Link}from "react-router-dom";
 import '../Css/listitems.css';
+import {readableBytes} from './readablebytes'
+import {lastEdited} from './lastedited'
 import { downloadFile } from './dowload'
-import moment from 'moment';
-import {renameFile}  from './rename'
+//import {renameFile}  from './rename'
 import { Helmet } from "react-helmet";
-import {deleteFiles} from './delete'
+//import {deleteFiles} from './delete'
 
 
 
-const counter = (number) => {
+/* const counter = (number) => {
   if(number === null){
     number = 0;
   }
   return number = number + 1;
   
-}
+} */
 
 const ListItems = (props) => {
-  const element = useRef(null);
-  const inputEl = useRef(null);
-  const inputElFolder = useRef(null);
-  const clearInput = useRef(null)
-  const clearInputFolder = useRef(null)
-  const [data, updateData] = useState([])
-  const [rename, updateRename] = useState("")
-  const [newUrl, updateNewUrl] = useState("")
-  const [thumbnails, updateThumbnails] = useState([])
-  const [delFile, updateDelFile] = useState("")
-  const searchArr = props.search;
-  //let toll=-1; //Används för att rendera ut thumbnailArray.
+ // const element = useRef(null);
+ // const inputEl = useRef(null);
+ // const inputElFolder = useRef(null);
+ // const clearInput = useRef(null)
+ // const clearInputFolder = useRef(null)
+ // const [rename, updateRename] = useState("")
+ // const [newUrl, updateNewUrl] = useState("")
+ // const [delFile, updateDelFile] = useState("")
+ //const searchArr = props.search;
+
 
 //===============================USEEFFECT=====================================
 
 
-
-useEffect(() => {
-  
-  //toll = -1;
-  
-  const timerToShowModal = window.setTimeout(() => {
-    console.log('5 second has passed');
-    
-    props.showModal3(true)
-    //props.resetTime('modal')
-   
-  }, 480000);
-  
-    //console.log(timerToShowModal)
-  
-
-  const option = {
-    fetch: fetch,
-    accessToken: token$.value
-  };
-  const dbx = new Dropbox(
-    option,
-  );
-
-  if (props.folder === "/home"){
-
-    dbx.filesListFolder({
-      path: '',
-    
-    })
-    .then(response => {
-      updateThumbnails([]);
-       updateData(response.entries)
-      
-        dbx.filesGetThumbnailBatch({
-          
-          entries: response.entries.map(entry => {
-          return{
-            path: entry.id,
-            format : {'.tag': 'jpeg'},
-            size: { '.tag': 'w32h32'},
-            mode: { '.tag': 'strict' }  
-            }
-          }) 
-        }) 
-        .then(response => {   
-          
-          updateThumbnails(response.entries)
-          })
-
-          dbx.filesListFolderLongpoll({
-            cursor: response.cursor,
-            timeout: 480
-           
-          })
-          .then(response => {
-            
-              if(response.changes){
-                props.pollChanges(counter)
-              }
-              else if(response.changes === false){
-        
-              }
-              
-              
- 
-          })
-          .catch(function(error) {
-           console.log(error);
-          });
-
-        if (searchArr){
-         updateData(searchArr)
-        }
-    })
-
-  }
-  
-  else{
-
-    let newFolder = props.folder;
-    newFolder = newFolder.substring(5)
-    
-    dbx.filesListFolder({
-      path: newFolder,
-   
-    })
-    .then(response => {
-      updateThumbnails([]);
-     updateData(response.entries)
-     
-
-      dbx.filesGetThumbnailBatch({
-        entries: response.entries.map(entry => {
-          return{
-            path: entry.id,
-            format : {'.tag': 'jpeg'},
-            size: { '.tag': 'w32h32'},
-            mode: { '.tag': 'strict' }  
-            }
-            }) 
-          }) 
-        .then(response => {  
-          
-
-          
-         updateThumbnails(response.entries)
-        })
-        .catch(function(error) {
-          console.log(error);
-         });
-
-     dbx.filesListFolderLongpoll({
-      cursor: response.cursor,
-      timeout: 480
-    })
-    .then(response => {
-      //console.log(response.changes)
-     
-     
-      if(response.changes){
-        props.pollChanges(counter)
-      }
-      else if(response.changes === false){
-        console.log('folder')
-
-      }
-        
-        
-      
-    })
-    .catch(function(error) {
-     console.log(error);
-    });
-
-
-     if (searchArr){
-      updateData(searchArr)
-      }
-    })
-  }
-  
-  
-
-return () => {
-  window.clearTimeout(timerToShowModal);
-} 
-  
-}, [ props.search, searchArr, props.createFolder, props.uploadFile, props.pollChanges])
-  
-
-  //=================BYTESIZE SETTING======================
-  const readableBytes = (bytes) => {
-    if (bytes === 0){
-      bytes = 1
-    }
-    const index = Math.floor(Math.log(bytes) / Math.log(1024)),
-    sizes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
-  
-    return (bytes / Math.pow(1024, index)).toFixed(2) * 1 + ' ' + sizes[index];
-  }
-//==================END BYTESIZE SETTING===================
-
-//==================SET LATEST DATE EDITING================
-  const lastEdited = (date) => {
-   
-    const year = date.substring(0, 4);
-    let month = date.substring(5, 7)
-    let day = date.substring(8, 10)
-    //const hour = date.substring(11, 13)
-    //const minute = date.substring(14, 16)
-    //const second = date.substring(17, 19)
-  
-
-    const months = [
-      "January", "February", "March",
-      "April", "May", "June", "July",
-      "August", "September", "October",
-      "November", "December"
-    ];
-    
-    month = month.replace(/^0+/, '');
-    day = day.replace(/^0+/, '')
-    let monthInText = months[month-1];
-    
-
-    return <label>{'Last edited: ' + moment(date).fromNow() + ', ' + day + ' ' + monthInText + ' ' + year}</label>
-  }
-  //================END DATE SET=========================
-
-
 /* --------------------------- Rename Files ------------------------------------------- */
 
-let renameInput;
-let renameInputFolder;
+/* let renameInput;
+let renameInputFolder; */
 
-const reName = (e) => {
+/* const reName = (e) => {
   let old = e.target.dataset.path
   updateRename(old)
   inputEl.current.style.display = "block"
-}
-const newNameInput = (e) => {
+} */
+/* const newNameInput = (e) => {
   let target = e.target.value
   let idx = rename.lastIndexOf('.')
   let newIdx = rename.substring(idx)
   let newPath = rename.substring(0, rename.lastIndexOf("/"));
   let fixNewname = newPath + "/" + target + newIdx;
   updateNewUrl(fixNewname);
-  /* setTimeout(() => {
-    props.editIsDone(true)
-  }, 2000); */
+
+ 
 
 
-}
+} */
 
-const addNewName = (e) => {
+/* const addNewName = (e) => {
   
   renameFile(rename, newUrl)
   inputEl.current.style.display = "none"
   clearInput.current.value = "";
   
 
-}
+} */
 
-const addNewNameClose = () =>{
+/* const addNewNameClose = () =>{
   inputEl.current.style.display = "none"
-}
+} */
 
-renameInput = <div className="listRenameInput" ref={inputEl} style={{display: "none"}}><div className="listRenameText"> Rename file</div><span className="listRenameClose" onClick={addNewNameClose}><i className="material-icons">close</i></span><input className="listRenameInputText" style={{outline: "none"}} ref={clearInput} placeholder="New filename..." type="text" onChange={newNameInput} /><button style={{outline: "none"}} className="listBtnRename" onClick={addNewName}>Ok</button></div>
+/* renameInput = <div className="listRenameInput" ref={inputEl} style={{display: "none"}}><div className="listRenameText"> Rename file</div><span className="listRenameClose" onClick={addNewNameClose}><i className="material-icons">close</i></span><input className="listRenameInputText" style={{outline: "none"}} ref={clearInput} placeholder="New filename..." type="text" onChange={newNameInput} /><button style={{outline: "none"}} className="listBtnRename" onClick={addNewName}>Ok</button></div> */
 /* ---------------------------------------- end renameFiles ----------------------------- */
 
 
 /*------------------------------------------ Rename Folder ----------------------------------*/
-const reNameFolder = (e) => {
+/* const reNameFolder = (e) => {
 let old = e.target.dataset.path
 updateRename(old)
 inputElFolder.current.style.display = "block"
-}
-const newNameInputFolder = (e) => {
+} */
+/* const newNameInputFolder = (e) => {
 let target = e.target.value
 
 let path = rename.split("/");
@@ -282,65 +89,63 @@ let strippedPath = path.slice(0, path.length-1).join("/");
 
 let fixNewname = strippedPath + "/" + target;
 updateNewUrl(fixNewname);
-}
+} */
 
-const addNewNameFolder = (e) => {
+/* const addNewNameFolder = (e) => {
 
 renameFile(rename, newUrl)
 inputElFolder.current.style.display = "none"
 clearInputFolder.current.value = "";
 
-/* setTimeout(() => {
-  props.editIsDone(true)
-}, 2000); */
 
-}
-const addNewNameCloseFolder = () =>{
+} */
+/* const addNewNameCloseFolder = () =>{
 inputElFolder.current.style.display = "none"
-}
+} */
 
-renameInputFolder = <div className="listRenameInput" ref={inputElFolder} style={{display: "none"}}><div className="listRenameText">Rename folder</div><span className="listRenameClose" onClick={addNewNameCloseFolder}><i className="material-icons">close</i></span><input placeholder="New foldername..." className="listRenameInputText" style={{outline: "none"}} ref={clearInputFolder} type="text" onChange={newNameInputFolder} /><button className="listBtnRename" style={{outline: "none"}} onClick={addNewNameFolder}>Ok</button></div>
+/* renameInputFolder = <div className="listRenameInput" ref={inputElFolder} style={{display: "none"}}><div className="listRenameText">Rename folder</div><span className="listRenameClose" onClick={addNewNameCloseFolder}><i className="material-icons">close</i></span><input placeholder="New foldername..." className="listRenameInputText" style={{outline: "none"}} ref={clearInputFolder} type="text" onChange={newNameInputFolder} /><button className="listBtnRename" style={{outline: "none"}} onClick={addNewNameFolder}>Ok</button></div> */
 
 
-const renameModal = 
+/* const renameModal = 
      <tr style={{background: "white"}}>
      <td>
        {renameInput}
        {renameInputFolder}
      </td>
-    </tr>
+    </tr> */
 
 
 /* ---------------------------------------- end renameFolder ------------------------------------------- */
 
 
-let delModal;
-
+/* let delModal;
+  console.log(props) */
  //===================RENDER LIST====================
+ 
   const renderList = (data, index) => {
-    const thumbs = thumbnails[index]
+   const thumbs = props.thumbnails[index]
 
     /*--------------------------  Del------------------------------- */
     
-    let pointerEvent = "visible"
-    const del = (e) => {
+   /*  let pointerEvent = "visible" */
+    /* const del = (e) => {
       console.log(e.target.dataset.path)
       updateDelFile(e.target.dataset.path) 
       element.current.style.visibility = "visible"
-    }
+    } */
     
-    const yes = () => {
+    /* const yes = () => {
         deleteFiles(delFile)
         element.current.style.visibility = "hidden"
         element.current.style.zIndex = "0";
-    }
+    } */
 
-    const no = () => {
+    /* const no = () => {
         element.current.style.visibility = "hidden"
         element.current.style.zIndex = "0";
-    }
+    } */
 
-    delModal = <div style={{pointerEvents: pointerEvent}} ref={element} className="modalBack">
+    /* delModal = <div style={{pointerEvents: pointerEvent}} ref={element} className="modalBack">
     <div style={{pointerEvents: pointerEvent}} className="modal">
         <div style={{pointerEvents: pointerEvent}} className="mainModal">
             <h2>Delete ! ! !</h2>
@@ -348,7 +153,7 @@ let delModal;
             <button className="modalBtn yes"  onClick={yes}>YES</button><button className="modalBtn no" onClick={no}>NO</button>
         </div>
       </div>
-    </div>
+    </div> */
 
 
     /* ---------------------------------------------------------------------- */
@@ -388,18 +193,18 @@ let delModal;
               {lastEdited(data.server_modified)}
             </td>
             <td>
-              <button className="listBtn" onClick={del}> <i data-path={data.path_lower} className="material-icons">delete_outline</i></button>
+              <button className="listBtn" /* onClick={del} */> <i data-path={data.path_lower} className="material-icons">delete_outline</i></button>
             </td>
             <td>
-              <button className="listBtn" data-path={data.path_lower} onClick={reName}><i data-path={data.path_lower} className="material-icons">edit</i></button>
+              <button className="listBtn" data-path={data.path_lower} /* onClick={reName} */><i data-path={data.path_lower} className="material-icons">edit</i></button>
             </td>
             <td>
             <button className="listBtn"> <i className="material-icons">swap_horiz</i></button>
           </td>
           </tr>
         ) 
-      }  
-      else{
+       }  
+       else{
         return( //FILES
           <tr
               key={data.id} 
@@ -430,10 +235,10 @@ let delModal;
               {lastEdited(data.server_modified)}
             </td>
             <td>
-              <button className="listBtn" onClick={del}> <i data-path={data.path_lower} className="material-icons">delete_outline</i></button>
+              <button className="listBtn" /* onClick={del} */> <i data-path={data.path_lower} className="material-icons">delete_outline</i></button>
             </td>
             <td>
-              <button className="listBtn" data-path={data.path_lower} onClick={reName}><i data-path={data.path_lower} className="material-icons">edit</i></button>
+              <button className="listBtn" data-path={data.path_lower} /* onClick={reName} */><i data-path={data.path_lower} className="material-icons">edit</i></button>
             </td>
             <td>
             <button className="listBtn"> <i className="material-icons">swap_horiz</i></button>
@@ -441,7 +246,7 @@ let delModal;
           </tr>
         ) 
 
-      }
+      } 
 
 
 
@@ -450,8 +255,9 @@ let delModal;
   
 
 if(data[".tag"] === 'folder'){ //FOLDER
+ console.log(props.match)
 return( //FOLDERS
-  <tr key={data.id} className="listFiles" to={data.path_lower} data-name={data.name} data-folder={data.path_lower} data-tag={data[".tag"]}>
+  <tr key={data.id} className="listFiles" data-name={data.name} data-folder={data.path_lower} data-tag={data[".tag"]}>
     <td>
     <i className="material-icons filesFolders">
       folder
@@ -461,16 +267,16 @@ return( //FOLDERS
       <Link className="listFolderLink" to={"/home" + data.path_lower}>{data.name}</Link>
     </td>
     <td>
-      ...
+      ...s
     </td>
     <td>
       ...
     </td>
     <td>
-      <button className="listBtn" onClick={del}> <i data-path={data.path_lower} className="material-icons">delete_outline</i></button>
+      <button className="listBtn" /* onClick={del} */> <i data-path={data.path_lower} className="material-icons">delete_outline</i></button>
     </td>
     <td>
-      <button className="listBtn" onClick={reNameFolder}><i data-path={data.path_lower} className="material-icons">edit</i></button> 
+      <button className="listBtn" /* onClick={reNameFolder} */><i data-path={data.path_lower} className="material-icons">edit</i></button> 
     </td>
     <td>
       <button className="listBtn"> <i className="material-icons">swap_horiz</i></button>
@@ -483,7 +289,7 @@ return( //FOLDERS
     //==================END LIST RENDERING==================
 
     
-      const listData = data.map(renderList)
+      const listData = props.renderData.map(renderList)
   
      
      
@@ -493,10 +299,10 @@ return( //FOLDERS
       <title>MyBOX</title>
     </Helmet>
       {listData}
-      {renameModal}
+    {/*   {renameModal} */}
       <tr style={{background: "white"}}>
      <td>
-       {delModal}
+      {/*  {delModal} */}
      </td>
     </tr>
       

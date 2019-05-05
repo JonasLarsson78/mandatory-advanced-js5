@@ -2,11 +2,12 @@ import React, {useState, useRef } from 'react';
 import { Dropbox } from 'dropbox';
 import {token$} from './store.js';
 import '../Css/createfolder.css';
+
 //import { BrowserRouter as Router, Route, Link, Redirect}from "react-router-dom";
 
 
 const CreateFolder = (props) => {
-  
+ 
 
   const [input, updateInput] = useState('')
   const inputRef = useRef(null);
@@ -37,15 +38,58 @@ const CreateFolder = (props) => {
     })
     .then(response => { 
        console.log(response)
-       props.create(response)
+       
        setTimeout(() => {
          closeModal();
        }, 2000);
-    })
-    .catch(function(error) {
+       console.log(newFolder)
+   
+       
+     
+       dbx.filesListFolder({
+        path: newFolder,
+      
+      })
+      .then(response => {
+        console.log(response)
+
+        props.thumbnailUpdate([]);
+        props.dataUpdate(response.entries)
+
+        dbx.filesGetThumbnailBatch({
+          
+          entries: response.entries.map(entry => {
+          return{
+            path: entry.id,
+            format : {'.tag': 'jpeg'},
+            size: { '.tag': 'w32h32'},
+            mode: { '.tag': 'strict' }  
+            }
+          }) 
+        }) 
+        .then(response => {   
+          
+          props.thumbnailUpdate(response.entries)
+          })
+          .catch(function(error) {
+            console.log(error);
+           });
+      })
+      .catch(function(error) {
         console.log(error);
-    });
+       });
+
+      })
+      .catch(function(error) {
+        console.log(error);
+       });
+
+
+   
+   
+
   }
+
 
   //inputRef.current.value = '';   
 
