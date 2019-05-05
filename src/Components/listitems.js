@@ -45,7 +45,7 @@ useEffect(() => {
     props.showModal3(true)
     //props.resetTime('modal')
    
-  }, 480000);
+  },  480000);
   
     //console.log(timerToShowModal)
   
@@ -89,6 +89,16 @@ useEffect(() => {
           
           updateThumbnails(response.entries)
           })
+          /* const path = response.entries.map(x => x.path_display)
+          console.log(path)
+          dbx.filesGetThumbnail({
+            "path": path[6]
+          })
+          .then(response => {
+            console.log(response)
+          }) */
+          
+
 
           dbx.filesListFolderLongpoll({
             cursor: response.cursor,
@@ -143,6 +153,7 @@ useEffect(() => {
             }) 
           }) 
         .then(response => {  
+         
           
 
           
@@ -183,13 +194,15 @@ useEffect(() => {
   }
   
   
-
+  console.log(props)
 return () => {
   window.clearTimeout(timerToShowModal);
 } 
   
-}, [props.folder, props.search, searchArr, props.createFolder, props.uploadFile, props.pollChanges, props, ])
-  
+}, /* [ props.search, searchArr, props.createFolder, props.uploadFile, rename, ] */
+
+[props.createFolder, props.uploadFile, props.folder, props.search, props.deleteDone, props.editDone])
+//[props.createFolder, props.uploadFile, props.folder, props.search, props.deleteDone, props.editDone, props]
 
   //=================BYTESIZE SETTING======================
   const readableBytes = (bytes) => {
@@ -231,8 +244,94 @@ return () => {
   //================END DATE SET=========================
 
 
+/* --------------------------- Rename Files ------------------------------------------- */
+
+let renameInput;
+let renameInputFolder;
+
+const reName = (e) => {
+  
+  let old = e.target.dataset.path
+  updateRename(old)
+  inputEl.current.style.display = "block"
+}
+const newNameInput = (e) => {
+  let target = e.target.value
+  let idx = rename.lastIndexOf('.')
+  let newIdx = rename.substring(idx)
+  let newPath = rename.substring(0, rename.lastIndexOf("/"));
+  let fixNewname = newPath + "/" + target + newIdx;
+  updateNewUrl(fixNewname);
+}
+
+const addNewName = (e) => {
+  
+  renameFile(rename, newUrl)
+  inputEl.current.style.display = "none"
+  clearInput.current.value = "";
+  
+  setTimeout(() => {
+    props.editIsDone(true)
+  }, 2000);
+
+ 
+}
+
+const addNewNameClose = () =>{
+  inputEl.current.style.display = "none"
+}
+
+renameInput = <div className="listRenameInput" ref={inputEl} style={{display: "none"}}><div className="listRenameText"> Rename file</div><span className="listRenameClose" onClick={addNewNameClose}><i className="material-icons">close</i></span><input className="listRenameInputText" style={{outline: "none"}} ref={clearInput} placeholder="New filename..." type="text" onChange={newNameInput} /><button style={{outline: "none"}} className="listBtnRename" onClick={addNewName}>Ok</button></div>
+/* ---------------------------------------- end renameFiles ----------------------------- */
+
+
+/*------------------------------------------ Rename Folder ----------------------------------*/
+const reNameFolder = (e) => {
+let old = e.target.dataset.path
+updateRename(old)
+inputElFolder.current.style.display = "block"
+}
+const newNameInputFolder = (e) => {
+let target = e.target.value
+
+let path = rename.split("/");
+let strippedPath = path.slice(0, path.length-1).join("/");
+
+let fixNewname = strippedPath + "/" + target;
+updateNewUrl(fixNewname);
+}
+
+const addNewNameFolder = (e) => {
+
+renameFile(rename, newUrl)
+inputElFolder.current.style.display = "none"
+clearInputFolder.current.value = "";
+props.editIsDone(true)
+
+}
+const addNewNameCloseFolder = () =>{
+inputElFolder.current.style.display = "none"
+}
+
+renameInputFolder = <div className="listRenameInput" ref={inputElFolder} style={{display: "none"}}><div className="listRenameText">Rename folder</div><span className="listRenameClose" onClick={addNewNameCloseFolder}><i className="material-icons">close</i></span><input placeholder="New foldername..." className="listRenameInputText" style={{outline: "none"}} ref={clearInputFolder} type="text" onChange={newNameInputFolder} /><button className="listBtnRename" style={{outline: "none"}} onClick={addNewNameFolder}>Ok</button></div>
+
+
+const renameModal = 
+     <tr style={{background: "white"}}>
+     <td>
+       {renameInput}
+       {renameInputFolder}
+     </td>
+    </tr>
+
+
+/* ---------------------------------------- end renameFolder ------------------------------------------- */
+
+
+
  //===================RENDER LIST====================
   const renderList = (data, index) => {
+    
     const thumbs = thumbnails[index]
     const del = (e) => {
       props.path(e.target.dataset.path) 
@@ -255,9 +354,10 @@ return () => {
               data-name={data.name} 
               data-folder={data.path_lower} 
               data-tag={data[".tag"]} onClick={downloadFile}>
-                <i className="material-icons-outlined filesFolders">
+                 <i className="material-icons-outlined filesFolders">
                   insert_drive_file
                 </i>
+                
             </td>
             <td
               title={"Download: " + data.name} 
