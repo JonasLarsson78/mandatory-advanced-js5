@@ -1,11 +1,11 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect} from 'react';
 import {token$} from './store.js';
 import { Dropbox } from 'dropbox';
 import {Link}from "react-router-dom";
 import '../Css/listitems.css';
 import { downloadFile } from './dowload'
 import moment from 'moment';
-import {renameFile}  from './rename'
+import RenderRename from './rename'
 import { Helmet } from "react-helmet";
 
 
@@ -19,15 +19,15 @@ const counter = (number) => {
 }
 
 const ListItems = (props) => {
-  
-  const inputEl = useRef(null);
-  const inputElFolder = useRef(null);
-  const clearInput = useRef(null)
-  const clearInputFolder = useRef(null)
+  //const inputEl = useRef(null);
+  //const inputElFolder = useRef(null);
+  //const clearInput = useRef(null)
+  //const clearInputFolder = useRef(null)
   const [data, updateData] = useState([])
-  const [rename, updateRename] = useState("")
-  const [newUrl, updateNewUrl] = useState("")
+  //const [renameFile, updateRenameFile] = useState(false)
+  //const [newUrl, updateNewUrl] = useState("")
   const [thumbnails, updateThumbnails] = useState([])
+
   const searchArr = props.search;
   //let toll=-1; //Används för att rendera ut thumbnailArray.
 
@@ -50,6 +50,12 @@ useEffect(() => {
     //console.log(timerToShowModal)
   
 
+
+
+
+
+ 
+    
   const option = {
     fetch: fetch,
     accessToken: token$.value
@@ -182,7 +188,7 @@ return () => {
   window.clearTimeout(timerToShowModal);
 } 
   
-}, [ props.search, searchArr, props.createFolder, props.uploadFile, props.pollChanges, props])
+}, [props.folder, props.search, searchArr, props.createFolder, props.uploadFile, props.pollChanges, props, ])
   
 
   //=================BYTESIZE SETTING======================
@@ -223,83 +229,6 @@ return () => {
     return <label>{'Last edited: ' + moment(date).fromNow() + ', ' + day + ' ' + monthInText + ' ' + year}</label>
   }
   //================END DATE SET=========================
-
-
-/* --------------------------- Rename Files ------------------------------------------- */
-
-let renameInput;
-let renameInputFolder;
-
-const reName = (e) => {
-  let old = e.target.dataset.path
-  updateRename(old)
-  inputEl.current.style.display = "block"
-}
-const newNameInput = (e) => {
-  let target = e.target.value
-  let idx = rename.lastIndexOf('.')
-  let newIdx = rename.substring(idx)
-  let newPath = rename.substring(0, rename.lastIndexOf("/"));
-  let fixNewname = newPath + "/" + target + newIdx;
-  updateNewUrl(fixNewname);
-}
-
-const addNewName = (e) => {
-  
-  renameFile(rename, newUrl)
-  inputEl.current.style.display = "none"
-  clearInput.current.value = "";
-}
-
-const addNewNameClose = () =>{
-  inputEl.current.style.display = "none"
-}
-
-renameInput = <div className="listRenameInput" ref={inputEl} style={{display: "none"}}><div className="listRenameText"> Rename file</div><span className="listRenameClose" onClick={addNewNameClose}><i className="material-icons">close</i></span><input className="listRenameInputText" style={{outline: "none"}} ref={clearInput} placeholder="New filename..." type="text" onChange={newNameInput} /><button style={{outline: "none"}} className="listBtnRename" onClick={addNewName}>Ok</button></div>
-/* ---------------------------------------- end renameFiles ----------------------------- */
-
-
-/*------------------------------------------ Rename Folder ----------------------------------*/
-const reNameFolder = (e) => {
-let old = e.target.dataset.path
-updateRename(old)
-inputElFolder.current.style.display = "block"
-}
-const newNameInputFolder = (e) => {
-let target = e.target.value
-
-let path = rename.split("/");
-let strippedPath = path.slice(0, path.length-1).join("/");
-
-let fixNewname = strippedPath + "/" + target;
-updateNewUrl(fixNewname);
-}
-
-const addNewNameFolder = (e) => {
-
-renameFile(rename, newUrl)
-inputElFolder.current.style.display = "none"
-clearInputFolder.current.value = "";
-
-}
-const addNewNameCloseFolder = () =>{
-inputElFolder.current.style.display = "none"
-}
-
-renameInputFolder = <div className="listRenameInput" ref={inputElFolder} style={{display: "none"}}><div className="listRenameText">Rename folder</div><span className="listRenameClose" onClick={addNewNameCloseFolder}><i className="material-icons">close</i></span><input placeholder="New foldername..." className="listRenameInputText" style={{outline: "none"}} ref={clearInputFolder} type="text" onChange={newNameInputFolder} /><button className="listBtnRename" style={{outline: "none"}} onClick={addNewNameFolder}>Ok</button></div>
-
-
-const renameModal = 
-     <tr style={{background: "white"}}>
-     <td>
-       {renameInput}
-       {renameInputFolder}
-     </td>
-    </tr>
-
-
-/* ---------------------------------------- end renameFolder ------------------------------------------- */
-
 
 
  //===================RENDER LIST====================
@@ -348,11 +277,8 @@ const renameModal =
               <button className="listBtn" onClick={del}> <i data-path={data.path_lower} className="material-icons">delete_outline</i></button>
             </td>
             <td>
-              <button className="listBtn" data-path={data.path_lower} onClick={reName}><i data-path={data.path_lower} className="material-icons">edit</i></button>
+              <button className="listBtn" data-path={data.path_lower} onClick={props.reName}><i data-path={data.path_lower} className="material-icons">edit</i></button>
             </td>
-            <td>
-            <button className="listBtn"> <i className="material-icons">swap_horiz</i></button>
-          </td>
           </tr>
         ) 
       }  
@@ -390,11 +316,8 @@ const renameModal =
               <button className="listBtn" onClick={del}> <i data-path={data.path_lower} className="material-icons">delete_outline</i></button>
             </td>
             <td>
-              <button className="listBtn" data-path={data.path_lower} onClick={reName}><i data-path={data.path_lower} className="material-icons">edit</i></button>
+              <button className="listBtn" data-path={data.path_lower} onClick={props.rename}><i data-path={data.path_lower} className="material-icons">edit</i></button>
             </td>
-            <td>
-            <button className="listBtn"> <i className="material-icons">swap_horiz</i></button>
-          </td>
           </tr>
         ) 
 
@@ -427,10 +350,7 @@ return( //FOLDERS
       <button className="listBtn" onClick={del}> <i data-path={data.path_lower} className="material-icons">delete_outline</i></button>
     </td>
     <td>
-      <button className="listBtn" onClick={reNameFolder}><i data-path={data.path_lower} className="material-icons">edit</i></button> 
-    </td>
-    <td>
-      <button className="listBtn"> <i className="material-icons">swap_horiz</i></button>
+      <button className="listBtn" onClick={props.rename2}><i data-path={data.path_lower} className="material-icons">edit</i></button> 
     </td>
   </tr>
 )
@@ -450,7 +370,7 @@ return( //FOLDERS
       <title>MyBOX</title>
     </Helmet>
       {listData}
-      {renameModal}
+      <RenderRename rename={props.rename} rename2={props.rename2} renFolder={props.renFolder} renFile={props.renFile}  />
     </>
   )
 }
