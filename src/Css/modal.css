@@ -12,7 +12,8 @@
     padding: 15px;
 }
 .modalBack{
-    opacity: 0;
+    visibility: hidden;
+    
     position: absolute;
     top: 0px;
     left: 0px;
@@ -55,9 +56,13 @@
 }
 .yes{
     background: red;
+    pointer-events: visible;
 }
 .yes:hover{
     background: darkred;
+}
+.no{
+    pointer-events: visible;  
 }
 .no:hover{
     background: darkgreen;

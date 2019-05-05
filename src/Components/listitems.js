@@ -1,12 +1,13 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {token$} from './store.js';
 import { Dropbox } from 'dropbox';
 import {Link}from "react-router-dom";
 import '../Css/listitems.css';
 import { downloadFile } from './dowload'
 import moment from 'moment';
-import RenderRename from './rename'
+import {renameFile}  from './rename'
 import { Helmet } from "react-helmet";
+import {deleteFiles} from './delete'
 
 
 
@@ -19,15 +20,16 @@ const counter = (number) => {
 }
 
 const ListItems = (props) => {
-  //const inputEl = useRef(null);
-  //const inputElFolder = useRef(null);
-  //const clearInput = useRef(null)
-  //const clearInputFolder = useRef(null)
+  const element = useRef(null);
+  const inputEl = useRef(null);
+  const inputElFolder = useRef(null);
+  const clearInput = useRef(null)
+  const clearInputFolder = useRef(null)
   const [data, updateData] = useState([])
-  //const [renameFile, updateRenameFile] = useState(false)
-  //const [newUrl, updateNewUrl] = useState("")
+  const [rename, updateRename] = useState("")
+  const [newUrl, updateNewUrl] = useState("")
   const [thumbnails, updateThumbnails] = useState([])
-
+  const [delFile, updateDelFile] = useState("")
   const searchArr = props.search;
   //let toll=-1; //Används för att rendera ut thumbnailArray.
 
@@ -45,17 +47,11 @@ useEffect(() => {
     props.showModal3(true)
     //props.resetTime('modal')
    
-  },  480000);
+  }, 480000);
   
     //console.log(timerToShowModal)
   
 
-
-
-
-
- 
-    
   const option = {
     fetch: fetch,
     accessToken: token$.value
@@ -89,16 +85,6 @@ useEffect(() => {
           
           updateThumbnails(response.entries)
           })
-          /* const path = response.entries.map(x => x.path_display)
-          console.log(path)
-          dbx.filesGetThumbnail({
-            "path": path[6]
-          })
-          .then(response => {
-            console.log(response)
-          }) */
-          
-
 
           dbx.filesListFolderLongpoll({
             cursor: response.cursor,
@@ -153,7 +139,6 @@ useEffect(() => {
             }) 
           }) 
         .then(response => {  
-         
           
 
           
@@ -194,15 +179,13 @@ useEffect(() => {
   }
   
   
-  console.log(props)
+
 return () => {
   window.clearTimeout(timerToShowModal);
 } 
   
-}, /* [ props.search, searchArr, props.createFolder, props.uploadFile, rename, ] */
-
-[props.createFolder, props.uploadFile, props.folder, props.search, props.deleteDone, props.editDone])
-//[props.createFolder, props.uploadFile, props.folder, props.search, props.deleteDone, props.editDone, props]
+}, [ props.search, searchArr, props.createFolder, props.uploadFile, props.pollChanges])
+  
 
   //=================BYTESIZE SETTING======================
   const readableBytes = (bytes) => {
@@ -250,7 +233,6 @@ let renameInput;
 let renameInputFolder;
 
 const reName = (e) => {
-  
   let old = e.target.dataset.path
   updateRename(old)
   inputEl.current.style.display = "block"
@@ -269,12 +251,6 @@ const addNewName = (e) => {
   renameFile(rename, newUrl)
   inputEl.current.style.display = "none"
   clearInput.current.value = "";
-  
-  setTimeout(() => {
-    props.editIsDone(true)
-  }, 2000);
-
- 
 }
 
 const addNewNameClose = () =>{
@@ -306,7 +282,6 @@ const addNewNameFolder = (e) => {
 renameFile(rename, newUrl)
 inputElFolder.current.style.display = "none"
 clearInputFolder.current.value = "";
-props.editIsDone(true)
 
 }
 const addNewNameCloseFolder = () =>{
@@ -328,15 +303,44 @@ const renameModal =
 /* ---------------------------------------- end renameFolder ------------------------------------------- */
 
 
+let delModal;
 
  //===================RENDER LIST====================
   const renderList = (data, index) => {
-    
     const thumbs = thumbnails[index]
+
+    /*--------------------------  Del------------------------------- */
+    
+    let pointerEvent = "visible"
     const del = (e) => {
-      props.path(e.target.dataset.path) 
-      props.showModal(true)
+      console.log(e.target.dataset.path)
+      updateDelFile(e.target.dataset.path) 
+      element.current.style.visibility = "visible"
     }
+    
+    const yes = () => {
+        deleteFiles(delFile)
+        element.current.style.visibility = "hidden"
+        element.current.style.zIndex = "0";
+    }
+
+    const no = () => {
+        element.current.style.visibility = "hidden"
+        element.current.style.zIndex = "0";
+    }
+
+    delModal = <div style={{pointerEvents: pointerEvent}} ref={element} className="modalBack">
+    <div style={{pointerEvents: pointerEvent}} className="modal">
+        <div style={{pointerEvents: pointerEvent}} className="mainModal">
+            <h2>Delete ! ! !</h2>
+            <p className="modalText">Do you want to delete the file / folder ??</p>
+            <button className="modalBtn yes"  onClick={yes}>YES</button><button className="modalBtn no" onClick={no}>NO</button>
+        </div>
+      </div>
+    </div>
+
+
+    /* ---------------------------------------------------------------------- */
 
     if(data[".tag"] === 'file'){ //FILER
       if(thumbs === undefined){
@@ -354,10 +358,9 @@ const renameModal =
               data-name={data.name} 
               data-folder={data.path_lower} 
               data-tag={data[".tag"]} onClick={downloadFile}>
-                 <i className="material-icons-outlined filesFolders">
+                <i className="material-icons-outlined filesFolders">
                   insert_drive_file
                 </i>
-                
             </td>
             <td
               title={"Download: " + data.name} 
@@ -377,8 +380,11 @@ const renameModal =
               <button className="listBtn" onClick={del}> <i data-path={data.path_lower} className="material-icons">delete_outline</i></button>
             </td>
             <td>
-              <button className="listBtn" data-path={data.path_lower} onClick={props.reName}><i data-path={data.path_lower} className="material-icons">edit</i></button>
+              <button className="listBtn" data-path={data.path_lower} onClick={reName}><i data-path={data.path_lower} className="material-icons">edit</i></button>
             </td>
+            <td>
+            <button className="listBtn"> <i className="material-icons">swap_horiz</i></button>
+          </td>
           </tr>
         ) 
       }  
@@ -416,8 +422,11 @@ const renameModal =
               <button className="listBtn" onClick={del}> <i data-path={data.path_lower} className="material-icons">delete_outline</i></button>
             </td>
             <td>
-              <button className="listBtn" data-path={data.path_lower} onClick={props.rename}><i data-path={data.path_lower} className="material-icons">edit</i></button>
+              <button className="listBtn" data-path={data.path_lower} onClick={reName}><i data-path={data.path_lower} className="material-icons">edit</i></button>
             </td>
+            <td>
+            <button className="listBtn"> <i className="material-icons">swap_horiz</i></button>
+          </td>
           </tr>
         ) 
 
@@ -450,7 +459,10 @@ return( //FOLDERS
       <button className="listBtn" onClick={del}> <i data-path={data.path_lower} className="material-icons">delete_outline</i></button>
     </td>
     <td>
-      <button className="listBtn" onClick={props.rename2}><i data-path={data.path_lower} className="material-icons">edit</i></button> 
+      <button className="listBtn" onClick={reNameFolder}><i data-path={data.path_lower} className="material-icons">edit</i></button> 
+    </td>
+    <td>
+      <button className="listBtn"> <i className="material-icons">swap_horiz</i></button>
     </td>
   </tr>
 )
@@ -470,7 +482,13 @@ return( //FOLDERS
       <title>MyBOX</title>
     </Helmet>
       {listData}
-      <RenderRename rename={props.rename} rename2={props.rename2} renFolder={props.renFolder} renFile={props.renFile}  />
+      {renameModal}
+      <tr style={{background: "white"}}>
+     <td>
+       {delModal}
+     </td>
+    </tr>
+      
     </>
   )
 }
