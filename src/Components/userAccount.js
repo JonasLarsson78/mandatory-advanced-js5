@@ -6,8 +6,8 @@ import '../Css/userAccount.css';
 
 const UserAccount = () => {
 const photoRef = useRef(null);  
-const [name, updateName] = useState("");
-const [mail, updateMail] = useState("");
+const [name, updateName] = useState("Name Lastname");
+const [mail, updateMail] = useState("name@domain.com");
 const [photoUrl, updatePhotUrl] = useState(null);
 const [country, updateCountry] = useState("us");
 
