@@ -4,11 +4,10 @@ import {token$} from './store.js';
 
 const Search = (props) => {
 
- let newFolder = props.folder
- newFolder = newFolder.substring(5);
+ let newFolder = props.folder.substring(5);
+ 
 
  const makeSerch = (e) => {
-
     const option = {
         fetch: fetch,
         accessToken: token$.value
@@ -22,12 +21,44 @@ const Search = (props) => {
         query: e.target.value,
       })
       .then(response => {
-        console.log(response)
         if (response.matches.length === 0){
-            props.updateSearch(null)
+          dbx.filesListFolder({
+            path: props.folder.substring(5),
+          
+                }).then(response =>{
+                  props.thumbnailUpdate([])
+                  props.dataUpdate(response.entries)
+      
+                        dbx.filesGetThumbnailBatch({
+                          entries: response.entries.map(entry => {
+                          return{
+                            path: entry.id,
+                            format : {'.tag': 'jpeg'},
+                            size: { '.tag': 'w32h32'},
+                            mode: { '.tag': 'strict' }  
+                            }
+                          }) 
+                        }) 
+                        .then(response => {   
+                          
+                          props.thumbnailUpdate(response.entries)
+                          })
+                          .catch(function(error) {
+                            console.log(error);
+                          });
+                  
+                })
+                .catch(function(error) {
+                  console.log(error);
+                });
         }
         else{
-          props.search(response.matches)
+          props.thumbnailUpdate([])
+          let newArr = []
+          for (let i of response.matches){
+            newArr.push(i.metadata) 
+          }
+          props.dataUpdate(newArr)
         }
       })
       .catch(function(error) {
@@ -40,6 +71,8 @@ const Search = (props) => {
            
       });
  }
+
+ 
 
 return (
     <>

@@ -12,14 +12,11 @@ import UserAccount from './userAccount'
 import { Helmet } from "react-helmet";
 import '../Css/home.css';
 
-//import TimeOutModal from './timeoutmodal.js';
-
 
 const Home = (props) => {
   const [token, updateTokenState] = useState(token$.value)
   const [data, updateData] = useState([]);
   const [thumbnails, updateThumbnails] = useState([])
-  const [search, updateSearch] = useState(null)
  
   
 
@@ -131,54 +128,14 @@ const Home = (props) => {
     updateThumbnails(data)
   } 
 
-  const searchResults = (matches) => {
-    let newArr = []
-        for (let i of matches){
-          newArr.push(i.metadata) 
-        }
-    updateSearch(newArr)
-  }
-
-
-
-
-
-
-
   
-  //const [isLoggedIn, updateIsLoggedIn] = useState(props.location.state.isLoggedIn)
-  
-  //const [search, updateSearch] = useState(null)
-  //const [createF, updateCreateF] = useState(null)
-  //const [showModal, updateShowModal] = useState(false)
-  //const [delPath, updateDelPath] = useState(null)
-  //const [uploadFile, updateUpload] = useState(null)
-  //const [, updateChanges] = useState(null);
-  //const [timeOutModal, updateTimeOutModal] = useState(null)
-  //const [setTime, updateTime] = useState(null);
-  //const [deleteDone, updateDeleteDone] = useState(false);
-  //const [editDone, updateEditDone] = useState(false)
-
-
-  /* const ResetTime = (change) => {
-    updateTime(change)
-  } */
 
   const logOut = () => {
     updateToken(null);
     updateTokenState(token$.value);
    
   }
-  /* Functions for serarch files/folders */
- /*  const searchResults = (matches) => {
-    let newArr = []
-        for (let i of matches){
-          newArr.push(i.metadata) 
-        }
-    updateSearch(newArr)
-  } */
-/* ------------ end serarch -------------- */
-
+  
 
   if(token === null){
     return <Redirect to="/" />
@@ -189,11 +146,10 @@ const Home = (props) => {
     <Helmet>
       <title>MyBOX</title>
     </Helmet>
-    {/* <TimeOutModal showModal3={tiemoutModalClick}  showTimeout={timeOutModal} resetTime={ResetTime}></TimeOutModal>} */}
     <header className="mainHeader">
       <div className="header-logo-wrap"><img id="header-logo" src={ require('../Img/Logo_mybox.png') } alt="My Box logo"/> </div>
         <span className="headerContent">
-          <Search folder={props.location.pathname} search={searchResults}  updateSearch={updateSearch}></Search>
+          <Search folder={props.location.pathname} dataUpdate={dataUpdate} thumbnailUpdate={thumbnailUpdate} />
           <span><UserAccount/></span>
           <span><button className="headerLogOutBtn" onClick={logOut}>LogOut</button></span>
         </span>
@@ -209,7 +165,7 @@ const Home = (props) => {
         
         <table className="mainTable">
           <tbody>
-            <ListItems folder={props.location.pathname} dataUpdate={dataUpdate} thumbnailUpdate={thumbnailUpdate}/* path={path} */ /* showModal={modalOnClick} */ /* showModal3={tiemoutModalClick} */ search={search} /* createFolder={createF} */  /* uploadFile={uploadFile} */ /* pollChanges={pollChanges} */ /* setTime={setTime} */ /* resetTime={ResetTime} */ /* delPath={delPath} */ /* deleteDone={deleteDone} */ /* editIsDone={editIsDone}  *//* editDone={editDone} */ renderData={data} thumbnails={thumbnails}></ListItems>
+            <ListItems folder={props.location.pathname} dataUpdate={dataUpdate} thumbnailUpdate={thumbnailUpdate}  renderData={data} thumbnails={thumbnails}></ListItems>
           </tbody>
         </table>
       </main>
