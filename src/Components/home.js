@@ -10,6 +10,7 @@ import Breadcrumbs from './breadcrumbs'
 import UploadFile from './uploadfile';
 import UserAccount from './userAccount'
 import { Helmet } from "react-helmet";
+import LogOut from './logout'
 import '../Css/home.css';
 
 
@@ -130,11 +131,11 @@ const Home = (props) => {
 
   
 
-  const logOut = () => {
+  /* const logOut = () => {
     updateToken(null);
     updateTokenState(token$.value);
    
-  }
+  } */
   
 
   if(token === null){
@@ -151,7 +152,7 @@ const Home = (props) => {
         <span className="headerContent">
           <Search folder={props.location.pathname} dataUpdate={dataUpdate} thumbnailUpdate={thumbnailUpdate} />
           <span><UserAccount/></span>
-          <span><button className="headerLogOutBtn" onClick={logOut}>LogOut</button></span>
+          <span><LogOut updateTokenState={updateTokenState}/></span>
         </span>
     </header>
     <div className="mainWrapper">
