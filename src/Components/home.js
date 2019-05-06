@@ -19,8 +19,6 @@ const Home = (props) => {
   const [thumbnails, updateThumbnails] = useState([])
   const [thumbnailsLoaded, updateThumbnailsLoaded] = useState(false);
 
-  console.log("loaded", thumbnailsLoaded);
-
 
   useEffect(() => {
 

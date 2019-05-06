@@ -19,7 +19,7 @@ import {token$} from './store.js';
 const ListItems = (props) => {
   
  //===================RENDER LIST====================
-  const arrIdx = [".jpg", ".png", ".pdf"] // Array med filer som thumb. inte funkar.
+  const arrIdx = [".jpg", ".png", ".pdf"] // Array med filer som vissar thumb...
 
   const renderList = (data, index) => {
     
