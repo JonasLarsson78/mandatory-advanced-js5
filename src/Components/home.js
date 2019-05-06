@@ -7,7 +7,6 @@ import ListItems from './listitems'
 import CreateFolder from './createfolder'
 import Search from './search'
 import Breadcrumbs from './breadcrumbs'
-import { deleteFiles } from './delete'
 import UploadFile from './uploadfile';
 import UserAccount from './userAccount'
 import { Helmet } from "react-helmet";
@@ -112,12 +111,10 @@ const Home = (props) => {
   
 
   const dataUpdate = (data) => {
-    
     updateData(data)
   }
 
   const thumbnailUpdate = (data) => {
-    console.log(data)
     updateThumbnails(data)
   }
 
@@ -165,11 +162,11 @@ const Home = (props) => {
     updateTime(change)
   } */
 
-  /* const logOut = () => {
+  const logOut = () => {
     updateToken(null);
     updateTokenState(token$.value);
-    //updateIsLoggedIn(false)
-  } */
+   
+  }
   /* Functions for serarch files/folders */
  /*  const searchResults = (matches) => {
     let newArr = []
@@ -231,7 +228,7 @@ const Home = (props) => {
         <span className="headerContent">
           <Search folder={props.location.pathname} search={searchResults}  updateSearch={updateSearch}></Search>
           <span><UserAccount/></span>
-          <span><button className="headerLogOutBtn" /* onClick={logOut} */>LogOut</button></span>
+          <span><button className="headerLogOutBtn" onClick={logOut}>LogOut</button></span>
         </span>
     </header>
     <div className="mainWrapper">
@@ -245,7 +242,7 @@ const Home = (props) => {
         
         <table className="mainTable">
           <tbody>
-            <ListItems folder={props.location.pathname} /* path={path} */ /* showModal={modalOnClick} */ /* showModal3={tiemoutModalClick} */ search={search} /* createFolder={createF} */  /* uploadFile={uploadFile} */ /* pollChanges={pollChanges} */ /* setTime={setTime} */ /* resetTime={ResetTime} */ /* delPath={delPath} */ /* deleteDone={deleteDone} */ /* editIsDone={editIsDone}  *//* editDone={editDone} */ renderData={data} thumbnails={thumbnails}></ListItems>
+            <ListItems folder={props.location.pathname} dataUpdate={dataUpdate} thumbnailUpdate={thumbnailUpdate}/* path={path} */ /* showModal={modalOnClick} */ /* showModal3={tiemoutModalClick} */ search={search} /* createFolder={createF} */  /* uploadFile={uploadFile} */ /* pollChanges={pollChanges} */ /* setTime={setTime} */ /* resetTime={ResetTime} */ /* delPath={delPath} */ /* deleteDone={deleteDone} */ /* editIsDone={editIsDone}  *//* editDone={editDone} */ renderData={data} thumbnails={thumbnails}></ListItems>
           </tbody>
         </table>
       </main>

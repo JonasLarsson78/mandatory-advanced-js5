@@ -3,10 +3,10 @@ import { Dropbox } from 'dropbox';
 import {token$} from './store.js';
 
 const Search = (props) => {
-console.log(props)
+//console.log(props)
  let newFolder = props.folder
  newFolder = newFolder.substring(5);
-console.log(newFolder)
+//console.log(newFolder)
  const makeSerch = (e) => {
 
     const option = {
