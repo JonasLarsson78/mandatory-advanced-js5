@@ -18,7 +18,8 @@ const ListItems = (props) => {
  //===================RENDER LIST====================
 
   const renderList = (data, index) => {
-   const thumbs = props.thumbnails[index]
+    
+   const thumbs = props.thumbnailsLoaded ? props.thumbnails[index] : undefined;
 
     if(data[".tag"] === 'file'){ //FILER
      
