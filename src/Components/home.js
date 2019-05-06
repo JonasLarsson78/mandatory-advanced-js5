@@ -190,41 +190,6 @@ const Home = (props) => {
   } */
 /* ------------ end serarch -------------- */
 
-/* const pollChanges = (change) => {
-  //console.log(change)
-    updateChanges(change)
-  
-} */
-
-/*  Function for create folder */
-  /* const create = (folder) => {
-    updateCreateF(folder)
-  } */
-/* ----------- end create folder----------- */
-  /* const upload = (file) => {
-    
-   updateUpload(file)
-  } */
-
-  /* Functions for del files/folders */
- /*  const del = (path) =>{
-   deleteFiles(path)
-  } */
-  /* const modalOnClick = (x) =>{
-    updateShowModal(x)
-  } */
-  /* const tiemoutModalClick = (change) => {
-    updateTimeOutModal(change)
-  } */
-
-  /* const path = (path) => {
-    updateDelPath(path)
-  } */
-  /* ----------- end del ----------------- */
-
-  
-  
-
 
   if(token === null){
     return <Redirect to="/" />
