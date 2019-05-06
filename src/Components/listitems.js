@@ -16,6 +16,7 @@ import MoveFiles from './movefiles.js'
 const ListItems = (props) => {
   
  //===================RENDER LIST====================
+  const arrIdx = [".txt"] // Array med filer som thumb. inte funkar.
 
   const renderList = (data, index) => {
     
@@ -24,6 +25,13 @@ const ListItems = (props) => {
     if(data[".tag"] === 'file'){ //FILER
      
       let newThumbs = thumbs === undefined ? <i className="material-icons-outlined filesFolders">insert_drive_file</i> : <img src={"data:image/jpeg;base64," + thumbs.thumbnail} alt=""/>
+      
+      let idx = data.name.lastIndexOf('.');
+      let newIdx = data.name.substring(idx);
+
+      if (arrIdx.includes(newIdx)){
+        newThumbs = <i className="material-icons-outlined filesFolders">insert_drive_file</i>
+      }
 
         return( //FILES
           <tr
