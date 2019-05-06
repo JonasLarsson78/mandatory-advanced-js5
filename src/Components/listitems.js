@@ -8,6 +8,7 @@ import { Helmet } from "react-helmet";
 import Delete from './delete'
 import RenameFile  from './renameFiles'
 import ReNameFolder from './renameFolder.js';
+import MoveFiles from './movefiles.js'
 
 
 
@@ -64,7 +65,7 @@ const ListItems = (props) => {
               <RenameFile dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} folder={props.folder} path={data.path_lower}/>
             </td>
             <td>
-            <button className="listBtn"> <i className="material-icons">swap_horiz</i></button>
+              <MoveFiles dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} folder={props.folder} path={data.path_lower}/>
           </td>
           </tr>
         ) 
@@ -87,14 +88,13 @@ return( //FOLDERS
       ...
     </td>
     <td>
-    <Delete dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} path={data.path_lower} folder={props.folder}/>
+      <Delete dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} path={data.path_lower} folder={props.folder}/>
     </td>
     <td>
-    <ReNameFolder dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} folder={props.folder} path={data.path_lower}/>
-
+      <ReNameFolder dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} folder={props.folder} path={data.path_lower}/>
     </td>
     <td>
-      <button className="listBtn"> <i className="material-icons">swap_horiz</i></button>
+      <MoveFiles dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} folder={props.folder} path={data.path_lower}/>
     </td>
   </tr>
     )
