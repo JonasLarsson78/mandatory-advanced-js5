@@ -18,7 +18,24 @@ const Home = (props) => {
   const [token, updateTokenState] = useState(token$.value)
   const [data, updateData] = useState([]);
   const [thumbnails, updateThumbnails] = useState([])
- 
+  const [thumbnailsLoaded, updateThumbnailsLoaded] = useState(false);
+
+  console.log("loaded", thumbnailsLoaded);
+
+
+  useEffect(() => {
+
+    if (thumbnails.length === data.length) {
+      const isLoaded = thumbnails.every((x, idx) => {
+        return x[".tag"] === "failure" || x.metadata.id === data[idx].id;
+      });
+
+      updateThumbnailsLoaded(isLoaded);      
+    } else {
+      updateThumbnailsLoaded(false);
+    }
+
+  }, [data, thumbnails]);
   
 
   useEffect(() => {
@@ -53,8 +70,7 @@ const Home = (props) => {
           }) 
         }) 
         .then(response => {   
-          
-          updateThumbnails(response.entries)
+            updateThumbnails(response.entries)
           })
           .catch(function(error) {
             console.log(error);
@@ -66,6 +82,7 @@ const Home = (props) => {
       .catch(function(error) {
         console.log(error);
        });
+
      
     }
     else{
@@ -97,7 +114,7 @@ const Home = (props) => {
           }) 
         }) 
         .then(response => {   
-          
+          console.log(response)
           updateThumbnails(response.entries)
           })
           
@@ -113,13 +130,8 @@ const Home = (props) => {
     
        
     }
-
-   
-
   }, [props.location.pathname])
 
-  
-  
 
   const dataUpdate = (data) => {
     updateData(data)
@@ -150,7 +162,7 @@ const Home = (props) => {
     <header className="mainHeader">
       <div className="header-logo-wrap"><img id="header-logo" src={ require('../Img/Logo_mybox.png') } alt="My Box logo"/> </div>
         <span className="headerContent">
-          <Search folder={props.location.pathname} dataUpdate={dataUpdate} thumbnailUpdate={thumbnailUpdate} />
+          <Search searchData={data} folder={props.location.pathname} dataUpdate={dataUpdate} thumbnailUpdate={thumbnailUpdate} />
           <span><UserAccount/></span>
           <span><LogOut updateTokenState={updateTokenState}/></span>
         </span>
@@ -166,7 +178,7 @@ const Home = (props) => {
         
         <table className="mainTable">
           <tbody>
-            <ListItems folder={props.location.pathname} dataUpdate={dataUpdate} thumbnailUpdate={thumbnailUpdate}  renderData={data} thumbnails={thumbnails}></ListItems>
+            <ListItems thumbnailsLoaded={thumbnailsLoaded} folder={props.location.pathname} dataUpdate={dataUpdate} thumbnailUpdate={thumbnailUpdate}  renderData={data} thumbnails={thumbnails}></ListItems>
           </tbody>
         </table>
       </main>
