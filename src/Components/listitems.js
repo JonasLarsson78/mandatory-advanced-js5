@@ -95,7 +95,6 @@ const ListItems = (props) => {
     .then(response => {
       dbx.filesListFolder({
         path: props.folder.substring(5),
-      
       })
       .then(response => {
         props.dataUpdate(response.entries)
