@@ -13,7 +13,6 @@
 }
 .modalBack{
     visibility: hidden;
-    
     position: absolute;
     top: 0px;
     left: 0px;
@@ -38,6 +37,7 @@
 }
 .modalText{
     font-size: 14px;
+    color: black;
 }
 .modalBtn2{
     position: relative;
