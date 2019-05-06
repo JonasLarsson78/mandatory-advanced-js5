@@ -6,7 +6,6 @@ import '../Css/upload.css';
 
 
 const UploadFile = (props) => {
-  console.log(props)
   const [uploadMessage, updateMessage] = useState(null)
   let uploadFile = '';
 

@@ -39,8 +39,6 @@ const Home = (props) => {
       })
       .then(response => {
         
-        let newData = [...response.entries];
-        console.log(newData)
         updateThumbnails([]);
         updateData(response.entries)
         

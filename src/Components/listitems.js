@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React from 'react';
 import {Link}from "react-router-dom";
 import '../Css/listitems.css';
 import {readableBytes} from './readablebytes'
@@ -14,7 +14,6 @@ import ReNameFolder from './renameFolder.js';
 
 const ListItems = (props) => {
  
- const clearInput = useRef(null)
  // const clearInputFolder = useRef(null)
  
  
