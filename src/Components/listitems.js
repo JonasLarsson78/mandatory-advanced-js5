@@ -14,12 +14,7 @@ import MoveFiles from './movefiles.js'
 
 
 const ListItems = (props) => {
- 
- // const clearInputFolder = useRef(null)
- 
- 
- //const searchArr = props.search;
- 
+  
  //===================RENDER LIST====================
 
   const renderList = (data, index) => {
