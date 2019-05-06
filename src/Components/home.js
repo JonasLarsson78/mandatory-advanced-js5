@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import { Dropbox } from 'dropbox';
 import { Redirect } from "react-router-dom";
-import { updateToken } from './store.js'
 import {token$} from './store.js';
 import ListItems from './listitems'
 import CreateFolder from './createfolder'
@@ -140,15 +139,6 @@ const Home = (props) => {
   const thumbnailUpdate = (data) => {
     updateThumbnails(data)
   } 
-
-  
-
-  /* const logOut = () => {
-    updateToken(null);
-    updateTokenState(token$.value);
-   
-  } */
-  
 
   if(token === null){
     return <Redirect to="/" />
