@@ -20,7 +20,8 @@ const Home = (props) => {
   const [data, updateData] = useState([]);
   const [thumbnails, updateThumbnails] = useState([])
   const [search, updateSearch] = useState(null)
-  //const searchArr = props.search;
+ 
+  
 
   useEffect(() => {
    
@@ -37,9 +38,12 @@ const Home = (props) => {
       
       })
       .then(response => {
+        
+        let newData = [...response.entries];
+        console.log(newData)
         updateThumbnails([]);
         updateData(response.entries)
-
+        
 
         dbx.filesGetThumbnailBatch({
           
@@ -59,12 +63,14 @@ const Home = (props) => {
           .catch(function(error) {
             console.log(error);
            });
-
+           
 
       })
+      
       .catch(function(error) {
         console.log(error);
        });
+     
     }
     else{
       
@@ -75,9 +81,11 @@ const Home = (props) => {
       
       })
       .then(response => {
-   
+        
         updateThumbnails([]);
         updateData(response.entries)
+
+
 
         dbx.filesGetThumbnailBatch({
           
@@ -94,13 +102,18 @@ const Home = (props) => {
           
           updateThumbnails(response.entries)
           })
+          
           .catch(function(error) {
             console.log(error);
            });
+           
       })
       .catch(function(error) {
         console.log(error);
        });
+
+    
+       
     }
 
    
@@ -116,7 +129,7 @@ const Home = (props) => {
 
   const thumbnailUpdate = (data) => {
     updateThumbnails(data)
-  }
+  } 
 
   const searchResults = (matches) => {
     let newArr = []

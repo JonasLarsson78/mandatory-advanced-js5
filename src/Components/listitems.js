@@ -19,8 +19,6 @@ const ListItems = (props) => {
  
  
  //const searchArr = props.search;
- let data = props.renderData
-
  
  //===================RENDER LIST====================
 
