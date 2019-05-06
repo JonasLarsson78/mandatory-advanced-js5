@@ -255,7 +255,7 @@ inputElFolder.current.style.display = "none"
   
 
 if(data[".tag"] === 'folder'){ //FOLDER
- console.log(props.match)
+
 return( //FOLDERS
   <tr key={data.id} className="listFiles" data-name={data.name} data-folder={data.path_lower} data-tag={data[".tag"]}>
     <td>

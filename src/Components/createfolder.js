@@ -45,7 +45,7 @@ const CreateFolder = (props) => {
        console.log(newFolder)
    
        
-     
+       console.log(newFolder)
        dbx.filesListFolder({
         path: newFolder,
       
