@@ -6,7 +6,6 @@ import { token$ } from './store.js';
 const MoveFiles = (props) => {
     const moveModal = useRef(null);
     let moveFolders = '';
-    console.log(props)
 
 
     /*========= API Request =========
