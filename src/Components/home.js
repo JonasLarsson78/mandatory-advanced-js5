@@ -20,6 +20,7 @@ const Home = (props) => {
   const [thumbnailsLoaded, updateThumbnailsLoaded] = useState(false);
 
 
+
   useEffect(() => {
 
     if (thumbnails.length === data.length) {
@@ -36,7 +37,8 @@ const Home = (props) => {
   
 
   useEffect(() => {
-   
+
+  
     const option = {
       fetch: fetch,
       accessToken: token$.value
@@ -87,7 +89,6 @@ const Home = (props) => {
       let newFolder = props.location.pathname;
       newFolder = newFolder.substring(5)
 
-      console.log(newFolder);
       dbx.filesListFolder({
         path: newFolder,
       
@@ -123,10 +124,8 @@ const Home = (props) => {
       .catch(function(error) {
         console.log(error);
        });
-
-    
-       
     }
+   
   }, [props.location.pathname])
 
 
