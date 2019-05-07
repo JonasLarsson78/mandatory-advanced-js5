@@ -1,6 +1,5 @@
-import React, {useState, useRef} from 'react';
-import {token$, favorites$, updateFavoriteToken} from './store.js';
-import { Dropbox } from 'dropbox';
+import React from 'react';
+import {updateFavoriteToken} from './store.js';
 
 /*
 

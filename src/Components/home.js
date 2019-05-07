@@ -11,7 +11,6 @@ import UserAccount from './userAccount';
 import { Helmet } from "react-helmet";
 import LogOut from './logout'
 import FavoriteList from "./favoriteList.js"
-import AddFavorites from "./addFavorites.js"
 import {favorites$} from './store'
 import {updateFavoriteToken} from './store'
 import '../Css/home.css';

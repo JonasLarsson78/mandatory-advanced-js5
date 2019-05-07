@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {token$, favorites$, updateFavoriteToken} from './store.js';
-import { Dropbox } from 'dropbox';
+import {favorites$} from './store.js';
 import {Link} from "react-router-dom";
 import {downloadFile} from "./dowload"
 
