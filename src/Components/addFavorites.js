@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {token$} from './store.js';
+import React, {useState, useRef} from 'react';
+import {token$, favorites$, updateFavoriteToken} from './store.js';
 import { Dropbox } from 'dropbox';
 
 /*
@@ -22,17 +22,31 @@ A direct update of the favorite_state is not required, but obviously better.
 */
 
 const AddFavorites = (props) => {
-    const [favorites, updateFavorites] = useState([]);
 //////////////////////////////////////////////////////////////////////////////////////////////////
-    const add = (e) => {
-        let newArray = [...favorites, e.target.dataset.id]
-        updateFavorites(newArray)
+    let favArray = props.favorites;
+    let data = props.data;
+
+    const isFavorite = !!favArray.find(x => x.id === data.id);
+
+    //console.log(isFavorite);
+    console.log(favorites$.value)
+//////////////////////////////////////////////////////////////////////////////////////////////////
+    const add = () => {
+        updateFavoriteToken([...favArray, {...data}]);
+        return;
     }
-    console.log(favorites)
+    
+//////////////////////////////////////////////////////////////////////////////////////////////////
+    const remove = () => {
+        updateFavoriteToken(favArray.filter(x => x.id !== data.id));
+    }
 /////////////////////////////////////////////////////////////////////////////////////////////////
-    return (
-        <button className="listBtn" data-path={props.path} data-id={props.id} onClick={add}><i className="material-icons" data-path={props.path} data-id={props.id}>grade_outline</i></button>
-    )
+    if (isFavorite) {
+        return <button className="listBtn" onClick={remove}><i className="material-icons">favorite</i></button>;
+    }
+
+    return <button className="listBtn" onClick={add}><i className="material-icons">favorite_border</i></button>;
+    
 }
 
 export default AddFavorites;

@@ -1,11 +1,12 @@
 import React from 'react';
-import { updateToken } from './store.js'
+import { updateToken, updateFavoriteToken } from './store.js'
 import {token$} from './store.js';
 
 const LogOut = (props) => {
     const logOut = () =>{
         updateToken(null);
         props.updateTokenState(token$.value);
+        updateFavoriteToken(null);
     }
 
 return(

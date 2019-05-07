@@ -8,26 +8,35 @@ import { Helmet } from "react-helmet";
 import Delete from './delete'
 import RenameFile  from './renameFiles'
 import ReNameFolder from './renameFolder.js';
+import MoveFiles from './movefiles.js'
+import { Dropbox } from 'dropbox';
+import {token$, favorites$ } from './store.js';
 import AddFavorites from "./addFavorites.js";
 
 
 
 
+
 const ListItems = (props) => {
- 
- // const clearInputFolder = useRef(null)
- 
- 
- //const searchArr = props.search;
- 
+  
  //===================RENDER LIST====================
+  const arrIdx = [".jpg", ".png", ".pdf"] // Array med filer som vissar thumb...
 
   const renderList = (data, index) => {
-   const thumbs = props.thumbnails[index]
-   
+    
+   const thumbs = props.thumbnailsLoaded ? props.thumbnails[index] : undefined;
+
     if(data[".tag"] === 'file'){ //FILER
      
       let newThumbs = thumbs === undefined ? <i className="material-icons-outlined filesFolders">insert_drive_file</i> : <img src={"data:image/jpeg;base64," + thumbs.thumbnail} alt=""/>
+      
+      let idx = data.name.lastIndexOf('.');
+      let newIdx = data.name.substring(idx);
+
+      if (!arrIdx.includes(newIdx)){
+        newThumbs = <i className="material-icons-outlined filesFolders">insert_drive_file</i>
+      }
+      
 
         return( //FILES
           <tr
@@ -65,17 +74,53 @@ const ListItems = (props) => {
               <RenameFile dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} folder={props.folder} path={data.path_lower}/>
             </td>
             <td>
-              <button className="listBtn"> <i className="material-icons">swap_horiz</i></button>
+              <AddFavorites data={data} favorites={props.favorites} favUpdate={props.favUpdate} id={data.id} path={data.path_lower} ></AddFavorites>
             </td>
             <td>
-              <AddFavorites id={data.id} path={data.path_lower} ></AddFavorites>
+                <MoveFiles dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} folder={props.folder} path={data.path_lower}/>
             </td>
           </tr>
         ) 
       }
+  const renameBrackets = (rename, newUrl) =>{
+    const option = {
+      fetch: fetch,
+      accessToken: token$.value
+    };
+    
+    const dbx = new Dropbox(
+      option,
+    );
+    dbx.filesMoveV2({
+      from_path: rename,
+      to_path: newUrl,
+      autorename: true
+    })
+    .then(response => {
+      dbx.filesListFolder({
+        path: props.folder.substring(5),
+      })
+      .then(response => {
+        props.dataUpdate(response.entries)
+      })
+      
+    })
+    .catch(error => {
+      console.log(error);
+    });
   
+  }
 
 if(data[".tag"] === 'folder'){ //FOLDER
+
+  if (data.name.includes("(")){
+
+    let brak = data.name.replace(/[()]/g,'')
+    let newName = data.path_lower.substring(0, data.path_lower.lastIndexOf("/")) + "/" + brak;
+    
+    renameBrackets(data.path_lower, newName)
+    data.name = brak
+  }
 return( //FOLDERS
   <tr key={data.id} className="listFiles" data-name={data.name} data-folder={data.path_lower} data-tag={data[".tag"]}>
     <td>
@@ -91,17 +136,16 @@ return( //FOLDERS
       ...
     </td>
     <td>
-    <Delete dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} path={data.path_lower} folder={props.folder}/>
+      <Delete dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} path={data.path_lower} folder={props.folder}/>
     </td>
     <td>
-    <ReNameFolder dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} folder={props.folder} path={data.path_lower}/>
-
+      <ReNameFolder dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} folder={props.folder} path={data.path_lower}/>
     </td>
     <td>
-      <button className="listBtn"> <i className="material-icons">swap_horiz</i></button>
+      <MoveFiles dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} folder={props.folder} path={data.path_lower}/>
     </td>
     <td>
-        <AddFavorites key={data.id} path={data.path_lower}></AddFavorites>
+        <AddFavorites data={data} favorites={props.favorites} favUpdate={props.favUpdate} path={data.path_lower}></AddFavorites>
     </td>
   </tr>
     )

@@ -5,9 +5,10 @@ import {token$} from './store.js';
 const Search = (props) => {
 
  let newFolder = props.folder.substring(5);
- 
 
  const makeSerch = (e) => {
+  
+
     const option = {
         fetch: fetch,
         accessToken: token$.value
@@ -21,12 +22,13 @@ const Search = (props) => {
         query: e.target.value,
       })
       .then(response => {
+        console.log(response)
         if (response.matches.length === 0){
           dbx.filesListFolder({
             path: props.folder.substring(5),
           
                 }).then(response =>{
-                  props.thumbnailUpdate([])
+                  
                   props.dataUpdate(response.entries)
       
                         dbx.filesGetThumbnailBatch({
@@ -53,12 +55,18 @@ const Search = (props) => {
                 });
         }
         else{
-          props.thumbnailUpdate([])
+          
+           props.thumbnailUpdate([])
+         
+         
           let newArr = []
           for (let i of response.matches){
+            
             newArr.push(i.metadata) 
           }
-          props.dataUpdate(newArr)
+          props.dataUpdate(newArr) 
+          
+          
         }
       })
       .catch(function(error) {
@@ -72,12 +80,15 @@ const Search = (props) => {
       });
  }
 
- 
+
+
 
 return (
+  
     <>
     <i className="material-icons header-serach-icon">search</i>
     <input className="header-search" placeholder="Search..." type="text" onChange={makeSerch} />
+    
     </>
     )
 }

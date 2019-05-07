@@ -1,8 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import { Dropbox } from 'dropbox';
 import { Redirect } from "react-router-dom";
-import { updateToken } from './store.js'
-import {token$} from './store.js';
+import {token$, favorites$, updateFavoriteToken } from './store.js';
 import ListItems from './listitems'
 import CreateFolder from './createfolder'
 import Search from './search'
@@ -11,6 +10,8 @@ import UploadFile from './uploadfile';
 import UserAccount from './userAccount'
 import { Helmet } from "react-helmet";
 import LogOut from './logout'
+//import favoriteList from "./favoriteList.js"
+import AddFavorites from "./addFavorites.js"
 import '../Css/home.css';
 
 
@@ -18,7 +19,27 @@ const Home = (props) => {
   const [token, updateTokenState] = useState(token$.value)
   const [data, updateData] = useState([]);
   const [thumbnails, updateThumbnails] = useState([])
- 
+  const [thumbnailsLoaded, updateThumbnailsLoaded] = useState(false);
+  const [favorites, updateFavorites] = useState([]);
+
+  useEffect(() => {
+    const subscription = favorites$.subscribe(updateFavorites);
+    return () => subscription.unsubscribe();
+  }, []);
+
+  useEffect(() => {
+
+    if (thumbnails.length === data.length) {
+      const isLoaded = thumbnails.every((x, idx) => {
+        return x[".tag"] === "failure" || x.metadata.id === data[idx].id;
+      });
+
+      updateThumbnailsLoaded(isLoaded);      
+    } else {
+      updateThumbnailsLoaded(false);
+    }
+
+  }, [data, thumbnails]);
   
 
   useEffect(() => {
@@ -53,8 +74,7 @@ const Home = (props) => {
           }) 
         }) 
         .then(response => {   
-          
-          updateThumbnails(response.entries)
+            updateThumbnails(response.entries)
           })
           .catch(function(error) {
             console.log(error);
@@ -66,6 +86,7 @@ const Home = (props) => {
       .catch(function(error) {
         console.log(error);
        });
+
      
     }
     else{
@@ -97,7 +118,7 @@ const Home = (props) => {
           }) 
         }) 
         .then(response => {   
-          
+          console.log(response)
           updateThumbnails(response.entries)
           })
           
@@ -113,13 +134,8 @@ const Home = (props) => {
     
        
     }
-
-   
-
   }, [props.location.pathname])
 
-  
-  
 
   const dataUpdate = (data) => {
     updateData(data)
@@ -129,14 +145,10 @@ const Home = (props) => {
     updateThumbnails(data)
   } 
 
-  
-
-  /* const logOut = () => {
-    updateToken(null);
-    updateTokenState(token$.value);
-   
-  } */
-  
+  const favUpdate = (data) => {
+    updateFavorites(data);
+    updateFavoriteToken(data);
+  }
 
   if(token === null){
     return <Redirect to="/" />
@@ -150,7 +162,7 @@ const Home = (props) => {
     <header className="mainHeader">
       <div className="header-logo-wrap"><img id="header-logo" src={ require('../Img/Logo_mybox.png') } alt="My Box logo"/> </div>
         <span className="headerContent">
-          <Search folder={props.location.pathname} dataUpdate={dataUpdate} thumbnailUpdate={thumbnailUpdate} />
+          <Search searchData={data} folder={props.location.pathname} dataUpdate={dataUpdate} thumbnailUpdate={thumbnailUpdate} />
           <span><UserAccount/></span>
           <span><LogOut updateTokenState={updateTokenState}/></span>
         </span>
@@ -166,13 +178,13 @@ const Home = (props) => {
         
         <table className="mainTable">
           <tbody>
-            <ListItems folder={props.location.pathname} dataUpdate={dataUpdate} thumbnailUpdate={thumbnailUpdate}  renderData={data} thumbnails={thumbnails}></ListItems>
+            <ListItems favorites={favorites} favUpdate={favUpdate} thumbnailsLoaded={thumbnailsLoaded} folder={props.location.pathname} dataUpdate={dataUpdate} thumbnailUpdate={thumbnailUpdate}  renderData={data} thumbnails={thumbnails}></ListItems>
           </tbody>
         </table>
       </main>
       <aside className="rightSide">
         <div className="aside"></div>
-        höger aside
+        {/* {favoriteList} */}
       </aside>
     </div>
     
