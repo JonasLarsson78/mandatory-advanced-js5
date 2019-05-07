@@ -26,8 +26,6 @@ const ListItems = (props) => {
 
   const arrIdx = [".jpg", ".jpeg", ".png", ".pdf"] // Array med filer som vissar thumb...
 
-  
-
   const renderList = (data, index) => {
 
 
@@ -94,7 +92,7 @@ const ListItems = (props) => {
               <RenameFile dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} folder={props.folder} path={data.path_lower}/>
             </td>
             <td>
-              <MoveFiles dataUpdate={props.dataUpdate} folder={props.folder} />
+              <MoveFiles dataUpdate={props.dataUpdate} folder={props.folder} path={data.path_lower} name={data.name}/>
           </td>
           
           </tr>
@@ -161,7 +159,7 @@ return( //FOLDERS
       <ReNameFolder dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} folder={props.folder} path={data.path_lower}/>
     </td>
     <td>
-      <MoveFiles dataUpdate={props.dataUpdate} folder={props.folder} path={data.path_lower}/>
+      <MoveFiles dataUpdate={props.dataUpdate} folder={props.folder} path={data.path_lower} name={data.name}/>
     </td>
   </tr>
     )
