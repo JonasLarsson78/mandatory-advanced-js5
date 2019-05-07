@@ -19,10 +19,9 @@ import {token$} from './store.js';
 const ListItems = (props) => {
   
  //===================RENDER LIST====================
-  const arrIdx = [".jpg", ".png", ".pdf"] // Array med filer som vissar thumb...
+  const arrIdx = [".jpg", ".jpeg", ".png", ".pdf"] // Array med filer som vissar thumb...
 
   const renderList = (data, index) => {
-    
    const thumbs = props.thumbnailsLoaded ? props.thumbnails[index] : undefined;
 
     if(data[".tag"] === 'file'){ //FILER
@@ -67,7 +66,7 @@ const ListItems = (props) => {
               {lastEdited(data.server_modified)}
             </td>
             <td>
-              <Delete dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} path={data.path_lower} folder={props.folder}/>
+              <Delete tag={data[".tag"]} name={data.name} dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} path={data.path_lower} folder={props.folder}/>
             </td>
             <td>
               <RenameFile dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} folder={props.folder} path={data.path_lower}/>
@@ -132,7 +131,7 @@ return( //FOLDERS
       ...
     </td>
     <td>
-      <Delete dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} path={data.path_lower} folder={props.folder}/>
+      <Delete tag={data[".tag"]} name={data.name} dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} path={data.path_lower} folder={props.folder}/>
     </td>
     <td>
       <ReNameFolder dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} folder={props.folder} path={data.path_lower}/>
