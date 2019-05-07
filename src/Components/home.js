@@ -13,7 +13,7 @@ import LogOut from './logout'
 //import favoriteList from "./favoriteList.js"
 import AddFavorites from "./addFavorites.js"
 import {favorites$} from './store'
-import {updateFavoriteToken} from '.store'
+import {updateFavoriteToken} from './store'
 import '../Css/home.css';
 
 
