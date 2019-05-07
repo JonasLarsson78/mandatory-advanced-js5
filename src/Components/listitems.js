@@ -8,6 +8,7 @@ import { Helmet } from "react-helmet";
 import Delete from './delete'
 import RenameFile  from './renameFiles'
 import ReNameFolder from './renameFolder.js';
+import AddFavorites from "./addFavorites.js";
 
 
 
@@ -23,7 +24,7 @@ const ListItems = (props) => {
 
   const renderList = (data, index) => {
    const thumbs = props.thumbnails[index]
-
+   
     if(data[".tag"] === 'file'){ //FILER
      
       let newThumbs = thumbs === undefined ? <i className="material-icons-outlined filesFolders">insert_drive_file</i> : <img src={"data:image/jpeg;base64," + thumbs.thumbnail} alt=""/>
@@ -64,8 +65,11 @@ const ListItems = (props) => {
               <RenameFile dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} folder={props.folder} path={data.path_lower}/>
             </td>
             <td>
-            <button className="listBtn"> <i className="material-icons">swap_horiz</i></button>
-          </td>
+              <button className="listBtn"> <i className="material-icons">swap_horiz</i></button>
+            </td>
+            <td>
+              <AddFavorites id={data.id} path={data.path_lower} ></AddFavorites>
+            </td>
           </tr>
         ) 
       }
@@ -95,6 +99,9 @@ return( //FOLDERS
     </td>
     <td>
       <button className="listBtn"> <i className="material-icons">swap_horiz</i></button>
+    </td>
+    <td>
+        <AddFavorites key={data.id} path={data.path_lower}></AddFavorites>
     </td>
   </tr>
     )
