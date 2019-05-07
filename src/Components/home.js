@@ -10,6 +10,10 @@ import UploadFile from './uploadfile';
 import UserAccount from './userAccount';
 import { Helmet } from "react-helmet";
 import LogOut from './logout'
+//import favoriteList from "./favoriteList.js"
+import AddFavorites from "./addFavorites.js"
+import {favorites$} from './store'
+import {updateFavoriteToken} from '.store'
 import '../Css/home.css';
 
 
@@ -18,8 +22,12 @@ const Home = (props) => {
   const [data, updateData] = useState([]);
   const [thumbnails, updateThumbnails] = useState([])
   const [thumbnailsLoaded, updateThumbnailsLoaded] = useState(false);
+  const [favorites, updateFavorites] = useState([]);
 
-  
+  useEffect(() => {
+    const subscription = favorites$.subscribe(updateFavorites);
+    return () => subscription.unsubscribe();
+  }, []);
 
   useEffect(() => {
 
@@ -248,6 +256,11 @@ const Home = (props) => {
     updateThumbnails(data)
   } 
 
+  const favUpdate = (data) => {
+    updateFavorites(data);
+    updateFavoriteToken(data);
+  }
+
   if(token === null){
     return <Redirect to="/" />
   }
@@ -276,13 +289,13 @@ const Home = (props) => {
         
         <table className="mainTable">
           <tbody>
-            <ListItems thumbnailsLoaded={thumbnailsLoaded} folder={props.location.pathname} dataUpdate={dataUpdate} thumbnailUpdate={thumbnailUpdate}  renderData={data} thumbnails={thumbnails}></ListItems>
+            <ListItems favorites={favorites} favUpdate={favUpdate} thumbnailsLoaded={thumbnailsLoaded} folder={props.location.pathname} dataUpdate={dataUpdate} thumbnailUpdate={thumbnailUpdate}  renderData={data} thumbnails={thumbnails}></ListItems>
           </tbody>
         </table>
       </main>
       <aside className="rightSide">
         <div className="aside"></div>
-        höger aside
+        {/* {favoriteList} */}
       </aside>
     </div>
     

@@ -10,7 +10,8 @@ import RenameFile  from './renameFiles'
 import ReNameFolder from './renameFolder.js';
 import MoveFiles from './movefiles.js'
 import { Dropbox } from 'dropbox';
-import {token$} from './store.js';
+import {token$, favorites$ } from './store.js';
+import AddFavorites from "./addFavorites.js";
 
 
 
@@ -94,9 +95,11 @@ const ListItems = (props) => {
               <RenameFile dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} folder={props.folder} path={data.path_lower}/>
             </td>
             <td>
-              <MoveFiles dataUpdate={props.dataUpdate} folder={props.folder} path={data.path_lower}/>
-          </td>
-          
+              <AddFavorites data={data} favorites={props.favorites} favUpdate={props.favUpdate} id={data.id} path={data.path_lower} ></AddFavorites>
+            </td>
+            <td>
+                <MoveFiles dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} folder={props.folder} path={data.path_lower}/>
+            </td>
           </tr>
          
         ) 
@@ -162,6 +165,9 @@ return( //FOLDERS
     </td>
     <td>
       <MoveFiles dataUpdate={props.dataUpdate} folder={props.folder} path={data.path_lower}/>
+    </td>
+    <td>
+        <AddFavorites data={data} favorites={props.favorites} favUpdate={props.favUpdate} path={data.path_lower}></AddFavorites>
     </td>
   </tr>
     )
