@@ -6,8 +6,8 @@ import '../Css/userAccount.css';
 
 const UserAccount = () => {
 const photoRef = useRef(null);  
-const [name, updateName] = useState("");
-const [mail, updateMail] = useState("");
+const [name, updateName] = useState("Name Lastname");
+const [mail, updateMail] = useState("name@domain.com");
 const [photoUrl, updatePhotUrl] = useState(null);
 const [country, updateCountry] = useState("us");
 
@@ -69,8 +69,7 @@ const onMouseOutPhoto = (e) => {
 return(
   <div className="userMain">
   <div className="userFlag"><ReactCountryFlag code={countryFlag} svg /></div>
-  <span className="userName">{name}</span>  
-  <span className="userMail"><a className="userMailAtag" href={url} target="_blank" without="true" rel="noopener noreferrer">( {mail} )</a></span>
+  <span className="userName"><a title="Open your mail" className="userMailAtag" href={url} target="_blank" without="true" rel="noopener noreferrer">{name}</a></span>  
   {checkPhoto}
   </div>
 )

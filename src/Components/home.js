@@ -1,102 +1,264 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
+import { Dropbox } from 'dropbox';
 import { Redirect } from "react-router-dom";
-import { updateToken } from './store.js'
 import {token$} from './store.js';
-import ListItems from './listitems'
-import CreateFolder from './createfolder'
-import Search from './search'
-import Modal from './modal';
-import Breadcrumbs from './breadcrumbs'
-import { deleteFiles } from './delete'
+import ListItems from './listitems';
+import CreateFolder from './createfolder';
+import Search from './search';
+import Breadcrumbs from './breadcrumbs';
 import UploadFile from './uploadfile';
-import UserAccount from './userAccount'
+import UserAccount from './userAccount';
 import { Helmet } from "react-helmet";
+import LogOut from './logout'
+import FavoriteList from "./favoriteList.js"
+import {favorites$} from './store'
+import {updateFavoriteToken} from './store'
 import '../Css/home.css';
-import TimeOutModal from './timeoutmodal.js';
-
 
 
 const Home = (props) => {
-  
-  //const [isLoggedIn, updateIsLoggedIn] = useState(props.location.state.isLoggedIn)
   const [token, updateTokenState] = useState(token$.value)
-  const [search, updateSearch] = useState(null)
-  const [createF, updateCreateF] = useState(null)
-  const [showModal, updateShowModal] = useState(false)
-  const [delPath, updateDelPath] = useState(null)
-  const [uploadFile, updateUpload] = useState(null)
-  const [, updateChanges] = useState(null);
-  const [timeOutModal, updateTimeOutModal] = useState(null)
-  const [setTime, updateTime] = useState(null);
-  const [deleteDone, updateDeleteDone] = useState(false);
-  const [editDone, updateEditDone] = useState(false)
+  const [data, updateData] = useState([]);
+  const [thumbnails, updateThumbnails] = useState([])
+  const [thumbnailsLoaded, updateThumbnailsLoaded] = useState(false);
+  const [favorites, updateFavorites] = useState([]);
 
-  const editIsDone = (change) => {
-    updateEditDone(change)
-    updateEditDone(false)
-  }
+  useEffect(() => {
+    const subscription = favorites$.subscribe(updateFavorites);
+    return () => subscription.unsubscribe();
+  }, []);
 
-  console.log(deleteDone)
-  const deleteIsDone = (change) => {
-    console.log(change)
-    updateDeleteDone(change)
-    updateDeleteDone(false)
-  }
+  useEffect(() => {
 
-  const ResetTime = (change) => {
-    updateTime(change)
-  }
+    if (thumbnails.length === data.length) {
+      const isLoaded = thumbnails.every((x, idx) => {
+        return x[".tag"] === "failure" || x.metadata.id === data[idx].id;
+      });
 
-  const logOut = () => {
-    updateToken(null);
-    updateTokenState(token$.value);
-    //updateIsLoggedIn(false)
-  }
-  /* Functions for serarch files/folders */
-  const searchResults = (matches) => {
-    let newArr = []
-        for (let i of matches){
-          newArr.push(i.metadata) 
-        }
-    updateSearch(newArr)
-  }
-/* ------------ end serarch -------------- */
+      updateThumbnailsLoaded(isLoaded);      
+    } else {
+      updateThumbnailsLoaded(false);
+    }
 
-const pollChanges = (change) => {
-  //console.log(change)
-    updateChanges(change)
+  }, [data, thumbnails]);
+
+
   
-}
 
-/*  Function for create folder */
-  const create = (folder) => {
-    updateCreateF(folder)
-  }
-/* ----------- end create folder----------- */
-  const upload = (file) => {
+
+
+    useEffect(() => {
+      console.log('poll')
+
+
+      const poll = setInterval(() => {
+        const option = {
+          fetch: fetch,
+          accessToken: token$.value
+        };
+        const dbx = new Dropbox(
+          option,
+        );
+        if(props.location.pathname === '/home'){
+          dbx.filesListFolder({
+            path: '',
+          
+          })
+          .then(response => {
+            
+            updateThumbnails([]);
+            updateData(response.entries)
+            
     
-   updateUpload(file)
-  }
+            dbx.filesGetThumbnailBatch({
+              
+              entries: response.entries.map(entry => {
+              return{
+                path: entry.id,
+                format : {'.tag': 'jpeg'},
+                size: { '.tag': 'w32h32'},
+                mode: { '.tag': 'strict' }  
+                }
+              }) 
+            }) 
+            .then(response => {   
+               updateThumbnails(response.entries)
+              })
+              .catch(function(error) {
+                console.log(error);
+               });
+               
+    
+          })
+          
+          .catch(function(error) {
+            console.log(error);
+           });
+    
+         
+        }
+        else{
+          
+          let newFolder = props.location.pathname;
+          newFolder = newFolder.substring(5)
+    
+          dbx.filesListFolder({
+            path: newFolder,
+          
+          })
+          .then(response => {
+            
+           updateThumbnails([]);
+            updateData(response.entries)
+    
+    
+    
+            dbx.filesGetThumbnailBatch({
+              
+              entries: response.entries.map(entry => {
+              return{
+                path: entry.id,
+                format : {'.tag': 'jpeg'},
+                size: { '.tag': 'w32h32'},
+                mode: { '.tag': 'strict' }  
+                }
+              }) 
+            }) 
+            .then(response => {   
+              console.log(response)
+              updateThumbnails(response.entries)
+              })
+              
+              .catch(function(error) {
+                console.log(error);
+               });
+               
+          })
+          .catch(function(error) {
+            console.log(error);
+           });
+        }
+      }, 5000);
+      
+      
+    
+    return () => clearInterval(poll);
 
-  /* Functions for del files/folders */
-  const del = (path) =>{
-   deleteFiles(path)
-  }
-  const modalOnClick = (x) =>{
-    updateShowModal(x)
-  }
-  const tiemoutModalClick = (change) => {
-    updateTimeOutModal(change)
-  }
+    }, [props.location.pathname, data, thumbnails])
 
-  const path = (path) => {
-    updateDelPath(path)
-  }
-  /* ----------- end del ----------------- */
+    
+  
+
+
+
 
   
-  
 
+  useEffect(() => {
+
+  
+    const option = {
+      fetch: fetch,
+      accessToken: token$.value
+    };
+    const dbx = new Dropbox(
+      option,
+    );
+    if(props.location.pathname === '/home'){
+      dbx.filesListFolder({
+        path: '',
+      
+      })
+      .then(response => {
+        
+        updateThumbnails([]);
+        updateData(response.entries)
+        
+
+        dbx.filesGetThumbnailBatch({
+          
+          entries: response.entries.map(entry => {
+          return{
+            path: entry.id,
+            format : {'.tag': 'jpeg'},
+            size: { '.tag': 'w32h32'},
+            mode: { '.tag': 'strict' }  
+            }
+          }) 
+        }) 
+        .then(response => {   
+            updateThumbnails(response.entries)
+          })
+          .catch(function(error) {
+            console.log(error);
+           });
+           
+
+      })
+      
+      .catch(function(error) {
+        console.log(error);
+       });
+
+     
+    }
+    else{
+      
+      let newFolder = props.location.pathname;
+      newFolder = newFolder.substring(5)
+
+      dbx.filesListFolder({
+        path: newFolder,
+      
+      })
+      .then(response => {
+        
+        updateThumbnails([]);
+        updateData(response.entries)
+
+
+
+        dbx.filesGetThumbnailBatch({
+          
+          entries: response.entries.map(entry => {
+          return{
+            path: entry.id,
+            format : {'.tag': 'jpeg'},
+            size: { '.tag': 'w32h32'},
+            mode: { '.tag': 'strict' }  
+            }
+          }) 
+        }) 
+        .then(response => {   
+          console.log(response)
+          updateThumbnails(response.entries)
+          })
+          
+          .catch(function(error) {
+            console.log(error);
+           });
+           
+      })
+      .catch(function(error) {
+        console.log(error);
+       });
+    }
+   
+  }, [props.location.pathname])
+
+
+  const dataUpdate = (data) => {
+    updateData(data)
+  }
+
+  const thumbnailUpdate = (data) => {
+    updateThumbnails(data)
+  } 
+
+  const favUpdate = (data) => {
+    updateFavorites(data);
+    updateFavoriteToken(data);
+  }
 
   if(token === null){
     return <Redirect to="/" />
@@ -107,34 +269,57 @@ const pollChanges = (change) => {
     <Helmet>
       <title>MyBOX</title>
     </Helmet>
-    <Modal showModal2={modalOnClick} delPath={delPath} showModal={showModal} del={del} deleteIsDone={deleteIsDone}/>
-    <TimeOutModal showModal3={tiemoutModalClick} showTimeout={timeOutModal} resetTime={ResetTime}></TimeOutModal>
     <header className="mainHeader">
       <div className="header-logo-wrap"><img id="header-logo" src={ require('../Img/Logo_mybox.png') } alt="My Box logo"/> </div>
         <span className="headerContent">
-          <Search folder={props.location.pathname} search={searchResults} updateSearch={updateSearch}></Search>
+          <Search searchData={data} folder={props.location.pathname} dataUpdate={dataUpdate} thumbnailUpdate={thumbnailUpdate} />
           <span><UserAccount/></span>
-          <span><button className="headerLogOutBtn" onClick={logOut}>LogOut</button></span>
+          <span><LogOut updateTokenState={updateTokenState}/></span>
         </span>
     </header>
     <div className="mainWrapper">
       <aside className="leftSide">
         
-        <div className="left-link-wrap"><UploadFile upload={upload} folder={props.location.pathname}></UploadFile><br></br><br></br>
-        <CreateFolder folder={props.location.pathname} create={create}></CreateFolder></div>
+        <div className="left-link-wrap"><UploadFile folder={props.location.pathname} dataUpdate={dataUpdate} thumbnailUpdate={thumbnailUpdate}></UploadFile><br></br><br></br>
+        <CreateFolder folder={props.location.pathname} dataUpdate={dataUpdate} thumbnailUpdate={thumbnailUpdate}></CreateFolder></div>
       </aside>
       <main className="mainMain">
-        <Breadcrumbs /><br />
-        
+      <Breadcrumbs /><br />
         <table className="mainTable">
+          <thead>
+            <th>
+            <i className="material-icons filesFolders">all_inbox</i>
+            </th>
+            <th>
+              Name:
+            </th>
+            <th>
+              File size:
+            </th>
+            <th>
+              Last edited:
+            </th>
+            <th>
+            Del:
+            </th>
+            <th>
+             Ren: 
+            </th>
+            <th>
+             Mov:
+            </th>
+            <th>
+              Fav:
+            </th>
+          </thead>
           <tbody>
-            <ListItems folder={props.location.pathname} path={path} showModal={modalOnClick} showModal3={tiemoutModalClick} search={search} createFolder={createF}  uploadFile={uploadFile} pollChanges={pollChanges} setTime={setTime} resetTime={ResetTime} delPath={delPath} deleteDone={deleteDone} editIsDone={editIsDone} editDone={editDone}></ListItems>
+            <ListItems favorites={favorites} favUpdate={favUpdate} thumbnailsLoaded={thumbnailsLoaded} folder={props.location.pathname} dataUpdate={dataUpdate} thumbnailUpdate={thumbnailUpdate}  renderData={data} thumbnails={thumbnails}></ListItems>
           </tbody>
         </table>
       </main>
       <aside className="rightSide">
         <div className="aside"></div>
-        höger aside
+         <FavoriteList />
       </aside>
     </div>
     
