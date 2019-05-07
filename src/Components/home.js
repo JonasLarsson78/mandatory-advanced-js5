@@ -10,7 +10,7 @@ import UploadFile from './uploadfile';
 import UserAccount from './userAccount'
 import { Helmet } from "react-helmet";
 import LogOut from './logout'
-//import favoriteList from "./favoriteList.js"
+import FavoriteList from "./favoriteList.js"
 import AddFavorites from "./addFavorites.js"
 import '../Css/home.css';
 
@@ -182,7 +182,7 @@ const Home = (props) => {
       </main>
       <aside className="rightSide">
         <div className="aside"></div>
-        {/* {favoriteList} */}
+         <FavoriteList />
       </aside>
     </div>
     

@@ -1,6 +1,8 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {token$, favorites$, updateFavoriteToken} from './store.js';
 import { Dropbox } from 'dropbox';
+import {Link} from "react-router-dom";
+import {downloadFile} from "./dowload"
 
 /*
 
@@ -21,9 +23,19 @@ A direct update of the favorite_state is not required, but obviously better.
 === Kör en toggle onClick - Om id inte finns i listan, lägg till objektet (objekt ska in i state, inte id), om id finns i listan, ta bort.
 */
 
-const favoriteList = (props) => {
+const FavoriteList = () => {
 /////////////////////////////////////////////////////////////////////////////////////////////////
-    const renderFavorites = (props) => {
+  const [fav, updateFav] = useState([]);
+/////////////////////////////////////////////////////////////////////////////////////////////////
+  useEffect(() => {
+    const subscription = favorites$.subscribe(updateFav);
+    return () => subscription.unsubscribe();
+  }, []);
+/////////////////////////////////////////////////////////////////////////////////////////////////
+  let sortData = fav.sort((a, b) => (a[".tag"] > b[".tag"]) ? 1 : -1).reverse();
+/////////////////////////////////////////////////////////////////////////////////////////////////
+    let data = sortData;
+    const renderFavorites = (data, index) => {
         /////IF FILES STARTS////
         if(data[".tag"] === 'file'){ 
               return( //FILES
@@ -68,12 +80,19 @@ const favoriteList = (props) => {
         }
         /////IF FOLDER ENDS//// 
     }
+
+    let renderingFavorites = data.map(renderFavorites);
     
     return (
         <div className="favorite_list">
-            {renderFavorites}
+          <p className="favoriteTitle" style={{fontWeight: "bolder"}}>Favorites</p>
+          <table>
+            <tbody>
+              {renderingFavorites}
+            </tbody>
+          </table>
         </div>
     )
 }
 
-export default AddFavorites;
+export default FavoriteList;
