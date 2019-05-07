@@ -1,6 +1,7 @@
 import React, {useState, useRef, useEffect} from 'react';
 import { Dropbox } from 'dropbox';
 import { token$ } from './store.js';
+import {Link}from "react-router-dom";
 import '../Css/movefiles.css';
 
 const MoveFiles = (props) => {
@@ -8,10 +9,7 @@ const MoveFiles = (props) => {
     const [oldPath, updateOldPath] = useState('path')
     const [data, updateData] = useState([]);
     let moveFolders = '';
-<<<<<<< HEAD
     //console.log(props)
-=======
->>>>>>> 9226804aa5adc80a69851c472acfce2315d3dcbb
 
   const startModal = (e) => {
     const path = props.path
@@ -53,7 +51,7 @@ const MoveFiles = (props) => {
           <i className="material-icons filesFolders">folder</i>
           </td>
           <td>
-            {data.name}
+            <Link className="listFolderLink" to={"/home" + data.path_lower}>{data.name}</Link>
           </td>
         </tr>
           )
