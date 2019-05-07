@@ -33,7 +33,7 @@ const yes = () => {
             path: delFile,
           })
           .then(response => {
-            
+            console.log(response)
             dbx.filesListFolder({
             path: path,
           
