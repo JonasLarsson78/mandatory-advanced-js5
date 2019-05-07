@@ -19,13 +19,6 @@ const Home = (props) => {
   const [thumbnails, updateThumbnails] = useState([])
   const [thumbnailsLoaded, updateThumbnailsLoaded] = useState(false);
 
-<<<<<<< HEAD
-
-
-=======
->>>>>>> 9226804aa5adc80a69851c472acfce2315d3dcbb
-
-
   useEffect(() => {
 
     if (thumbnails.length === data.length) {
