@@ -93,15 +93,7 @@ const MoveFiles = (props) => {
         console.log(error);
       });
     }
-<<<<<<< HEAD
  /*==================*/
-=======
-    moveModal.current.style.display = 'block';
-  }
-
-
-
->>>>>>> afc145aafe0e2e05e44401d1cc31b9ac47196a12
 
   const renderModalData = (data) => {
     //console.log(startPath)
