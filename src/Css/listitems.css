@@ -20,6 +20,7 @@
 .listFiles{
     cursor: pointer;
     list-style-type: none;
+    height: 45px;
 }
 .listFiles:hover{
     color: #029BB5;

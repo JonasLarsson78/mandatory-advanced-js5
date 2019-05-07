@@ -286,7 +286,6 @@ const Home = (props) => {
       </aside>
       <main className="mainMain">
       <Breadcrumbs /><br />
-        
         <table className="mainTable">
           <tbody>
             <ListItems favorites={favorites} favUpdate={favUpdate} thumbnailsLoaded={thumbnailsLoaded} folder={props.location.pathname} dataUpdate={dataUpdate} thumbnailUpdate={thumbnailUpdate}  renderData={data} thumbnails={thumbnails}></ListItems>

@@ -41,16 +41,17 @@ const FavoriteList = () => {
               return( //FILES
                 <tr
                     key={data.id} 
-                    className="listFiles" 
                     data-name={data.name} 
                     data-folder={data.path_lower} 
                     data-tag={data[".tag"]}
+                    style={{background: "white"}}
                     >
                   <td 
                     title={"Download: " + data.name} 
                     data-name={data.name} 
-                    data-folder={data.path_lower} 
-                    data-tag={data[".tag"]} onClick={downloadFile}>
+                    data-folder={data.path_lower}
+                    data-tag={data[".tag"]} onClick={downloadFile}
+                    style={{cursor: "pointer"}}>
                     <i className="material-icons-outlined filesFolders">insert_drive_file</i>
                   </td>
                   <td
@@ -58,6 +59,7 @@ const FavoriteList = () => {
                     data-name={data.name} 
                     data-folder={data.path_lower} 
                     data-tag={data[".tag"]} onClick={downloadFile}
+                    style={{cursor: "pointer"}}
                   >
                   {data.name}
                   </td>
@@ -68,7 +70,7 @@ const FavoriteList = () => {
       /////IF FOLDER STARTS////
       if(data[".tag"] === 'folder'){ //FOLDER
       return( //FOLDERS
-        <tr key={data.id} className="listFiles" data-name={data.name} data-folder={data.path_lower} data-tag={data[".tag"]}>
+        <tr style={{background: "white"}} key={data.id} className="listFiles" data-name={data.name} data-folder={data.path_lower} data-tag={data[".tag"]}>
           <td>
           <i className="material-icons filesFolders">folder</i>
           </td>
@@ -85,8 +87,11 @@ const FavoriteList = () => {
     
     return (
         <div className="favorite_list">
-          <p className="favoriteTitle" style={{fontWeight: "bolder"}}>Favorites</p>
-          <table>
+          
+          <table className="favTable">
+            <thead>
+              <th colSpan="2"><p className="favoriteTitle" style={{fontWeight: "bold"}}><i style={{color: "#ffd900", WebkitTextStroke: "1px #4d4d4d", fontSize: "12px"}} className="material-icons">star</i> Favorites</p></th>
+            </thead>
             <tbody>
               {renderingFavorites}
             </tbody>
