@@ -20,9 +20,20 @@ const ListItems = (props) => {
   
  //===================RENDER LIST====================
   const arrIdx = [".jpg", ".png", ".pdf"] // Array med filer som vissar thumb...
-
+  
   const renderList = (data, index) => {
-    
+
+
+    if(data.noSearchResult){
+      return(
+        
+          <tr key={data.id}>
+            <td>No search matches</td>
+          </tr>
+        
+      )
+    }
+
    const thumbs = props.thumbnailsLoaded ? props.thumbnails[index] : undefined;
 
     if(data[".tag"] === 'file'){ //FILER
@@ -38,6 +49,7 @@ const ListItems = (props) => {
       
 
         return( //FILES
+        
           <tr
               key={data.id} 
               className="listFiles" 
@@ -75,7 +87,9 @@ const ListItems = (props) => {
             <td>
               <MoveFiles dataUpdate={props.dataUpdate} folder={props.folder} path={data.path_lower}/>
           </td>
+          
           </tr>
+         
         ) 
       }
   const renameBrackets = (rename, newUrl) =>{
