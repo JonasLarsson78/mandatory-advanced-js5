@@ -1,4 +1,4 @@
-import React, {useState}from 'react';
+import React, {useState} from 'react';
 import { Dropbox } from 'dropbox';
 import {token$} from './store.js';
 
@@ -6,7 +6,6 @@ const Search = (props) => {
 
 const [noSearch, updateNoSearch] = useState('')
  let newFolder = props.folder.substring(5);
-
 
  const makeSerch = (e) => {
 

@@ -19,7 +19,7 @@ import {token$} from './store.js';
 const ListItems = (props) => {
   
  //===================RENDER LIST====================
-  const arrIdx = [".txt",".wav",".mp3",".id3"] // Array med filer som thumb. inte funkar.
+  const arrIdx = [".jpg", ".png", ".pdf"] // Array med filer som vissar thumb...
 
   const renderList = (data, index) => {
     
@@ -32,9 +32,10 @@ const ListItems = (props) => {
       let idx = data.name.lastIndexOf('.');
       let newIdx = data.name.substring(idx);
 
-      if (arrIdx.includes(newIdx)){
+      if (!arrIdx.includes(newIdx)){
         newThumbs = <i className="material-icons-outlined filesFolders">insert_drive_file</i>
       }
+      
 
         return( //FILES
           <tr
@@ -94,7 +95,6 @@ const ListItems = (props) => {
     .then(response => {
       dbx.filesListFolder({
         path: props.folder.substring(5),
-      
       })
       .then(response => {
         props.dataUpdate(response.entries)
