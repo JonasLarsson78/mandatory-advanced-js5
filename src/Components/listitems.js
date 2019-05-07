@@ -15,21 +15,23 @@ import AddFavorites from "./addFavorites.js";
 
 
 
-
-
 const ListItems = (props) => {
   
  //===================RENDER LIST====================
-  
-  
 
-
-
-  const arrIdx = [".jpg", ".jpeg", ".png", ".pdf"] // Array med filer som vissar thumb...
+  const arrIdx = [
+    ".jpg",
+    ".jpeg",
+    ".png",
+    ".pdf",
+    ".wav",
+    ".mp3",
+    ".id3",
+    ".mp4",
+    ".mov",
+  ] // Array med filer som vissar thumb...
 
   const renderList = (data, index) => {
-
-
 
     if(data.noSearchResult){
       return(
@@ -41,7 +43,6 @@ const ListItems = (props) => {
       )
     }
 
-
    const thumbs = props.thumbnailsLoaded ? props.thumbnails[index] : undefined;
 
     if(data[".tag"] === 'file'){ //FILER
@@ -50,11 +51,23 @@ const ListItems = (props) => {
       
       let idx = data.name.lastIndexOf('.');
       let newIdx = data.name.substring(idx);
+      /*------------- Audio idx files -----------------------------------*/
+      let audioIdx = [".wav", ".mp3", ".id3"]
+      if (audioIdx.includes(newIdx)){
+        newThumbs = <i class="material-icons filesFolders">audiotrack</i>
+      }
+      /* --------------------------------------------------------------- */
+
+       /*------------- Vidio idx files -----------------------------------*/
+      let videoIdx = [".mov", ".mp4"]
+      if (videoIdx.includes(newIdx)){
+        newThumbs = <i class="material-icons filesFolders">local_movies</i>
+      }
+      /* --------------------------------------------------------------- */
 
       if (!arrIdx.includes(newIdx)){
         newThumbs = <i className="material-icons-outlined filesFolders">insert_drive_file</i>
       }
-      
 
         return( //FILES
         
@@ -174,11 +187,8 @@ return( //FOLDERS
     )
   } 
 }
-
     
   const listData = props.renderData.map(renderList)
-  
-      
      
   return(
     <>
