@@ -20,10 +20,30 @@ import AddFavorites from "./addFavorites.js";
 const ListItems = (props) => {
   
  //===================RENDER LIST====================
-  const arrIdx = [".jpg", ".png", ".pdf"] // Array med filer som vissar thumb...
+  
+  
+
+
+
+  const arrIdx = [".jpg", ".jpeg", ".png", ".pdf"] // Array med filer som vissar thumb...
+
+  
 
   const renderList = (data, index) => {
-    
+
+
+
+    if(data.noSearchResult){
+      return(
+        
+          <tr key={data.id}>
+            <td>No search matches</td>
+          </tr>
+        
+      )
+    }
+
+
    const thumbs = props.thumbnailsLoaded ? props.thumbnails[index] : undefined;
 
     if(data[".tag"] === 'file'){ //FILER
@@ -39,6 +59,7 @@ const ListItems = (props) => {
       
 
         return( //FILES
+        
           <tr
               key={data.id} 
               className="listFiles" 
@@ -68,7 +89,7 @@ const ListItems = (props) => {
               {lastEdited(data.server_modified)}
             </td>
             <td>
-              <Delete dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} path={data.path_lower} folder={props.folder}/>
+              <Delete tag={data[".tag"]} name={data.name} dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} path={data.path_lower} folder={props.folder}/>
             </td>
             <td>
               <RenameFile dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} folder={props.folder} path={data.path_lower}/>
@@ -80,6 +101,7 @@ const ListItems = (props) => {
                 <MoveFiles dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} folder={props.folder} path={data.path_lower}/>
             </td>
           </tr>
+         
         ) 
       }
   const renameBrackets = (rename, newUrl) =>{
@@ -136,13 +158,13 @@ return( //FOLDERS
       ...
     </td>
     <td>
-      <Delete dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} path={data.path_lower} folder={props.folder}/>
+      <Delete tag={data[".tag"]} name={data.name} dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} path={data.path_lower} folder={props.folder}/>
     </td>
     <td>
       <ReNameFolder dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} folder={props.folder} path={data.path_lower}/>
     </td>
     <td>
-      <MoveFiles dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} folder={props.folder} path={data.path_lower}/>
+      <MoveFiles dataUpdate={props.dataUpdate} folder={props.folder} path={data.path_lower}/>
     </td>
     <td>
         <AddFavorites data={data} favorites={props.favorites} favUpdate={props.favUpdate} path={data.path_lower}></AddFavorites>
