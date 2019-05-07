@@ -109,6 +109,10 @@ Textgrå #4D4D4D
     width: 100%;
     border-collapse: collapse;
 }
+th{
+    text-align: left;
+    font-size: 14px;
+}
 tr:nth-child(even) {
     background: #ffffff;
 }
