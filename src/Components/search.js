@@ -4,7 +4,7 @@ import {token$} from './store.js';
 
 const Search = (props) => {
 
-const [noSearch, updateNoSearch] = useState('')
+
  let newFolder = props.folder.substring(5);
 
  const makeSerch = (e) => {
@@ -24,7 +24,7 @@ const [noSearch, updateNoSearch] = useState('')
         path: props.folder.substring(5),
       
             }).then(response =>{
-              
+              console.log(response.entries)
               props.dataUpdate(response.entries)
   
                     dbx.filesGetThumbnailBatch({
@@ -38,7 +38,7 @@ const [noSearch, updateNoSearch] = useState('')
                       }) 
                     }) 
                     .then(response => {   
-                      
+                      console.log(response.entries)
                       props.thumbnailUpdate(response.entries)
                       })
                       .catch(function(error) {
@@ -59,17 +59,14 @@ const [noSearch, updateNoSearch] = useState('')
       })
 
       .then(response => {
-
+        
+        let test = [{".tag": 'file', id: 1, noSearchResult: 'noResult'}]
+        
         if(response.matches.length === 0){
-          updateNoSearch(<p>hej hej</p>)
+          props.dataUpdate(test)
         }
         else{
-          updateNoSearch('')
-        }
-
-        console.log(response)
-
-        props.thumbnailUpdate([])
+          props.thumbnailUpdate([])
          
          
           let newArr = []
@@ -78,6 +75,11 @@ const [noSearch, updateNoSearch] = useState('')
             newArr.push(i.metadata) 
           }
           props.dataUpdate(newArr) 
+
+        }
+       
+
+        
 
       })
     }
@@ -122,7 +124,7 @@ return (
     <>
     <i className="material-icons header-serach-icon">search</i>
     <input className="header-search" placeholder="Search..." type="text" onChange={makeSerch} />
-    {noSearch}
+   
     </>
     )
 }

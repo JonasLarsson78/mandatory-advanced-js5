@@ -81,7 +81,7 @@ delModal = <div style={{pointerEvents: pointerEvent}} ref={element} className="m
 <div style={{pointerEvents: pointerEvent}} className="modal">
     <div style={{pointerEvents: pointerEvent}} className="mainModal">
         <h2 style={{color: "black"}}>Delete ! ! !</h2>
-        <p className="modalText">Do you want to delete the file / folder ??</p>
+        <p className="modalText">Do you want to delete {props.tag} {props.name} ??</p>
         <button className="modalBtn yes"  onClick={yes}>YES</button><button className="modalBtn no" onClick={no}>NO</button>
     </div>
   </div>
