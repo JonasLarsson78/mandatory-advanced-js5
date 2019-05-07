@@ -8,7 +8,10 @@ const MoveFiles = (props) => {
     const [oldPath, updateOldPath] = useState('path')
     const [data, updateData] = useState([]);
     let moveFolders = '';
+<<<<<<< HEAD
     //console.log(props)
+=======
+>>>>>>> 9226804aa5adc80a69851c472acfce2315d3dcbb
 
   const startModal = (e) => {
     const path = props.path

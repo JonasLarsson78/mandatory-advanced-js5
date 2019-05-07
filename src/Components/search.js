@@ -1,16 +1,12 @@
-import React, {useState}from 'react';
+import React from 'react';
 import { Dropbox } from 'dropbox';
 import {token$} from './store.js';
 
 const Search = (props) => {
-  const [noResult, updateNoResult] = useState('')
 
  let newFolder = props.folder.substring(5);
- 
- 
- const makeSerch = (e) => {
-  
 
+ const makeSerch = (e) => {
   
 
     const option = {
@@ -59,12 +55,18 @@ const Search = (props) => {
                 });
         }
         else{
-          props.thumbnailUpdate([])
+          
+           props.thumbnailUpdate([])
+         
+         
           let newArr = []
           for (let i of response.matches){
+            
             newArr.push(i.metadata) 
           }
-          props.dataUpdate(newArr)
+          props.dataUpdate(newArr) 
+          
+          
         }
       })
       .catch(function(error) {
