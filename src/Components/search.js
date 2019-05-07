@@ -4,11 +4,11 @@ import {token$} from './store.js';
 
 const Search = (props) => {
 
+const [noSearch, updateNoSearch] = useState('')
  let newFolder = props.folder.substring(5);
 
-  console.log(props)
+
  const makeSerch = (e) => {
-  
 
     const option = {
         fetch: fetch,
@@ -16,48 +16,61 @@ const Search = (props) => {
       };
       const dbx = new Dropbox(
         option,
-      );
+      );      
+
+
+    if(e.target.value.length === 0){
+
+      dbx.filesListFolder({
+        path: props.folder.substring(5),
+      
+            }).then(response =>{
+              
+              props.dataUpdate(response.entries)
+  
+                    dbx.filesGetThumbnailBatch({
+                      entries: response.entries.map(entry => {
+                      return{
+                        path: entry.id,
+                        format : {'.tag': 'jpeg'},
+                        size: { '.tag': 'w32h32'},
+                        mode: { '.tag': 'strict' }  
+                        }
+                      }) 
+                    }) 
+                    .then(response => {   
+                      
+                      props.thumbnailUpdate(response.entries)
+                      })
+                      .catch(function(error) {
+                        console.log(error);
+                      });
+              
+            })
+            .catch(function(error) {
+              console.log(error);
+            });
+
+    }
+    else if(e.target.value.length > 0){
       dbx.filesSearch({
        
         path: newFolder,
         query: e.target.value,
       })
+
       .then(response => {
-        console.log(response)
-        if (response.matches.length === 0){
-          dbx.filesListFolder({
-            path: props.folder.substring(5),
-          
-                }).then(response =>{
-                  
-                  props.dataUpdate(response.entries)
-      
-                        dbx.filesGetThumbnailBatch({
-                          entries: response.entries.map(entry => {
-                          return{
-                            path: entry.id,
-                            format : {'.tag': 'jpeg'},
-                            size: { '.tag': 'w32h32'},
-                            mode: { '.tag': 'strict' }  
-                            }
-                          }) 
-                        }) 
-                        .then(response => {   
-                          
-                          props.thumbnailUpdate(response.entries)
-                          })
-                          .catch(function(error) {
-                            console.log(error);
-                          });
-                  
-                })
-                .catch(function(error) {
-                  console.log(error);
-                });
+
+        if(response.matches.length === 0){
+          updateNoSearch(<p>hej hej</p>)
         }
         else{
-          
-           props.thumbnailUpdate([])
+          updateNoSearch('')
+        }
+
+        console.log(response)
+
+        props.thumbnailUpdate([])
          
          
           let newArr = []
@@ -66,11 +79,32 @@ const Search = (props) => {
             newArr.push(i.metadata) 
           }
           props.dataUpdate(newArr) 
-          
-          
-        }
+
       })
-      .catch(function(error) {
+    }
+    
+    
+  }
+    
+      
+      
+     
+
+
+
+
+        
+      
+          
+     
+       
+          
+           
+          
+          
+        
+    
+     /*  .catch(function(error) {
         if (error.response.status === 400){
           console.log("Wrong input.")
         }
@@ -78,8 +112,8 @@ const Search = (props) => {
           console.log("Wrong search path.")
         }
            
-      });
- }
+      }); */
+  
 
 
 
@@ -89,9 +123,10 @@ return (
     <>
     <i className="material-icons header-serach-icon">search</i>
     <input className="header-search" placeholder="Search..." type="text" onChange={makeSerch} />
-    
+    {noSearch}
     </>
     )
 }
 
 export default Search;
+
