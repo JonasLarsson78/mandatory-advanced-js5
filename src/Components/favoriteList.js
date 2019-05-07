@@ -44,6 +44,7 @@ const FavoriteList = () => {
                     data-folder={data.path_lower} 
                     data-tag={data[".tag"]}
                     style={{background: "white"}}
+                    className="listFiles"
                     >
                   <td 
                     title={"Download: " + data.name} 

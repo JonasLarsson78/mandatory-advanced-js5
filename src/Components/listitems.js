@@ -71,7 +71,7 @@ const ListItems = (props) => {
               data-folder={data.path_lower} 
               data-tag={data[".tag"]}
               onClick={downloadFile}
-              style={{width: "30px"}}>
+              style={{width: "40px"}}>
                 {newThumbs}
             </td>
             <td
@@ -146,7 +146,7 @@ if(data[".tag"] === 'folder'){ //FOLDER
   }
 return( //FOLDERS
   <tr key={data.id} className="listFiles" data-name={data.name} data-folder={data.path_lower} data-tag={data[".tag"]}>
-    <td style={{width: "30px"}}>
+    <td style={{width: "40px"}}>
     <i className="material-icons filesFolders">folder</i>
     </td>
     <td>
@@ -155,7 +155,7 @@ return( //FOLDERS
     <td style={{width: "100px"}}>
       ...
     </td>
-    <td style={{width: "300px"}}>
+    <td style={{width: "250px"}}>
       ...
     </td>
     <td style={{width: "30px"}}>
