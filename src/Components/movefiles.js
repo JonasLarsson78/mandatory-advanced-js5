@@ -2,6 +2,7 @@ import React, {useState, useRef, useEffect} from 'react';
 import { Dropbox } from 'dropbox';
 import { token$ } from './store.js';
 import {Link}from "react-router-dom";
+import ModalBreadcrumbs from './breadcrumbs.js'
 import '../Css/movefiles.css';
 
 const MoveFiles = (props) => {
@@ -11,12 +12,11 @@ const MoveFiles = (props) => {
     let moveFolders = '';
     //console.log(props)
 
-  const startModal = (e) => {
-    const path = props.path
+  const startModal = (path) => {
+    //const path = props.folder
     console.log(path)
-    updateOldPath(path)
+    //updateOldPath(path)
     
-
     const option = {
       fetch: fetch,
       accessToken: token$.value
@@ -24,34 +24,48 @@ const MoveFiles = (props) => {
     const dbx = new Dropbox(
       option,
     );
+
+    if (path === '/home'){
       dbx.filesListFolder({
         path: '',
+
       })
       .then(response => {
         updateData(response.entries)          
-        
-        console.log(response.entries) 
+        //console.log(response.entries) 
       })
       .catch(error => {
         console.log(error);
       }); 
-
-
-      moveModal.current.style.display = 'block';
+     } else {
+      
+      dbx.filesListFolder({
+        path: path,
+      })
+      .then(response => {
+        console.log(response.entries) 
+        updateData(response.entries)          
+        
+      })
+      .catch(error => {
+        console.log(error);
+      }); 
+    }
+    moveModal.current.style.display = 'block';
   }
-  console.log(oldPath)
+
 
 
 
   const renderModalData = (data) => {
     if(data[".tag"] === 'folder'){ //FOLDER
       return( //FOLDERS
-        <tr key={data.id} className="listFiles" data-name={data.name} data-folder={data.path_lower} data-tag={data[".tag"]}>
+        <tr key={data.id} className="" data-name={data.name} data-folder={data.path_lower} data-tag={data[".tag"]}>
           <td>
           <i className="material-icons filesFolders">folder</i>
           </td>
           <td>
-            <Link className="listFolderLink" to={"/home" + data.path_lower}>{data.name}</Link>
+            <div onClick={ () => startModal(data.path_lower)}>{data.name}</div>
           </td>
         </tr>
           )
@@ -66,6 +80,7 @@ const MoveFiles = (props) => {
 
 
     moveFolders = <div className="moveModal" ref={ moveModal }>
+    <ModalBreadcrumbs />
     <p>Move your file</p>
     <table>
       <tbody>
@@ -74,13 +89,11 @@ const MoveFiles = (props) => {
     </table>
     <i className="material-icons upload-close" onClick={ closeModal }>close</i>
     </div>
-    
-
 
     return (
         <>
         { moveFolders }
-        <button className="listBtn" onClick={ startModal }> <i className="material-icons">swap_horiz</i></button>
+        <button className="listBtn" onClick={ () => startModal(props.folder) }> <i className="material-icons">swap_horiz</i></button>
         </>
 
     )

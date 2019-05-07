@@ -15,3 +15,17 @@ export function updateToken(newToken) {
  token$.next(newToken);
  //console.log(token$.value)
 }
+
+//====================================FAVORITES STORE TOKEN==========================================
+export const favorites$ = new BehaviorSubject(JSON.parse(window.localStorage.getItem("favorites") || "[]"));
+
+export function updateFavoriteToken(newFavorites) {
+
+  if(!newFavorites){
+    window.localStorage.removeItem("favorites");
+  }
+  else {
+    window.localStorage.setItem("favorites", JSON.stringify(newFavorites));
+  }
+  favorites$.next(newFavorites)
+}

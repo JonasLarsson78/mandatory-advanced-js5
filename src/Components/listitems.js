@@ -10,7 +10,8 @@ import RenameFile  from './renameFiles'
 import ReNameFolder from './renameFolder.js';
 import MoveFiles from './movefiles.js'
 import { Dropbox } from 'dropbox';
-import {token$} from './store.js';
+import {token$, favorites$ } from './store.js';
+import AddFavorites from "./addFavorites.js";
 
 
 
@@ -19,9 +20,30 @@ import {token$} from './store.js';
 const ListItems = (props) => {
   
  //===================RENDER LIST====================
+  
+  
+
+
+
   const arrIdx = [".jpg", ".jpeg", ".png", ".pdf"] // Array med filer som vissar thumb...
 
+  
+
   const renderList = (data, index) => {
+
+
+
+    if(data.noSearchResult){
+      return(
+        
+          <tr key={data.id}>
+            <td>No search matches</td>
+          </tr>
+        
+      )
+    }
+
+
    const thumbs = props.thumbnailsLoaded ? props.thumbnails[index] : undefined;
 
     if(data[".tag"] === 'file'){ //FILER
@@ -37,6 +59,7 @@ const ListItems = (props) => {
       
 
         return( //FILES
+        
           <tr
               key={data.id} 
               className="listFiles" 
@@ -72,9 +95,13 @@ const ListItems = (props) => {
               <RenameFile dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} folder={props.folder} path={data.path_lower}/>
             </td>
             <td>
-              <MoveFiles dataUpdate={props.dataUpdate} folder={props.folder} path={data.path_lower}/>
-          </td>
+              <AddFavorites data={data} favorites={props.favorites} favUpdate={props.favUpdate} id={data.id} path={data.path_lower} ></AddFavorites>
+            </td>
+            <td>
+                <MoveFiles dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} folder={props.folder} path={data.path_lower}/>
+            </td>
           </tr>
+         
         ) 
       }
   const renameBrackets = (rename, newUrl) =>{
@@ -138,6 +165,9 @@ return( //FOLDERS
     </td>
     <td>
       <MoveFiles dataUpdate={props.dataUpdate} folder={props.folder} path={data.path_lower}/>
+    </td>
+    <td>
+        <AddFavorites data={data} favorites={props.favorites} favUpdate={props.favUpdate} path={data.path_lower}></AddFavorites>
     </td>
   </tr>
     )
