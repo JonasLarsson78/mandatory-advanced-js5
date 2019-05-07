@@ -2,12 +2,12 @@ import React, {useState, useEffect} from 'react';
 import { Dropbox } from 'dropbox';
 import { Redirect } from "react-router-dom";
 import {token$} from './store.js';
-import ListItems from './listitems'
-import CreateFolder from './createfolder'
-import Search from './search'
-import Breadcrumbs from './breadcrumbs'
+import ListItems from './listitems';
+import CreateFolder from './createfolder';
+import Search from './search';
+import Breadcrumbs from './breadcrumbs';
 import UploadFile from './uploadfile';
-import UserAccount from './userAccount'
+import UserAccount from './userAccount';
 import { Helmet } from "react-helmet";
 import LogOut from './logout'
 import '../Css/home.css';
@@ -19,7 +19,7 @@ const Home = (props) => {
   const [thumbnails, updateThumbnails] = useState([])
   const [thumbnailsLoaded, updateThumbnailsLoaded] = useState(false);
 
-
+  
 
   useEffect(() => {
 
@@ -34,6 +34,117 @@ const Home = (props) => {
     }
 
   }, [data, thumbnails]);
+
+
+  
+
+
+
+    useEffect(() => {
+      console.log('poll')
+
+
+      const poll = setInterval(() => {
+        const option = {
+          fetch: fetch,
+          accessToken: token$.value
+        };
+        const dbx = new Dropbox(
+          option,
+        );
+        if(props.location.pathname === '/home'){
+          dbx.filesListFolder({
+            path: '',
+          
+          })
+          .then(response => {
+            
+            updateThumbnails([]);
+            updateData(response.entries)
+            
+    
+            dbx.filesGetThumbnailBatch({
+              
+              entries: response.entries.map(entry => {
+              return{
+                path: entry.id,
+                format : {'.tag': 'jpeg'},
+                size: { '.tag': 'w32h32'},
+                mode: { '.tag': 'strict' }  
+                }
+              }) 
+            }) 
+            .then(response => {   
+               updateThumbnails(response.entries)
+              })
+              .catch(function(error) {
+                console.log(error);
+               });
+               
+    
+          })
+          
+          .catch(function(error) {
+            console.log(error);
+           });
+    
+         
+        }
+        else{
+          
+          let newFolder = props.location.pathname;
+          newFolder = newFolder.substring(5)
+    
+          dbx.filesListFolder({
+            path: newFolder,
+          
+          })
+          .then(response => {
+            
+           updateThumbnails([]);
+            updateData(response.entries)
+    
+    
+    
+            dbx.filesGetThumbnailBatch({
+              
+              entries: response.entries.map(entry => {
+              return{
+                path: entry.id,
+                format : {'.tag': 'jpeg'},
+                size: { '.tag': 'w32h32'},
+                mode: { '.tag': 'strict' }  
+                }
+              }) 
+            }) 
+            .then(response => {   
+              console.log(response)
+              updateThumbnails(response.entries)
+              })
+              
+              .catch(function(error) {
+                console.log(error);
+               });
+               
+          })
+          .catch(function(error) {
+            console.log(error);
+           });
+        }
+      }, 5000);
+      
+      
+    
+    return () => clearInterval(poll);
+
+    }, [props.location.pathname, data, thumbnails])
+
+    
+  
+
+
+
+
   
 
   useEffect(() => {

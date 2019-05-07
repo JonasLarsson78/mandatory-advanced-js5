@@ -39,7 +39,7 @@ const MoveFiles = (props) => {
 
       moveModal.current.style.display = 'block';
   }
-  console.log(oldPath)
+
 
 
 
