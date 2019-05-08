@@ -128,16 +128,16 @@ const MoveFiles = (props) => {
     //console.log(data.path_lower)
     if(data[".tag"] === 'folder'){ //FOLDER
       return( //FOLDERS
-        
-        <tr key={data.id} className="" data-name={data.name} data-folder={data.path_display} data-tag={data[".tag"]}>
-          <td>
+        <>
+        <tr key={data.id} className="modal-movefiles-tr" data-name={data.name} data-folder={data.path_display} data-tag={data[".tag"]}>
+          <td key={data.id} className="modal-movefiles-td-icon">
           <i className="material-icons filesFolders">folder</i>
           </td>
-          <td>
-          <Link to={ data.path_lower } onClick={ setPath } data-id={ data.path_display }>{ data.name }</Link>
+          <td className="modal-movefiles-td-link">
+          <Link to={ data.path_lower } className="modal-movefiles-link" onClick={ setPath } data-id={ data.path_display }>{ data.name }</Link>
           </td>
         </tr>
-        
+        </>
           )
         } 
   }
@@ -159,7 +159,7 @@ const MoveFiles = (props) => {
       { mapping }
       </tbody>
     </table>
-    <button onClick={moveToFolder}>Move</button>
+    <button className="modal-movefiles-button" onClick={moveToFolder}>Move</button>
     <i className="material-icons upload-close" onClick={closeModal}>close</i>
     <p ref={moveMessRef} style={{display: "none"}}>{props.name} moved...</p>
     </div>
