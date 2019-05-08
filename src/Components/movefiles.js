@@ -113,7 +113,7 @@ const MoveFiles = (props) => {
       return( //FOLDERS
         <>
         <tr key={data.id} className="" data-name={data.name} data-folder={data.path_display} data-tag={data[".tag"]}>
-          <td key={data.id}>
+          <td>
           <i className="material-icons filesFolders">folder</i>
           </td>
           <td>
