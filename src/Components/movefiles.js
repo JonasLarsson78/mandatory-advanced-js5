@@ -3,7 +3,7 @@ import { Dropbox } from 'dropbox';
 import { token$ } from './store.js';
 import {Link}from "react-router-dom";
 import { HashRouter as Router} from "react-router-dom";
-import ModalBreadcrumbs from './ModalBreadcrumb.js'
+import ModalBreadcrumbs from './modalbreadcrumb.js'
 import '../Css/movefiles.css';
 
 const MoveFiles = (props) => {
@@ -13,9 +13,10 @@ const MoveFiles = (props) => {
     const [showModal, updateShowModal] = useState(false)
     const [data, updateData] = useState([]);
     let moveFolders = '';
-    console.log(props.path)
+    //console.log(props.dataUpdate)
 
     const path = window.decodeURIComponent(window.location.hash.slice(1));
+    //console.log(path)
     //console.log(path)
     /*========= API Request for List folders =========*/
     useEffect(() => {
@@ -69,19 +70,24 @@ const MoveFiles = (props) => {
   }
 
   const setPath = (e) => {
+    console.log(e.target.dataset.id)
     updateMovePath(e.target.dataset.id)
   }
 
       /*========= API Request for move files =========*/
 
-    console.log(movePath)
-    console.log(props.folder)
+    //console.log(movePath)
+    //console.log(props.folder)
     
     
   const moveToFolder = (startPath, movePath) => {
+    const test = '/test app files' + startPath;
+    const test2 = '/test app files' + movePath +startPath;
+    console.log(test)
+    console.log(test2)
     console.log(startPath)
     console.log(movePath)
-    console.log(encodeURIComponent(movePath))
+    //console.log(encodeURIComponent(movePath))
     const option = {
         fetch: fetch,
         accessToken: token$.value
@@ -89,14 +95,16 @@ const MoveFiles = (props) => {
       const dbx = new Dropbox(
         option,
       );
-      dbx.filesMoveBatchV2({
-        from_path: '/home' + startPath,
-        to_path: '/home' + movePath,
-        autorename: true
+      dbx.filesMoveV2({
+        from_path: test,
+        to_path: test2,
+        allow_shared_folder: true,
+        autorename: true,
+        allow_ownership_transfer: true,
       })
       .then(response => {
         console.log(response)
-        props.dataUpdate(response.entries)
+        //props.dataUpdate(response.entries)
         
       })
       .catch(error => {
@@ -108,6 +116,7 @@ const MoveFiles = (props) => {
   const renderModalData = (data) => {
     //console.log(startPath)
     //console.log(data.path_lower)
+    //console.log(data.path_display)
     if(data[".tag"] === 'folder'){ //FOLDER
       return( //FOLDERS
         <>
