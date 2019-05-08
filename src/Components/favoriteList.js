@@ -130,7 +130,7 @@ const FavoriteList = (props) => {
     let renderingFavorites = data.map(renderFavorites);
     
     return (
-        <div className="favorite_list" style={{position: "relative", top: "54px", left: "8px"}} >
+        <div className="favorite_list" style={{position: "relative", top: "52px", left: "8px"}} >
           <span className="favoriteTitle" style={{fontWeight: "bold", fontSize: "14px"}}><i style={{color: "#ffd900", WebkitTextStroke: "1px #4d4d4d", fontSize: "12px"}} className="material-icons">star</i> Favorites:</span>
           <table>
             <tbody>

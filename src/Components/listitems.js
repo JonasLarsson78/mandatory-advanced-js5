@@ -50,6 +50,19 @@ const ListItems = (props) => {
       
       let idx = data.name.lastIndexOf('.');
       let newIdx = data.name.substring(idx);
+      /*------------- Audio idx files -----------------------------------*/
+      let audioIdx = [".wav", ".mp3", ".id3"]
+      if (audioIdx.includes(newIdx)){
+        newThumbs = <i className="material-icons filesFolders">audiotrack</i>
+      }
+      /* --------------------------------------------------------------- */
+
+       /*------------- Vidio idx files -----------------------------------*/
+      let videoIdx = [".mov", ".mp4"]
+      if (videoIdx.includes(newIdx)){
+        newThumbs = <i className="material-icons filesFolders">local_movies</i>
+      }
+      /* --------------------------------------------------------------- */
 
       if (!arrIdx.includes(newIdx)){
         newThumbs = <i className="material-icons-outlined filesFolders">insert_drive_file</i>
@@ -92,7 +105,10 @@ const ListItems = (props) => {
             <td>
               <RenameFile dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} folder={props.folder} path={data.path_lower}/>
             </td>
-            <td>
+            <td style={{width: "30px"}}>
+              <MoveFiles dataUpdate={props.dataUpdate} folder={props.folder} path={data.path_lower} name={data.name}/>
+            </td>
+            <td style={{width: "30px"}}>
               <AddFavorites data={data} favorites={props.favorites} favUpdate={props.favUpdate} id={data.id} path={data.path_lower} ></AddFavorites>
             </td>
             <td>

@@ -115,6 +115,7 @@ body{
 th{
     text-align: left;
     font-size: 14px;
+    background: #ffffff;
 }
 tr:nth-child(even) {
     background: #ffffff;

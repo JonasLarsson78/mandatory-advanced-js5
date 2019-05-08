@@ -287,6 +287,7 @@ const Home = (props) => {
       <Breadcrumbs /><br />
         <table className="mainTable">
           <thead>
+            <tr>
             <th>
             <i className="material-icons filesFolders">all_inbox</i>
             </th>
@@ -311,6 +312,7 @@ const Home = (props) => {
             <th>
               Fav:
             </th>
+            </tr>
           </thead>
           <tbody>
             <ListItems favorites={favorites} favUpdate={favUpdate} thumbnailsLoaded={thumbnailsLoaded} folder={props.location.pathname} dataUpdate={dataUpdate} thumbnailUpdate={thumbnailUpdate}  renderData={data} thumbnails={thumbnails}></ListItems>
