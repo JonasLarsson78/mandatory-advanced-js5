@@ -2,12 +2,13 @@ import React, {useState, useRef, useEffect} from 'react';
 import { Dropbox } from 'dropbox';
 import { token$ } from './store.js';
 import {Link}from "react-router-dom";
-import { HashRouter as Router} from "react-router-dom";
+import { HashRouter as Router, Redirect} from "react-router-dom";
 import ModalBreadcrumbs from './ModalBreadcrumb.js'
 import '../Css/movefiles.css';
 
 const MoveFiles = (props) => {
     const moveModal = useRef(null);
+    const moveMessRef = useRef(null);
     const [movePath, updateMovePath] = useState("")
     const [startPath, updateStartPath] = useState("")
     const [showModal, updateShowModal] = useState(false)
@@ -74,6 +75,10 @@ const MoveFiles = (props) => {
     
     
   const moveToFolder = () => {
+    setTimeout(() => {
+      moveMessRef.current.style.display = "block"
+    }, 1000);
+    
     let name = startPath.lastIndexOf("/")
     let newName = startPath.substring(name)
     console.log(newName)
@@ -90,20 +95,9 @@ const MoveFiles = (props) => {
         to_path: movePath + newName,
       })
       .then(response => {
-        dbx.filesListFolder({
-          path: movePath,
-        })
-        .then(response => {
-         //props.dataUpdate(response.entries) 
-
-         
-         window.location =  window.location.origin + "/home" + movePath       
-          
-        })
-        .catch(error => {
-          console.log(error);
-        }); 
-       
+        setTimeout(() => {
+          closeModal()
+        }, 3000);
         
       })
       .catch(error => {
@@ -147,13 +141,13 @@ const MoveFiles = (props) => {
       { mapping }
       </tbody>
     </table>
-    <button onClick={ () => moveToFolder(startPath, movePath) }>Move</button>
-    <i className="material-icons upload-close" onClick={ closeModal }>close</i>
+    <button onClick={moveToFolder}>Move</button>
+    <i className="material-icons upload-close" onClick={closeModal}>close</i>
+    <p ref={moveMessRef} style={{display: "none"}}>{props.name} moved...</p>
     </div>
     </Router>
   
-
-
+    
     return (
         <>
         { moveFolders }
