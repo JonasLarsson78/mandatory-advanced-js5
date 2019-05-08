@@ -153,7 +153,7 @@ const MoveFiles = (props) => {
     <div className="moveModal" ref={ moveModal }>
     <ModalBreadcrumbs />
     <p>Move {props.name} ...to:</p>
-    <o>{ fileTransfer }</o>
+    <p>{ fileTransfer }</p>
     <table>
       <tbody>
       { mapping }
