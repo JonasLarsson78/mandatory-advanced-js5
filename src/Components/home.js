@@ -49,7 +49,7 @@ const Home = (props) => {
 
 
     useEffect(() => {
-      console.log('poll')
+      //console.log('poll')
 
 
       const poll = setInterval(() => {
