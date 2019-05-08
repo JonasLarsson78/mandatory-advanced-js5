@@ -14,6 +14,7 @@ body{
     display: flex;
     flex-flow: row wrap;
     justify-content: space-between;
+    align-content: center;
     width: 100%;
     height: 150px;
     border: 0px solid black;
@@ -21,13 +22,12 @@ body{
 
 #header-logo {
     width: 200px;
-    margin: 50px 0 0 40px;
+    margin-left: 20px;
 }
 
 .header-search {
     width: 200px;
     height: 25px;
-    margin-top: 28px;
     margin-right: 50px;
     border-radius: 5px;
     outline: none;
@@ -37,8 +37,8 @@ body{
 }
 .header-serach-icon{
     position: relative;
+    top: 5px;
     height: 50px;
-    top: 32px;
     color: #4d4d4d;
 }
 .headerContent{
@@ -49,11 +49,11 @@ body{
 }
 .headerLogOutBtn{
     position: relative;
-    top: 30px;
+    top: 5px;
     margin-right: 20px;
     margin-left: 10px;
     height: 25px;
-    border:none;
+    border: none;
     border-radius: 5px;
     color: white;
     background-color: #00AFD6;
