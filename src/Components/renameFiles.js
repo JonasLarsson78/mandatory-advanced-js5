@@ -1,6 +1,6 @@
 import React, {useState,useRef} from 'react';
 import { Dropbox } from 'dropbox';
-import {token$} from './store.js';
+import {token$, favorites$, updateFavoriteToken} from './store.js';
 
 const RenameFile = (props) => {
   const inputEl = useRef(null);
@@ -45,7 +45,14 @@ const addNewName = (e) => {
     autorename: true
   })
   .then(response => {
-    
+
+    for (let i=0; i<favorites$.value.length; i++) {
+      if (favorites$.value[i].id === response.metadata.id) {
+          let newArray = [...favorites$.value];
+          newArray[i] = response.metadata;
+          updateFavoriteToken(newArray);
+      }
+    }
     dbx.filesListFolder({
       path: props.folder.substring(5),
     

@@ -1,9 +1,7 @@
 import React, {useState, useRef} from 'react';
-import {token$} from './store.js';
+import {token$, favorites$, updateFavoriteToken} from './store.js';
 import { Dropbox } from 'dropbox';
 import '../Css/modal.css'
-
-
 
 
 const Delete = (props) => {
@@ -33,7 +31,13 @@ const yes = () => {
             path: delFile,
           })
           .then(response => {
-            
+            for (let i=0; i<favorites$.value.length; i++) {
+              if (favorites$.value[i].id === response.metadata.id) {
+                  let newArray = [...favorites$.value];
+                  newArray.splice(i, 1);
+                  updateFavoriteToken(newArray);
+            }
+          }
             dbx.filesListFolder({
             path: path,
           

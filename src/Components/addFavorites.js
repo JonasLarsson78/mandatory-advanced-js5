@@ -1,6 +1,5 @@
-import React, {useState, useRef} from 'react';
-import {token$, favorites$, updateFavoriteToken} from './store.js';
-import { Dropbox } from 'dropbox';
+import React from 'react';
+import {updateFavoriteToken} from './store.js';
 
 /*
 
@@ -40,10 +39,10 @@ const AddFavorites = (props) => {
     }
 /////////////////////////////////////////////////////////////////////////////////////////////////
     if (isFavorite) {
-        return <button className="listBtn" onClick={remove}><i className="material-icons">favorite</i></button>;
+        return <button className="listBtn" onClick={remove}><i style={{color: "#ffd900", WebkitTextStroke: "1px #4d4d4d"}} className="material-icons">star</i></button>;
     }
 
-    return <button className="listBtn" onClick={add}><i className="material-icons">favorite_border</i></button>;
+    return <button className="listBtn" onClick={add}><i className="material-icons hoverStar">star</i></button>;
     
 }
 

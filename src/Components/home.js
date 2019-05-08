@@ -11,7 +11,6 @@ import UserAccount from './userAccount';
 import { Helmet } from "react-helmet";
 import LogOut from './logout'
 import FavoriteList from "./favoriteList.js"
-import AddFavorites from "./addFavorites.js"
 import {favorites$} from './store'
 import {updateFavoriteToken} from './store'
 import '../Css/home.css';
@@ -286,8 +285,33 @@ const Home = (props) => {
       </aside>
       <main className="mainMain">
       <Breadcrumbs /><br />
-        
         <table className="mainTable">
+          <thead>
+            <th>
+            <i className="material-icons filesFolders">all_inbox</i>
+            </th>
+            <th>
+              Name:
+            </th>
+            <th>
+              File size:
+            </th>
+            <th>
+              Last edited:
+            </th>
+            <th>
+            Del:
+            </th>
+            <th>
+             Ren: 
+            </th>
+            <th>
+             Mov:
+            </th>
+            <th>
+              Fav:
+            </th>
+          </thead>
           <tbody>
             <ListItems favorites={favorites} favUpdate={favUpdate} thumbnailsLoaded={thumbnailsLoaded} folder={props.location.pathname} dataUpdate={dataUpdate} thumbnailUpdate={thumbnailUpdate}  renderData={data} thumbnails={thumbnails}></ListItems>
           </tbody>
