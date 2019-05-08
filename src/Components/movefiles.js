@@ -3,20 +3,17 @@ import { Dropbox } from 'dropbox';
 import { token$ } from './store.js';
 import {Link}from "react-router-dom";
 import { HashRouter as Router} from "react-router-dom";
-import ModalBreadcrumbs from './modalbreadcrumb.js'
+import ModalBreadcrumbs from './ModalBreadcrumb.js'
 import '../Css/movefiles.css';
 
 const MoveFiles = (props) => {
     const moveModal = useRef(null);
-    const [movePath, updateMovePath] = useState(null)
-    const [startPath, updateStartPath] = useState(null)
+    const [movePath, updateMovePath] = useState("")
+    const [startPath, updateStartPath] = useState("")
     const [showModal, updateShowModal] = useState(false)
     const [data, updateData] = useState([]);
     let moveFolders = '';
-    //console.log(props.dataUpdate)
-
     const path = window.decodeURIComponent(window.location.hash.slice(1));
-    //console.log(path)
     //console.log(path)
     /*========= API Request for List folders =========*/
     useEffect(() => {
@@ -57,7 +54,6 @@ const MoveFiles = (props) => {
       }
     }
     }, [showModal, path]);
-
   useEffect(() => {
     if (!showModal) {
       window.location.hash = "/";
@@ -70,24 +66,18 @@ const MoveFiles = (props) => {
   }
 
   const setPath = (e) => {
-    console.log(e.target.dataset.id)
     updateMovePath(e.target.dataset.id)
   }
 
       /*========= API Request for move files =========*/
 
-    //console.log(movePath)
-    //console.log(props.folder)
     
     
-  const moveToFolder = (startPath, movePath) => {
-    const test = '/Test app files' + startPath;
-    const test2 = '/Test app files' + movePath +startPath;
-    console.log(test)
-    console.log(test2)
-    console.log(startPath)
+  const moveToFolder = () => {
+    let name = startPath.lastIndexOf("/")
+    let newName = startPath.substring(name)
+    console.log(newName)
     console.log(movePath)
-    //console.log(encodeURIComponent(movePath))
     const option = {
         fetch: fetch,
         accessToken: token$.value
@@ -96,15 +86,24 @@ const MoveFiles = (props) => {
         option,
       );
       dbx.filesMoveV2({
-        from_path: test,
-        to_path: test2,
-        allow_shared_folder: true,
-        autorename: true,
-        allow_ownership_transfer: true,
+        from_path: startPath,
+        to_path: movePath + newName,
       })
       .then(response => {
-        console.log(response)
-        //props.dataUpdate(response.entries)
+        dbx.filesListFolder({
+          path: movePath,
+        })
+        .then(response => {
+         //props.dataUpdate(response.entries) 
+
+         
+         window.location =  window.location.origin + "/home" + movePath       
+          
+        })
+        .catch(error => {
+          console.log(error);
+        }); 
+       
         
       })
       .catch(error => {
@@ -116,7 +115,6 @@ const MoveFiles = (props) => {
   const renderModalData = (data) => {
     //console.log(startPath)
     //console.log(data.path_lower)
-    //console.log(data.path_display)
     if(data[".tag"] === 'folder'){ //FOLDER
       return( //FOLDERS
         <>
