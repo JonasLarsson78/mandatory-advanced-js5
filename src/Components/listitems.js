@@ -10,7 +10,7 @@ import RenameFile  from './renameFiles'
 import ReNameFolder from './renameFolder.js';
 import MoveFiles from './movefiles.js'
 import { Dropbox } from 'dropbox';
-import {token$, favorites$ } from './store.js';
+import {token$} from './store.js';
 import AddFavorites from "./addFavorites.js";
 
 
