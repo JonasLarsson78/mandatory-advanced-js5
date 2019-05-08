@@ -125,7 +125,6 @@ const Home = (props) => {
               }) 
             }) 
             .then(response => {   
-              console.log(response)
               updateThumbnails(response.entries)
               })
               
