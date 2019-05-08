@@ -3,13 +3,14 @@ import { Dropbox } from 'dropbox';
 import { token$ } from './store.js';
 import {Link}from "react-router-dom";
 import { HashRouter as Router} from "react-router-dom";
-import ModalBreadcrumbs from './ModalBreadcrumb.js'
+import ModalBreadcrumbs from './modalbreadcrumb.js'
 import '../Css/movefiles.css';
 
 const MoveFiles = (props) => {
     const moveModal = useRef(null);
     const [movePath, updateMovePath] = useState("")
     const [startPath, updateStartPath] = useState("")
+    const [fileTransfer, updateFileTransfer] = useState("")
     const [showModal, updateShowModal] = useState(false)
     const [data, updateData] = useState([]);
     let moveFolders = '';
@@ -76,6 +77,7 @@ const MoveFiles = (props) => {
   const moveToFolder = () => {
     let name = startPath.lastIndexOf("/")
     let newName = startPath.substring(name)
+    console.log(name)
     console.log(newName)
     console.log(movePath)
     const option = {
@@ -94,10 +96,14 @@ const MoveFiles = (props) => {
           path: movePath,
         })
         .then(response => {
+          updateFileTransfer('File transfered')
          //props.dataUpdate(response.entries) 
-
+         setTimeout(() => {
+          closeModal() 
+         }, 3000);
          
-         window.location =  window.location.origin + "/home" + movePath       
+         
+         //window.location =  window.location.origin + "/home" + movePath       
           
         })
         .catch(error => {
@@ -142,6 +148,7 @@ const MoveFiles = (props) => {
     <div className="moveModal" ref={ moveModal }>
     <ModalBreadcrumbs />
     <p>Move {props.name} ...to:</p>
+    <o>{ fileTransfer }</o>
     <table>
       <tbody>
       { mapping }
