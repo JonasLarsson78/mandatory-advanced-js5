@@ -2,6 +2,8 @@ import React, {useState, useEffect} from 'react';
 import {favorites$} from './store.js';
 import {Link} from "react-router-dom";
 import {downloadFile} from "./dowload"
+import { Dropbox } from 'dropbox';
+import {token$} from './store.js';
 
 /*
 
@@ -22,7 +24,7 @@ A direct update of the favorite_state is not required, but obviously better.
 === Kör en toggle onClick - Om id inte finns i listan, lägg till objektet (objekt ska in i state, inte id), om id finns i listan, ta bort.
 */
 
-const FavoriteList = () => {
+const FavoriteList = (props) => {
 /////////////////////////////////////////////////////////////////////////////////////////////////
   const [fav, updateFav] = useState([]);
 /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -67,8 +69,50 @@ const FavoriteList = () => {
               )
         }
         /////IF FILES ENDS////
+
+
+        const renameBrackets = (rename, newUrl) =>{
+          const option = {
+            fetch: fetch,
+            accessToken: token$.value
+          };
+          
+          const dbx = new Dropbox(
+            option,
+          );
+          dbx.filesMoveV2({
+            from_path: rename,
+            to_path: newUrl,
+            autorename: true
+          })
+          .then(response => {
+            dbx.filesListFolder({
+              path: props.folder.substring(5),
+            })
+            .then(response => {
+              props.dataUpdate(response.entries)
+            })
+            
+          })
+          .catch(error => {
+            console.log(error);
+          });
+        
+        }
+
       /////IF FOLDER STARTS////
       if(data[".tag"] === 'folder'){ //FOLDER
+
+
+        if (data.name.includes("(")){
+
+          let brak = data.name.replace(/[()]/g,'')
+          let newName = data.path_lower.substring(0, data.path_lower.lastIndexOf("/")) + "/" + brak;
+          
+          renameBrackets(data.path_lower, newName)
+          data.name = brak
+        }
+
       return( //FOLDERS
         <tr style={{background: "white"}} key={data.id} className="listFiles" data-name={data.name} data-folder={data.path_lower} data-tag={data[".tag"]}>
           <td>
