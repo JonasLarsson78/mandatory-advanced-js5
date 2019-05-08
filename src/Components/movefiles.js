@@ -8,14 +8,15 @@ import '../Css/movefiles.css';
 
 const MoveFiles = (props) => {
     const moveModal = useRef(null);
-    const [oldPath, updateOldPath] = useState('')
+    const [movePath, updateMovePath] = useState(null)
     const [startPath, updateStartPath] = useState(null)
     const [showModal, updateShowModal] = useState(false)
     const [data, updateData] = useState([]);
     let moveFolders = '';
+    console.log(props.path)
 
     const path = window.decodeURIComponent(window.location.hash.slice(1));
-
+    //console.log(path)
     /*========= API Request for List folders =========*/
     useEffect(() => {
       if (!showModal) {
@@ -45,7 +46,7 @@ const MoveFiles = (props) => {
           path: path,
         })
         .then(response => {
-          console.log(response.entries) 
+          //console.log(response.entries) 
           updateData(response.entries)          
           
         })
@@ -68,12 +69,19 @@ const MoveFiles = (props) => {
   }
 
   const setPath = (e) => {
-    updateStartPath(e.target.dataset.id)
+    updateMovePath(e.target.dataset.id)
   }
 
       /*========= API Request for move files =========*/
-    //onClick={ moveToFolder(startPath, data.path_lower) }
-  const moveToFolder = (folder, newFolder) => {
+
+    console.log(movePath)
+    console.log(props.folder)
+    
+    
+  const moveToFolder = (startPath, movePath) => {
+    console.log(startPath)
+    console.log(movePath)
+    console.log(encodeURIComponent(movePath))
     const option = {
         fetch: fetch,
         accessToken: token$.value
@@ -82,12 +90,14 @@ const MoveFiles = (props) => {
         option,
       );
       dbx.filesMoveBatchV2({
-        from_path: folder,
-        to_path: newFolder,
+        from_path: '/home' + startPath,
+        to_path: '/home' + movePath,
         autorename: true
       })
       .then(response => {
         console.log(response)
+        props.dataUpdate(response.entries)
+        
       })
       .catch(error => {
         console.log(error);
@@ -106,8 +116,7 @@ const MoveFiles = (props) => {
           <i className="material-icons filesFolders">folder</i>
           </td>
           <td>
-          <Link to={ data.path_lower } onClick={ setPath } data-id={ data.path_display }>{data.name}</Link>
-          <button>Move</button>
+          <Link to={ data.path_lower } onClick={ setPath } data-id={ data.path_display }>{ data.name }</Link>
           </td>
         </tr>
         </>
@@ -131,16 +140,18 @@ const MoveFiles = (props) => {
       { mapping }
       </tbody>
     </table>
+    <button onClick={ () => moveToFolder(startPath, movePath) }>Move</button>
     <i className="material-icons upload-close" onClick={ closeModal }>close</i>
     </div>
     </Router>
   
 
+
     return (
         <>
         { moveFolders }
         
-        <button className="listBtn" onClick={ () => startModal(props.folder) }> <i className="material-icons">swap_horiz</i></button>
+        <button className="listBtn" onClick={ () => startModal(props.path) }> <i className="material-icons">swap_horiz</i></button>
         </>
 
     )
