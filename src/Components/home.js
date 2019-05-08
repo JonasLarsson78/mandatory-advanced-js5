@@ -229,7 +229,7 @@ const Home = (props) => {
           }) 
         }) 
         .then(response => {   
-          console.log(response)
+          //console.log(response)
           updateThumbnails(response.entries)
           })
           
@@ -320,7 +320,7 @@ const Home = (props) => {
       </main>
       <aside className="rightSide">
         <div className="aside"></div>
-         <FavoriteList />
+         <FavoriteList data={data} />
       </aside>
     </div>
     

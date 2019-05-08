@@ -137,7 +137,7 @@ const MoveFiles = (props) => {
           <Link to={ data.path_lower } className="modal-movefiles-link" onClick={ setPath } data-id={ data.path_display }>{ data.name }</Link>
           </td>
         </tr>
-        </>
+        
           )
         } 
   }
