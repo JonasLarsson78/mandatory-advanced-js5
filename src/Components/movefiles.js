@@ -98,7 +98,7 @@ const MoveFiles = (props) => {
         setTimeout(() => {
           closeModal()
         }, 3000);
-        
+        clearTimeout()
       })
       .catch(error => {
         console.log(error);
@@ -113,7 +113,7 @@ const MoveFiles = (props) => {
       return( //FOLDERS
         <>
         <tr key={data.id} className="" data-name={data.name} data-folder={data.path_display} data-tag={data[".tag"]}>
-          <td>
+          <td key={data.id}>
           <i className="material-icons filesFolders">folder</i>
           </td>
           <td>
