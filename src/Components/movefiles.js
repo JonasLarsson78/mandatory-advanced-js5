@@ -128,7 +128,7 @@ const MoveFiles = (props) => {
     //console.log(data.path_lower)
     if(data[".tag"] === 'folder'){ //FOLDER
       return( //FOLDERS
-        <>
+        
         <tr key={data.id} className="" data-name={data.name} data-folder={data.path_display} data-tag={data[".tag"]}>
           <td>
           <i className="material-icons filesFolders">folder</i>
@@ -137,7 +137,7 @@ const MoveFiles = (props) => {
           <Link to={ data.path_lower } onClick={ setPath } data-id={ data.path_display }>{ data.name }</Link>
           </td>
         </tr>
-        </>
+        
           )
         } 
   }

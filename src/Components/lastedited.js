@@ -23,5 +23,5 @@ export function lastEdited (date) {
   let monthInText = months[month-1];
   
 
-  return <label>{'Last edited: ' + moment(date).fromNow() + ', ' + day + ' ' + monthInText + ' ' + year}</label>
+  return <label>{moment(date).fromNow() + ', ' + day + ' ' + monthInText + ' ' + year}</label>
 }
