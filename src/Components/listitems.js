@@ -111,9 +111,6 @@ const ListItems = (props) => {
             <td style={{width: "30px"}}>
               <AddFavorites data={data} favorites={props.favorites} favUpdate={props.favUpdate} id={data.id} path={data.path_lower} ></AddFavorites>
             </td>
-            <td>
-              <MoveFiles dataUpdate={props.dataUpdate} folder={props.folder} path={data.path_lower} name={data.name}/>
-            </td>
           </tr>
          
         ) 
