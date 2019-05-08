@@ -8,6 +8,7 @@ import '../Css/movefiles.css';
 
 const MoveFiles = (props) => {
     const moveModal = useRef(null);
+    const moveMessRef = useRef(null);
     const [movePath, updateMovePath] = useState("")
     const [startPath, updateStartPath] = useState("")
     const [fileTransfer, updateFileTransfer] = useState("")
@@ -75,6 +76,10 @@ const MoveFiles = (props) => {
     
     
   const moveToFolder = () => {
+    setTimeout(() => {
+      moveMessRef.current.style.display = "block"
+    }, 1000);
+    
     let name = startPath.lastIndexOf("/")
     let newName = startPath.substring(name)
     console.log(name)
@@ -101,7 +106,7 @@ const MoveFiles = (props) => {
          setTimeout(() => {
           closeModal() 
          }, 3000);
-         
+         clearTimeout()
          
          //window.location =  window.location.origin + "/home" + movePath       
           
@@ -125,7 +130,7 @@ const MoveFiles = (props) => {
       return( //FOLDERS
         <>
         <tr key={data.id} className="" data-name={data.name} data-folder={data.path_display} data-tag={data[".tag"]}>
-          <td>
+          <td key={data.id}>
           <i className="material-icons filesFolders">folder</i>
           </td>
           <td>
@@ -154,13 +159,13 @@ const MoveFiles = (props) => {
       { mapping }
       </tbody>
     </table>
-    <button onClick={ () => moveToFolder(startPath, movePath) }>Move</button>
-    <i className="material-icons upload-close" onClick={ closeModal }>close</i>
+    <button onClick={moveToFolder}>Move</button>
+    <i className="material-icons upload-close" onClick={closeModal}>close</i>
+    <p ref={moveMessRef} style={{display: "none"}}>{props.name} moved...</p>
     </div>
     </Router>
   
-
-
+    
     return (
         <>
         { moveFolders }
