@@ -54,14 +54,14 @@ const ListItems = (props) => {
       /*------------- Audio idx files -----------------------------------*/
       let audioIdx = [".wav", ".mp3", ".id3"]
       if (audioIdx.includes(newIdx)){
-        newThumbs = <i class="material-icons filesFolders">audiotrack</i>
+        newThumbs = <i className="material-icons filesFolders">audiotrack</i>
       }
       /* --------------------------------------------------------------- */
 
        /*------------- Vidio idx files -----------------------------------*/
       let videoIdx = [".mov", ".mp4"]
       if (videoIdx.includes(newIdx)){
-        newThumbs = <i class="material-icons filesFolders">local_movies</i>
+        newThumbs = <i className="material-icons filesFolders">local_movies</i>
       }
       /* --------------------------------------------------------------- */
 
