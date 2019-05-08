@@ -81,8 +81,8 @@ const MoveFiles = (props) => {
     
     
   const moveToFolder = (startPath, movePath) => {
-    const test = '/test app files' + startPath;
-    const test2 = '/test app files' + movePath +startPath;
+    const test = '/Test app files' + startPath;
+    const test2 = '/Test app files' + movePath +startPath;
     console.log(test)
     console.log(test2)
     console.log(startPath)
