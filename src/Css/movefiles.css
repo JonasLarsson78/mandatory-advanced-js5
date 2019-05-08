@@ -12,3 +12,43 @@
     z-index: 500;
     box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
   }
+
+  .modal-movefiles-tr {
+    width: 300px;
+
+  }
+
+  .modal-movefiles-td-icon {
+    width: 50px;
+    padding: 0 10px;
+  }
+ 
+  .modal-movefiles-td-link {
+    width: 100%;
+    padding: 5px;
+  }
+
+  .modal-movefiles-link {
+    text-decoration: none;
+    color: #4D4D4D;
+    font-size: 16px;
+  }
+
+  .modal-movefiles-link:hover {
+    color: #00AFD6;
+  }
+
+  .modal-movefiles-button {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    width: 120px;
+    height: 25px;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    background-color: #00AFD6;
+    outline: none;
+    cursor: pointer;
+    text-transform: uppercase;
+  }
