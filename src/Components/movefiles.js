@@ -6,9 +6,11 @@ import { HashRouter as Router} from "react-router-dom";
 import ModalBreadcrumbs from './modalbreadcrumb.js'
 import '../Css/movefiles.css';
 
+
 const MoveFiles = (props) => {
     const moveModal = useRef(null);
     const moveMessRef = useRef(null);
+    const [moveError, updateMoveError] = useState("")
     const [movePath, updateMovePath] = useState("")
     const [startPath, updateStartPath] = useState("")
     const [fileTransfer, updateFileTransfer] = useState("")
@@ -16,13 +18,19 @@ const MoveFiles = (props) => {
     const [data, updateData] = useState([]);
     let moveFolders = '';
     const path = window.decodeURIComponent(window.location.hash.slice(1));
+
+    //console.log(props.folder)
+    //console.log(props.path)
+    //console.log(startPath)
+
     //console.log(path)
     /*========= API Request for List folders =========*/
-    useEffect(() => {
+    useEffect((e) => {
       if (!showModal) {
         moveModal.current.style.display = 'none';
       } else {
         moveModal.current.style.display = 'block';
+        moveModal.current.style.top = 'e.clientY'
         const option = {
           fetch: fetch,
           accessToken: token$.value
@@ -46,9 +54,7 @@ const MoveFiles = (props) => {
           path: path,
         })
         .then(response => {
-          //console.log(response.entries) 
-          updateData(response.entries)          
-          
+          updateData(response.entries)
         })
         .catch(error => {
           console.log(error);
@@ -56,6 +62,7 @@ const MoveFiles = (props) => {
       }
     }
     }, [showModal, path]);
+
   useEffect(() => {
     if (!showModal) {
       window.location.hash = "/";
@@ -76,50 +83,49 @@ const MoveFiles = (props) => {
     
     
   const moveToFolder = () => {
-    setTimeout(() => {
-      moveMessRef.current.style.display = "block"
-    }, 1000);
+    for (let i = 0; i < data.length; i++) {
+      console.log(data[i].path_lower)
+      if (startPath === movePath) {
+        updateMoveError('You cant move files in same directory')
+      } else {
+        let index = startPath.lastIndexOf("/")
+        let newName = startPath.substring(index)
+        updateMoveError('')
     
-    let name = startPath.lastIndexOf("/")
-    let newName = startPath.substring(name)
-    console.log(name)
-    console.log(newName)
-    console.log(movePath)
-    const option = {
-        fetch: fetch,
-        accessToken: token$.value
-      };
-      const dbx = new Dropbox(
-        option,
-      );
-      dbx.filesMoveV2({
-        from_path: startPath,
-        to_path: movePath + newName,
-      })
-      .then(response => {
-        dbx.filesListFolder({
-          path: movePath,
-        })
-        .then(response => {
-          updateFileTransfer('File transfered')
-         //props.dataUpdate(response.entries) 
-         setTimeout(() => {
-          closeModal() 
-         }, 3000);
-         clearTimeout()
-         
-         //window.location =  window.location.origin + "/home" + movePath       
-          
-        })
-        .catch(error => {
-          console.log(error);
-        }); 
-       
-        
-      })
-      .catch(error => {
-        console.log(error);
-      });
+        const option = {
+            fetch: fetch,
+            accessToken: token$.value
+          };
+          const dbx = new Dropbox(
+            option,
+          );
+          dbx.filesMoveV2({
+            from_path: startPath,
+            to_path: movePath + newName,
+          })
+          .then(response => {
+            updateFileTransfer('File transfered')
+            dbx.filesListFolder({
+              path: movePath,
+            })
+            .then(response => {
+              
+             setInterval(() => {
+              closeModal() 
+             }, 2000);
+             clearInterval()           
+            })
+            .catch(error => {
+              console.log(error);
+            }); 
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      }
+    }
+    
+ 
     }
  /*==================*/
 
@@ -128,7 +134,6 @@ const MoveFiles = (props) => {
     //console.log(data.path_lower)
     if(data[".tag"] === 'folder'){ //FOLDER
       return( //FOLDERS
-        <>
         <tr key={data.id} className="modal-movefiles-tr" data-name={data.name} data-folder={data.path_display} data-tag={data[".tag"]}>
           <td key={data.id} className="modal-movefiles-td-icon">
           <i className="material-icons filesFolders">folder</i>
@@ -137,7 +142,6 @@ const MoveFiles = (props) => {
           <Link to={ data.path_lower } className="modal-movefiles-link" onClick={ setPath } data-id={ data.path_display }>{ data.name }</Link>
           </td>
         </tr>
-        </>
           )
         } 
   }
@@ -159,6 +163,7 @@ const MoveFiles = (props) => {
       { mapping }
       </tbody>
     </table>
+    { moveError }
     <button className="modal-movefiles-button" onClick={moveToFolder}>Move</button>
     <i className="material-icons upload-close" onClick={closeModal}>close</i>
     <p ref={moveMessRef} style={{display: "none"}}>{props.name} moved...</p>
