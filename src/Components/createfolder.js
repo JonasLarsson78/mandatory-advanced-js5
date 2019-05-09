@@ -37,25 +37,21 @@ const CreateFolder = (props) => {
       autorename: true
     })
     .then(response => { 
-       console.log(response)
        
        setTimeout(() => {
          closeModal();
        }, 2000);
-       console.log(newFolder)
-   
-       
-       console.log(newFolder)
+
        dbx.filesListFolder({
         path: newFolder,
       
       })
       .then(response => {
-        console.log(response)
 
         props.thumbnailUpdate([]);
+        props.oldDataUpdate(response.entries)
         props.dataUpdate(response.entries)
-
+        
         dbx.filesGetThumbnailBatch({
           
           entries: response.entries.map(entry => {
@@ -85,13 +81,8 @@ const CreateFolder = (props) => {
        });
 
 
-   
-   
-
   }
 
-
-  //inputRef.current.value = '';   
 
   const closeModal = () => {
     uploadModal.current.style.display = 'none';
@@ -109,7 +100,6 @@ const CreateFolder = (props) => {
       <i className="material-icons upload-close" onClick={ closeModal }>close</i>
       <br /><button className="upload-folder-modal-button" onClick={createFolder}>Create new Folder</button>
     </div>
-
 
 
   return(

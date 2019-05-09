@@ -16,12 +16,17 @@ import {updateFavoriteToken} from './store'
 import '../Css/home.css';
 
 
+
+
 const Home = (props) => {
   const [token, updateTokenState] = useState(token$.value)
   const [data, updateData] = useState([]);
   const [thumbnails, updateThumbnails] = useState([])
   const [thumbnailsLoaded, updateThumbnailsLoaded] = useState(false);
   const [favorites, updateFavorites] = useState([]);
+  const [oldData, updateOldData] = useState([])
+  const [searchMode, updateSearchMode] = useState(false)
+
 
   useEffect(() => {
     const subscription = favorites$.subscribe(updateFavorites);
@@ -43,15 +48,19 @@ const Home = (props) => {
   }, [data, thumbnails]);
 
 
+
   
 
 
 
     useEffect(() => {
-      //console.log('poll')
-
-
+      
+       if(searchMode){
+        return;
+      }
+        
       const poll = setInterval(() => {
+       
         const option = {
           fetch: fetch,
           accessToken: token$.value
@@ -59,43 +68,61 @@ const Home = (props) => {
         const dbx = new Dropbox(
           option,
         );
+
+        
         if(props.location.pathname === '/home'){
           dbx.filesListFolder({
             path: '',
           
           })
           .then(response => {
+            updateOldData(response.entries)
             
-            updateThumbnails([]);
-            updateData(response.entries)
-            
-    
-            dbx.filesGetThumbnailBatch({
+            let responseRev = response.entries.map(x => x.rev).filter(y => y !== undefined)
+            let oldrespRev = oldData.map(x => x.rev).filter(y => y !== undefined)
+            let responseName = response.entries.map(x => x.name).filter(y => y !== undefined)
+            let oldrespName = oldData.map(x => x.name).filter(y => y !== undefined)
+
+            const diffRev = responseRev.filter(el => !oldrespRev.includes(el));
+            const diffName = responseName.filter(el => !oldrespName.includes(el))
+
+            if(oldData.length < response.entries.length){
+              updateData(response.entries)
+            }
+
+
+            if(oldData.length !== response.entries.length || diffRev.length > 0 || diffName.length > 0){
               
-              entries: response.entries.map(entry => {
-              return{
-                path: entry.id,
-                format : {'.tag': 'jpeg'},
-                size: { '.tag': 'w32h32'},
-                mode: { '.tag': 'strict' }  
-                }
+              dbx.filesGetThumbnailBatch({
+              
+                entries: response.entries.map(entry => {
+                return{
+                  path: entry.id,
+                  format : {'.tag': 'jpeg'},
+                  size: { '.tag': 'w32h32'},
+                  mode: { '.tag': 'strict' }  
+                  }
+                }) 
               }) 
-            }) 
-            .then(response => {   
-               updateThumbnails(response.entries)
-              })
-              .catch(function(error) {
-                console.log(error);
-               });
-               
-    
+              .then(responseThumbs => {   
+                
+                 updateThumbnails(responseThumbs.entries)
+                 updateData(response.entries)
+                 
+                })
+                .catch(function(error) {
+                  console.log(error);
+                 });
+              
+
+            }
+
           })
           
           .catch(function(error) {
             console.log(error);
            });
     
-         
         }
         else{
           
@@ -107,11 +134,22 @@ const Home = (props) => {
           
           })
           .then(response => {
-            
-           updateThumbnails([]);
-            updateData(response.entries)
-    
-    
+            updateOldData(response.entries)
+
+            let responseRev = response.entries.map(x => x.rev).filter(y => y !== undefined)
+            let oldrespRev = oldData.map(x => x.rev).filter(y => y !== undefined)
+            let responseName = response.entries.map(x => x.name).filter(y => y !== undefined)
+            let oldrespName = oldData.map(x => x.name).filter(y => y !== undefined)
+
+            const diffRev = responseRev.filter(el => !oldrespRev.includes(el));
+            const diffName = responseName.filter(el => !oldrespName.includes(el))
+
+
+            if(oldData.length < response.entries.length){
+              updateData(response.entries)
+            }
+
+            if(oldData.length !== response.entries.length || diffRev.length > 0 || diffName.length > 0){
     
             dbx.filesGetThumbnailBatch({
               
@@ -124,38 +162,35 @@ const Home = (props) => {
                 }
               }) 
             }) 
-            .then(response => {   
-              updateThumbnails(response.entries)
+            .then(responseThumbs => {   
+              updateThumbnails(responseThumbs.entries)
+              updateData(response.entries)
               })
               
               .catch(function(error) {
                 console.log(error);
                });
-               
+              }
+
           })
+        
           .catch(function(error) {
             console.log(error);
            });
         }
-      }, 50000);
+      }, 5000);
       
       
     
     return () => clearInterval(poll);
 
-    }, [props.location.pathname, data, thumbnails])
+    }) 
+
+
 
     
-  
-
-
-
-
-  
-
   useEffect(() => {
 
-  
     const option = {
       fetch: fetch,
       accessToken: token$.value
@@ -170,9 +205,9 @@ const Home = (props) => {
       })
       .then(response => {
         
-        updateThumbnails([]);
-        updateData(response.entries)
-        
+
+          updateThumbnails([]);
+          updateData(response.entries)
 
         dbx.filesGetThumbnailBatch({
           
@@ -186,7 +221,9 @@ const Home = (props) => {
           }) 
         }) 
         .then(response => {   
+          
             updateThumbnails(response.entries)
+            
           })
           .catch(function(error) {
             console.log(error);
@@ -211,12 +248,11 @@ const Home = (props) => {
       
       })
       .then(response => {
-        
+
         updateThumbnails([]);
         updateData(response.entries)
 
-
-
+          
         dbx.filesGetThumbnailBatch({
           
           entries: response.entries.map(entry => {
@@ -229,7 +265,6 @@ const Home = (props) => {
           }) 
         }) 
         .then(response => {   
-          //console.log(response)
           updateThumbnails(response.entries)
           })
           
@@ -247,16 +282,27 @@ const Home = (props) => {
 
 
   const dataUpdate = (data) => {
+    updateOldData(data)
     updateData(data)
+    
   }
 
   const thumbnailUpdate = (data) => {
     updateThumbnails(data)
   } 
 
+  const oldDataUpdate = (data) => {
+    updateOldData(data)
+    
+  }
+
   const favUpdate = (data) => {
     updateFavorites(data);
     updateFavoriteToken(data);
+  }
+
+  const searchUpdateMode = (bool) => {
+      updateSearchMode(bool)
   }
 
   if(token === null){
@@ -271,7 +317,7 @@ const Home = (props) => {
     <header className="mainHeader">
       <div className="header-logo-wrap"><img id="header-logo" src={ require('../Img/Logo_mybox.png') } alt="My Box logo"/> </div>
         <span className="headerContent">
-          <Search searchData={data} folder={props.location.pathname} dataUpdate={dataUpdate} thumbnailUpdate={thumbnailUpdate} />
+          <Search searchUpdateMode={searchUpdateMode} searchData={data} folder={props.location.pathname} dataUpdate={dataUpdate} thumbnailUpdate={thumbnailUpdate} />
           <span><UserAccount/></span>
           <span><LogOut updateTokenState={updateTokenState}/></span>
         </span>
@@ -280,7 +326,7 @@ const Home = (props) => {
       <aside className="leftSide">
         
         <div className="left-link-wrap"><UploadFile folder={props.location.pathname} dataUpdate={dataUpdate} thumbnailUpdate={thumbnailUpdate}></UploadFile><br></br><br></br>
-        <CreateFolder folder={props.location.pathname} dataUpdate={dataUpdate} thumbnailUpdate={thumbnailUpdate}></CreateFolder></div>
+        <CreateFolder folder={props.location.pathname} dataUpdate={dataUpdate} thumbnailUpdate={thumbnailUpdate} oldDataUpdate={oldDataUpdate}></CreateFolder></div>
       </aside>
       <main className="mainMain">
       <Breadcrumbs /><br />
