@@ -22,6 +22,7 @@
     background-color: #00000078;
     z-index: 500;
     cursor: default;
+    overflow: hidden;
 }
 .modalBtn{
     margin-right: 5px;

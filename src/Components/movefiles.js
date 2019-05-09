@@ -1,6 +1,6 @@
 import React, {useState, useRef, useEffect} from 'react';
 import { Dropbox } from 'dropbox';
-import { token$ } from './store.js';
+import {token$, favorites$, updateFavoriteToken} from './store.js';
 import {Link}from "react-router-dom";
 import { HashRouter as Router} from "react-router-dom";
 import ModalBreadcrumbs from './modalbreadcrumb.js'
@@ -20,11 +20,6 @@ const MoveFiles = (props) => {
     let moveFolders = '';
     const path = window.decodeURIComponent(window.location.hash.slice(1));
 
-    //console.log(props.folder)
-    //console.log(props.path)
-    //console.log(startPath)
-
-    //console.log(path)
     /*========= API Request for List folders =========*/
     useEffect((e) => {
       if (!showModal) {
@@ -44,12 +39,7 @@ const MoveFiles = (props) => {
           path: '',
         })
         .then(response => {
-          if (startPath.toLowerCase() === movePath.toLowerCase()) {
-            console.log('hej')
-            disable.current.style.display = 'none'
-          } else {
-            disable.current.style.display = 'block'
-          }  
+          
           updateData(response.entries) 
         })
         .catch(error => {
@@ -60,12 +50,7 @@ const MoveFiles = (props) => {
           path: path,
         })
         .then(response => {
-          if (startPath.toLowerCase() === movePath.toLowerCase()) {
-            console.log('hej')
-            disable.current.style.display = 'none'
-          } else {
-            disable.current.style.display = 'block'
-          }
+         
           updateData(response.entries)
         })
         .catch(error => {
@@ -96,6 +81,8 @@ const MoveFiles = (props) => {
   const moveToFolder = () => {
         let index = startPath.lastIndexOf("/")
         let newName = startPath.substring(index)
+        
+        let newName2 = startPath.substring(0, startPath.lastIndexOf("/"));
         updateMoveError('')
     
         const option = {
@@ -111,12 +98,22 @@ const MoveFiles = (props) => {
             autorename: true
           })
           .then(response => {
+
+            for (let i=0; i<favorites$.value.length; i++) {
+              if (favorites$.value[i].id === response.metadata.id) {
+                  let newArray = [...favorites$.value];
+                  newArray[i] = response.metadata;
+                  updateFavoriteToken(newArray);
+              }
+            }
+
             updateFileTransfer('File transfered')
             dbx.filesListFolder({
-              path: movePath,
+              path: newName2,
           })
           .then(response => {
-            closeModal() 
+            props.dataUpdate(response.entries)
+            
           })
             .catch(error => {
               console.log(error);
@@ -129,10 +126,7 @@ const MoveFiles = (props) => {
  /*==================*/
 
   const renderModalData = (data) => {
-    console.log(data)
     
-    console.log(startPath)
-    console.log(movePath)
     if(data[".tag"] === 'folder'){ //FOLDER
       return( //FOLDERS
         <tr key={data.id} className="modal-movefiles-tr" data-name={data.name} data-folder={data.path_display} data-tag={data[".tag"]}>
