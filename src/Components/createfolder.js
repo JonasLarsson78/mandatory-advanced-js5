@@ -49,7 +49,7 @@ const CreateFolder = (props) => {
       .then(response => {
 
         props.thumbnailUpdate([]);
-        props.oldDataUpdate(response.entries)
+        props.oldDataUpdate(response.entries) // Denna kanske ska användas i movefiles
         props.dataUpdate(response.entries)
         
         dbx.filesGetThumbnailBatch({

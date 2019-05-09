@@ -145,9 +145,14 @@ const Home = (props) => {
             const diffRev = responseRev.filter(el => !oldrespRev.includes(el));
             const diffName = responseName.filter(el => !oldrespName.includes(el))
 
+            console.log(oldData.length)
+            console.log(response.entries.length)
+
+            
 
             if(oldData.length < response.entries.length){
               updateData(response.entries)
+              
             }
 
             if(oldData.length !== response.entries.length || diffRev.length > 0 || diffName.length > 0){

@@ -26,7 +26,7 @@ const ListItems = (props) => {
 
 
 
-  const arrIdx = [".jpg", ".jpeg", ".png", ".pdf", ".mp3", ".id3", ".wav", ".mp4", ".mov"] // Array med filer som vissar thumb...
+  const arrIdx = [".jpg", ".jpeg", ".png", ".pdf", ".mp3", ".id3", ".wav", ".mp4", ".mov", 'JPG'] // Array med filer som vissar thumb...
 
   const renderList = (data, index) => {
    
