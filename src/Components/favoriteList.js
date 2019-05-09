@@ -36,21 +36,18 @@ const FavoriteList = (props) => {
   let sortData = fav.sort((a, b) => (a[".tag"] > b[".tag"]) ? 1 : -1).reverse();
 /////////////////////////////////////////////////////////////////////////////////////////////////
 
+
+
     let data = sortData;
     const renderFavorites = (data) => {
-
-      setInterval(() => {
-        poll()
-      }, 2000);
-      const poll = () =>{
-
-        const check = (x) => {
+       
+      const check = (x) => {
           if (x.id === data.id && x.name !== data.name){
             data = x
           }
         }
       props.data.map(check)
-      }
+      
 
         /////IF FILES STARTS////
         if(data[".tag"] === 'file'){ 
