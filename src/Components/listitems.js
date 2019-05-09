@@ -12,6 +12,7 @@ import MoveFiles from './movefiles.js'
 import { Dropbox } from 'dropbox';
 import {token$} from './store.js';
 import AddFavorites from "./addFavorites.js";
+import CopyFiles from './copyfiles.js'
 
 
 
@@ -112,6 +113,9 @@ const ListItems = (props) => {
             <td style={{width: "43px", textAlign: 'center'}}>
               <AddFavorites data={data} favorites={props.favorites} favUpdate={props.favUpdate} id={data.id} path={data.path_lower} ></AddFavorites>
             </td>
+            <td style={{width: "45px", textAlign: 'center'}}>
+              <CopyFiles data={data} favorites={props.favorites} favUpdate={props.favUpdate} path={data.path_lower} />
+            </td>
           </tr>
          
         ) 
@@ -180,6 +184,9 @@ return( //FOLDERS
     </td>
     <td style={{width: "45px", textAlign: 'center'}}>
         <AddFavorites data={data} favorites={props.favorites} favUpdate={props.favUpdate} path={data.path_lower}></AddFavorites>
+    </td>
+    <td style={{width: "45px", textAlign: 'center'}}>
+        <CopyFiles data={data} favorites={props.favorites} favUpdate={props.favUpdate} path={data.path_lower} />
     </td>
   </tr>
     )

@@ -137,7 +137,7 @@ const Home = (props) => {
             console.log(error);
            });
         }
-      }, 5000);
+      }, 50000);
       
       
     
@@ -287,7 +287,7 @@ const Home = (props) => {
         <table className="mainTable">
           <thead>
             <tr className="home-thead-tr">
-            <th colspan="2">
+            <th colSpan="2">
               Name
             </th>
             <th>
