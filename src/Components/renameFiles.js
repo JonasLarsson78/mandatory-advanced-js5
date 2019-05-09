@@ -107,7 +107,7 @@ renameInput = <div className="listRenameInput" ref={inputEl} style={{display: "n
 return(
   <>
   {renameInput}
-  <button className="listBtn" onClick={reName}><i data-path={props.path} className="material-icons">edit</i></button>
+  <button className="listBtn" onClick={reName}><i data-path={props.path} className="material-icons rename-icon">edit</i></button>
   </>
 )
 

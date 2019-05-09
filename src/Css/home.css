@@ -123,18 +123,23 @@ th {
     color: #4D4D4D;
     font-weight: 500;
     background: #ffffff;
-    color: 
 }
+
 tr:nth-child(even) {
     background: #ffffff;
 }
+
 tr:nth-child(odd) {
     background: #f5f5f5;
 }
+
 .hoverStar{
     color :#ffffff;
-    -webkit-text-stroke: 1px #4d4d4d;
+    font-size: 22px;
+    -webkit-text-stroke: 0.7px #4d4d4d;
 }
 .hoverStar:hover{
-    color: #ffed88;
+    font-size: 26px;
+    -webkit-text-stroke: 0.9px #029BB5;
+    transition: font-size 0.2s;
 }

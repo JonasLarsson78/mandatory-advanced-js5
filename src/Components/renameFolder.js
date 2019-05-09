@@ -105,7 +105,7 @@ renameInputFolder = <div className="listRenameInput" ref={inputElFolder} style={
 return(
   <>
   {renameInputFolder}
-  <button className="listBtn" onClick={reNameFolder}><i data-path={props.path} className="material-icons">edit</i></button>  </>
+  <button className="listBtn" onClick={reNameFolder}><i data-path={props.path} className="material-icons rename-icon">edit</i></button>  </>
 )
 
 }

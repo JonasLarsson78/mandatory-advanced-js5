@@ -296,16 +296,16 @@ const Home = (props) => {
             <th>
               Last edited
             </th>
-            <th>
+            <th style={{ textAlign: 'center' }}>
             Del
             </th>
-            <th>
+            <th style={{ textAlign: 'center' }}>
              Ren 
             </th>
-            <th>
+            <th style={{ textAlign: 'center' }}>
              Mov
             </th>
-            <th>
+            <th style={{ textAlign: 'center' }}>
               Fav
             </th>
             </tr>

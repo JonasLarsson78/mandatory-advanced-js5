@@ -174,8 +174,7 @@ const MoveFiles = (props) => {
     return (
         <>
         { moveFolders }
-        
-        <button className="listBtn" onClick={ () => startModal(props.path) }> <i className="material-icons">swap_horiz</i></button>
+        <button className="listBtn" onClick={ () => startModal(props.path) }> <i className="material-icons movefiles-icon">swap_horiz</i></button>
         </>
 
     )
