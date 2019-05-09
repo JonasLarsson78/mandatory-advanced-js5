@@ -21,7 +21,7 @@ body{
 }
 
 #header-logo {
-    width: 200px;
+    width: 230px;
     margin-left: 20px;
 }
 
@@ -71,6 +71,10 @@ body{
     flex-flow: row wrap;
 }
 
+.home-thead-tr {
+    border-bottom: 1px solid #ddd;
+}
+
 .leftSide{
     flex-grow: 0;
     flex-basis: 250px;
@@ -102,20 +106,24 @@ body{
     border: 0px solid red;
 }
 
-
 .rightSide {
     width: 250px;
     border: 0px solid green;
 }
+
 .mainTable{
     width: 100%;
     border-collapse: collapse;
     margin-bottom: 50px;
 }
-th{
+th {
     text-align: left;
-    font-size: 14px;
+    padding: 10px 0;
+    font-size: 12px;
+    color: #4D4D4D;
+    font-weight: 500;
     background: #ffffff;
+    color: 
 }
 tr:nth-child(even) {
     background: #ffffff;
