@@ -308,6 +308,9 @@ const Home = (props) => {
             <th style={{ textAlign: 'center' }}>
               Fav
             </th>
+            <th style={{ textAlign: 'center' }}>
+              Cop
+            </th>
             </tr>
           </thead>
           <tbody>
