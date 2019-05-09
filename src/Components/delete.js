@@ -14,6 +14,7 @@ let pointerEvent = "visible"
 const del = (e) => {
   updateDelFile(e.target.dataset.path) 
   element.current.style.visibility = "visible"
+  element.current.style.zIndex = "500";
 }
 
 const yes = () => {
@@ -82,7 +83,7 @@ const no = () => {
 }
 
 delModal = <div style={{pointerEvents: pointerEvent}} ref={element} className="modalBack">
-<div style={{pointerEvents: pointerEvent}} className="modal">
+<div style={{pointerEvents: pointerEvent}} ref={modal} className="modal">
     <div style={{pointerEvents: pointerEvent}} className="mainModal">
         <h2 style={{color: "black"}}>Delete ! ! !</h2>
         <p className="modalText">Do you want to delete {props.tag} {props.name} ??</p>

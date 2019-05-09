@@ -23,7 +23,11 @@ const ReNameFolder = (props) => {
 const reNameFolder = (e) => {
 let old = e.target.dataset.path
 updateRename(old)
-inputElFolder.current.style.display = "block"
+
+let pos = window.pageYOffset
+  let newPos = pos + 300
+  inputElFolder.current.style.top = newPos + "px"
+  inputElFolder.current.style.display = "block"
 }
 const newNameInputFolder = (e) => {
 let target = e.target.value
