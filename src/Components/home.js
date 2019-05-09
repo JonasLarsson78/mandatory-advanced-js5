@@ -10,8 +10,7 @@ import UploadFile from './uploadfile';
 import UserAccount from './userAccount';
 import { Helmet } from "react-helmet";
 import LogOut from './logout'
-//import favoriteList from "./favoriteList.js"
-import AddFavorites from "./addFavorites.js"
+import FavoriteList from "./favoriteList.js"
 import {favorites$} from './store'
 import {updateFavoriteToken} from './store'
 import '../Css/home.css';
@@ -266,7 +265,6 @@ const Home = (props) => {
           }) 
         }) 
         .then(response => {   
-
           updateThumbnails(response.entries)
           })
           
@@ -332,8 +330,32 @@ const Home = (props) => {
       </aside>
       <main className="mainMain">
       <Breadcrumbs /><br />
-        
         <table className="mainTable">
+          <thead>
+            <tr className="home-thead-tr">
+            <th colSpan="2">
+              Name
+            </th>
+            <th>
+              File size
+            </th>
+            <th>
+              Last edited
+            </th>
+            <th style={{ textAlign: 'center' }}>
+            Del
+            </th>
+            <th style={{ textAlign: 'center' }}>
+             Ren 
+            </th>
+            <th style={{ textAlign: 'center' }}>
+             Mov
+            </th>
+            <th style={{ textAlign: 'center' }}>
+              Fav
+            </th>
+            </tr>
+          </thead>
           <tbody>
             <ListItems favorites={favorites} favUpdate={favUpdate} thumbnailsLoaded={thumbnailsLoaded} folder={props.location.pathname} dataUpdate={dataUpdate} thumbnailUpdate={thumbnailUpdate}  renderData={data} thumbnails={thumbnails}></ListItems>
           </tbody>
@@ -341,7 +363,7 @@ const Home = (props) => {
       </main>
       <aside className="rightSide">
         <div className="aside"></div>
-        {/* {favoriteList} */}
+         <FavoriteList data={data} />
       </aside>
     </div>
     

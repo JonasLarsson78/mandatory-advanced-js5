@@ -1,6 +1,9 @@
-import React, {useState} from 'react';
-import {token$, favorites$, updateFavoriteToken} from './store.js';
+import React, {useState, useEffect} from 'react';
+import {favorites$} from './store.js';
+import {Link} from "react-router-dom";
+import {downloadFile} from "./dowload"
 import { Dropbox } from 'dropbox';
+import {token$} from './store.js';
 
 /*
 
@@ -21,24 +24,48 @@ A direct update of the favorite_state is not required, but obviously better.
 === Kör en toggle onClick - Om id inte finns i listan, lägg till objektet (objekt ska in i state, inte id), om id finns i listan, ta bort.
 */
 
-const favoriteList = (props) => {
+const FavoriteList = (props) => {
 /////////////////////////////////////////////////////////////////////////////////////////////////
-    const renderFavorites = (props) => {
+  const [fav, updateFav] = useState([]);
+/////////////////////////////////////////////////////////////////////////////////////////////////
+  useEffect(() => {
+    const subscription = favorites$.subscribe(updateFav);
+    return () => subscription.unsubscribe();
+  }, []);
+/////////////////////////////////////////////////////////////////////////////////////////////////
+  let sortData = fav.sort((a, b) => (a[".tag"] > b[".tag"]) ? 1 : -1).reverse();
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+    let data = sortData;
+    const renderFavorites = (data) => {
+       
+      const check = (x) => {
+          if (x.id === data.id && x.name !== data.name){
+            data = x
+          }
+        }
+      props.data.map(check)
+      
+
         /////IF FILES STARTS////
         if(data[".tag"] === 'file'){ 
               return( //FILES
                 <tr
                     key={data.id} 
-                    className="listFiles" 
                     data-name={data.name} 
                     data-folder={data.path_lower} 
                     data-tag={data[".tag"]}
+                    style={{background: "white", zIndex: "0"}}
+                    className="listFiles"
                     >
                   <td 
                     title={"Download: " + data.name} 
                     data-name={data.name} 
-                    data-folder={data.path_lower} 
-                    data-tag={data[".tag"]} onClick={downloadFile}>
+                    data-folder={data.path_lower}
+                    data-tag={data[".tag"]} onClick={downloadFile}
+                    style={{cursor: "pointer"}}>
                     <i className="material-icons-outlined filesFolders">insert_drive_file</i>
                   </td>
                   <td
@@ -46,6 +73,7 @@ const favoriteList = (props) => {
                     data-name={data.name} 
                     data-folder={data.path_lower} 
                     data-tag={data[".tag"]} onClick={downloadFile}
+                    style={{cursor: "pointer"}}
                   >
                   {data.name}
                   </td>
@@ -53,10 +81,52 @@ const favoriteList = (props) => {
               )
         }
         /////IF FILES ENDS////
+
+
+        const renameBrackets = (rename, newUrl) =>{
+          const option = {
+            fetch: fetch,
+            accessToken: token$.value
+          };
+          
+          const dbx = new Dropbox(
+            option,
+          );
+          dbx.filesMoveV2({
+            from_path: rename,
+            to_path: newUrl,
+            autorename: true
+          })
+          .then(response => {
+            dbx.filesListFolder({
+              path: props.folder.substring(5),
+            })
+            .then(response => {
+              props.dataUpdate(response.entries)
+            })
+            
+          })
+          .catch(error => {
+            console.log(error);
+          });
+        
+        }
+
       /////IF FOLDER STARTS////
       if(data[".tag"] === 'folder'){ //FOLDER
+
+
+        if (data.name.includes("(")){
+
+          let brak = data.name.replace(/[()]/g,'')
+          let newName = data.path_lower.substring(0, data.path_lower.lastIndexOf("/")) + "/" + brak;
+          
+          renameBrackets(data.path_lower, newName)
+          data.name = brak
+        }
+
       return( //FOLDERS
-        <tr key={data.id} className="listFiles" data-name={data.name} data-folder={data.path_lower} data-tag={data[".tag"]}>
+        <tr style={{background: "white"}} key={data.id} className="listFiles" data-name={data.name} data-folder={data.path_lower} data-tag={data[".tag"]}>
           <td>
           <i className="material-icons filesFolders">folder</i>
           </td>
@@ -68,12 +138,19 @@ const favoriteList = (props) => {
         }
         /////IF FOLDER ENDS//// 
     }
+
+    let renderingFavorites = data.map(renderFavorites);
     
     return (
-        <div className="favorite_list">
-            {renderFavorites}
+        <div className="favorite_list" style={{position: "relative", top: "52px", left: "8px"}} >
+          <span className="favoriteTitle" style={{fontWeight: "bold", fontSize: "14px"}}><i style={{color: "#ffd900", WebkitTextStroke: "1px #4d4d4d", fontSize: "12px"}} className="material-icons">star</i> Favorites:</span>
+          <table>
+            <tbody>
+              {renderingFavorites}
+            </tbody>
+          </table>
         </div>
     )
 }
 
-export default AddFavorites;
+export default FavoriteList;

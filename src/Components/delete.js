@@ -1,9 +1,7 @@
 import React, {useState, useRef} from 'react';
-import {token$} from './store.js';
+import {token$, favorites$, updateFavoriteToken} from './store.js';
 import { Dropbox } from 'dropbox';
 import '../Css/modal.css'
-
-
 
 
 const Delete = (props) => {
@@ -16,6 +14,7 @@ let pointerEvent = "visible"
 const del = (e) => {
   updateDelFile(e.target.dataset.path) 
   element.current.style.visibility = "visible"
+  element.current.style.zIndex = "500";
 }
 
 const yes = () => {
@@ -33,7 +32,13 @@ const yes = () => {
             path: delFile,
           })
           .then(response => {
-            
+            for (let i=0; i<favorites$.value.length; i++) {
+              if (favorites$.value[i].id === response.metadata.id) {
+                  let newArray = [...favorites$.value];
+                  newArray.splice(i, 1);
+                  updateFavoriteToken(newArray);
+            }
+          }
             dbx.filesListFolder({
             path: path,
           
@@ -90,7 +95,7 @@ delModal = <div style={{pointerEvents: pointerEvent}} ref={element} className="m
 return (
     <>
     {delModal}
-    <button className="listBtn" onClick={del}> <i data-path={props.path} className="material-icons">delete_outline</i></button>
+    <button className="listBtn" onClick={del}> <i data-path={props.path} className="material-icons delete-icon">delete_outline</i></button>
     </>
 )
 

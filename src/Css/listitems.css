@@ -1,9 +1,6 @@
 
 .listBtnRename{
     position: relative;
-   
-    
-    
     margin-right: 5px;
     height: 25px;
     border:none;
@@ -20,6 +17,7 @@
 .listFiles{
     cursor: pointer;
     list-style-type: none;
+    height: 45px;
 }
 .listFiles:hover{
     color: #029BB5;
@@ -49,14 +47,52 @@
     outline: none;
     color: #4d4d4d;
 }
+
 .listBtn:hover{
     color: #029BB5;
 }
+
+.delete-icon {
+    font-size: 24px;
+    -webkit-text-stroke: 0.6px #fff;
+}
+
+.delete-icon:hover {
+    font-size: 26px;
+    transition: font-size 0.2s;
+}
+
+.rename-icon {
+    color: #fff;
+    -webkit-text-stroke: 0.9px #4D4D4D;
+    font-size: 22px;
+}
+
+.rename-icon:hover {
+    font-size: 26px;
+    -webkit-text-stroke: 1px #029BB5;
+    transition: font-size 0.2s;
+}
+
+.movefiles-icon {
+    padding-top: 4px;
+    font-size: 28px;
+    color: #fff;
+    -webkit-text-stroke: 0.8px #4D4D4D;
+}
+
+.movefiles-icon:hover {
+    font-size: 31px;
+    -webkit-text-stroke: 1px #029BB5;
+    transition: font-size 0.2s;
+}
+
+
 .listRenameInput{
     position: absolute;
-    top: 40%;
+    top: 300px;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, 0%);
     width: 250px;
     height: 110px;
     background-color: #efefef;

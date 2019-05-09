@@ -7,10 +7,9 @@ import ModalBreadcrumbs from './modalbreadcrumb.js'
 import '../Css/movefiles.css';
 
 
-const MoveFiles = (props) => {
+const CopyFiles = (props) => {
     const moveModal = useRef(null);
     const moveMessRef = useRef(null);
-    const disable = useRef(null);
     const [moveError, updateMoveError] = useState("")
     const [movePath, updateMovePath] = useState("")
     const [startPath, updateStartPath] = useState("")
@@ -19,6 +18,7 @@ const MoveFiles = (props) => {
     const [data, updateData] = useState([]);
     let moveFolders = '';
     const path = window.decodeURIComponent(window.location.hash.slice(1));
+
 
     //console.log(props.folder)
     //console.log(props.path)
@@ -31,6 +31,7 @@ const MoveFiles = (props) => {
         moveModal.current.style.display = 'none';
       } else {
         moveModal.current.style.display = 'block';
+        moveModal.current.style.top = 'e.clientY'
         const option = {
           fetch: fetch,
           accessToken: token$.value
@@ -44,13 +45,7 @@ const MoveFiles = (props) => {
           path: '',
         })
         .then(response => {
-          if (startPath.toLowerCase() === movePath.toLowerCase()) {
-            console.log('hej')
-            disable.current.style.display = 'none'
-          } else {
-            disable.current.style.display = 'block'
-          }  
-          updateData(response.entries) 
+          updateData(response.entries)          
         })
         .catch(error => {
           console.log(error);
@@ -60,12 +55,6 @@ const MoveFiles = (props) => {
           path: path,
         })
         .then(response => {
-          if (startPath.toLowerCase() === movePath.toLowerCase()) {
-            console.log('hej')
-            disable.current.style.display = 'none'
-          } else {
-            disable.current.style.display = 'block'
-          }
           updateData(response.entries)
         })
         .catch(error => {
@@ -73,7 +62,6 @@ const MoveFiles = (props) => {
         }); 
       }
     }
-
     }, [showModal, path]);
 
   useEffect(() => {
@@ -91,9 +79,12 @@ const MoveFiles = (props) => {
     updateMovePath(e.target.dataset.id)
   }
 
-/*========= API Request for move files =========*/
-    
+      /*========= API Request for move files =========*/
+
   const moveToFolder = () => {
+      if (startPath === movePath) {
+        updateMoveError('You cant move files in same directory')
+      } else {
         let index = startPath.lastIndexOf("/")
         let newName = startPath.substring(index)
         updateMoveError('')
@@ -105,34 +96,34 @@ const MoveFiles = (props) => {
           const dbx = new Dropbox(
             option,
           );
-          dbx.filesMoveV2({
+          dbx.filesCopyV2({
             from_path: startPath,
             to_path: movePath + newName,
             autorename: true
           })
           .then(response => {
-            updateFileTransfer('File transfered')
+              //console.log(response.entries)
+            updateFileTransfer('File Moved')
             dbx.filesListFolder({
               path: movePath,
-          })
-          .then(response => {
-            closeModal() 
-          })
+            })
+            .then(response => {
+                closeModal() 
+            })
             .catch(error => {
               console.log(error);
-          }); 
-        })
-        .catch(error => {
-          console.log(error);
-        });
+            }); 
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      }
     }
  /*==================*/
 
   const renderModalData = (data) => {
-    console.log(data)
-    
-    console.log(startPath)
-    console.log(movePath)
+    //console.log(startPath)
+    //console.log(data.path_lower)
     if(data[".tag"] === 'folder'){ //FOLDER
       return( //FOLDERS
         <tr key={data.id} className="modal-movefiles-tr" data-name={data.name} data-folder={data.path_display} data-tag={data[".tag"]}>
@@ -145,7 +136,6 @@ const MoveFiles = (props) => {
         </tr>
           )
         } 
-      
   }
 
   let mapping = data.map(renderModalData)
@@ -166,7 +156,7 @@ const MoveFiles = (props) => {
       </tbody>
     </table>
     { moveError }
-    <button className="modal-movefiles-button" ref={ disable } onClick={ moveToFolder }>Move</button>
+    <button className="modal-movefiles-button" onClick={moveToFolder}>Move</button>
     <i className="material-icons upload-close" onClick={closeModal}>close</i>
     <p ref={moveMessRef} style={{display: "none"}}>{props.name} moved...</p>
     </div>
@@ -176,16 +166,11 @@ const MoveFiles = (props) => {
     return (
         <>
         { moveFolders }
-        <button className="listBtn" onClick={ () => startModal(props.path) }> <i className="material-icons movefiles-icon">swap_horiz</i></button>
+        <button className="listBtn" onClick={ () => startModal(props.path) }> <i className="material-icons movefiles-icon">file_copy</i></button>
         </>
 
     )
 
 }
 
-export default MoveFiles;
-
-
-
-
-
+export default CopyFiles;

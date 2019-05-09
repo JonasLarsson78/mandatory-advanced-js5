@@ -1,6 +1,6 @@
 import React, {useState,useRef} from 'react';
 import { Dropbox } from 'dropbox';
-import {token$} from './store.js';
+import {token$, favorites$, updateFavoriteToken} from './store.js';
 
 const RenameFile = (props) => {
   const inputEl = useRef(null);
@@ -24,6 +24,10 @@ const dbx = new Dropbox(
 const reName = (e) => {
   let old = e.target.dataset.path
   updateRename(old)
+  
+  let pos = window.pageYOffset
+  let newPos = pos + 300
+  inputEl.current.style.top = newPos + "px"
   inputEl.current.style.display = "block"
 }
 const newNameInput = (e) => {
@@ -33,19 +37,27 @@ const newNameInput = (e) => {
   let newPath = rename.substring(0, rename.lastIndexOf("/"));
   let fixNewname = newPath + "/" + target + newIdx;
   updateNewUrl(fixNewname);
-
+  console.log(rename)
+  console.log(newUrl)
 }
 
 const addNewName = (e) => {
   //console.log(props)
-
+  
   dbx.filesMoveV2({
     from_path: rename,
     to_path: newUrl,
     autorename: true
   })
   .then(response => {
-    
+
+    for (let i=0; i<favorites$.value.length; i++) {
+      if (favorites$.value[i].id === response.metadata.id) {
+          let newArray = [...favorites$.value];
+          newArray[i] = response.metadata;
+          updateFavoriteToken(newArray);
+      }
+    }
     dbx.filesListFolder({
       path: props.folder.substring(5),
     
@@ -99,7 +111,7 @@ renameInput = <div className="listRenameInput" ref={inputEl} style={{display: "n
 return(
   <>
   {renameInput}
-  <button className="listBtn" onClick={reName}><i data-path={props.path} className="material-icons">edit</i></button>
+  <button className="listBtn" onClick={reName}><i data-path={props.path} className="material-icons rename-icon">edit</i></button>
   </>
 )
 
