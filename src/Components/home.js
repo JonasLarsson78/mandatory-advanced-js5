@@ -286,30 +286,27 @@ const Home = (props) => {
       <Breadcrumbs /><br />
         <table className="mainTable">
           <thead>
-            <tr>
-            <th>
-            <i className="material-icons filesFolders">all_inbox</i>
+            <tr className="home-thead-tr">
+            <th colspan="2">
+              Name
             </th>
             <th>
-              Name:
+              File size
             </th>
             <th>
-              File size:
+              Last edited
             </th>
-            <th>
-              Last edited:
+            <th style={{ textAlign: 'center' }}>
+            Del
             </th>
-            <th>
-            Del:
+            <th style={{ textAlign: 'center' }}>
+             Ren 
             </th>
-            <th>
-             Ren: 
+            <th style={{ textAlign: 'center' }}>
+             Mov
             </th>
-            <th>
-             Mov:
-            </th>
-            <th>
-              Fav:
+            <th style={{ textAlign: 'center' }}>
+              Fav
             </th>
             </tr>
           </thead>

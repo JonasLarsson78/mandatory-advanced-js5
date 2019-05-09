@@ -100,16 +100,16 @@ const ListItems = (props) => {
             <td style={{width: "200px"}}>
               {lastEdited(data.server_modified)}
             </td>
-            <td style={{width: "30px"}}>
+            <td style={{width: "43px", textAlign: 'center'}}>
               <Delete tag={data[".tag"]} name={data.name} dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} path={data.path_lower} folder={props.folder}/>
             </td>
-            <td style={{width: "30px"}}>
+            <td style={{width: "43px", textAlign: 'center'}}>
               <RenameFile dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} folder={props.folder} path={data.path_lower}/>
             </td>
-            <td style={{width: "30px"}}>
+            <td style={{width: "43px", textAlign: 'center'}}>
               <MoveFiles dataUpdate={props.dataUpdate} folder={props.folder} path={data.path_lower} name={data.name}/>
             </td>
-            <td style={{width: "30px"}}>
+            <td style={{width: "43px", textAlign: 'center'}}>
               <AddFavorites data={data} favorites={props.favorites} favUpdate={props.favUpdate} id={data.id} path={data.path_lower} ></AddFavorites>
             </td>
           </tr>
@@ -169,16 +169,16 @@ return( //FOLDERS
     <td style={{width: "200px"}}>
       ...
     </td>
-    <td style={{width: "30px"}}>
+    <td style={{width: "45px", textAlign: 'center'}}>
       <Delete tag={data[".tag"]} name={data.name} dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} path={data.path_lower} folder={props.folder}/>
     </td>
-    <td style={{width: "30px"}}>
+    <td style={{width: "45px", textAlign: 'center'}}>
       <ReNameFolder dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} folder={props.folder} path={data.path_lower}/>
     </td>
-    <td style={{width: "30px"}}>
+    <td style={{width: "45px", textAlign: 'center'}}>
       <MoveFiles dataUpdate={props.dataUpdate} folder={props.folder} path={data.path_lower} name={data.name}/>
     </td>
-    <td style={{width: "30px"}}>
+    <td style={{width: "45px", textAlign: 'center'}}>
         <AddFavorites data={data} favorites={props.favorites} favUpdate={props.favUpdate} path={data.path_lower}></AddFavorites>
     </td>
   </tr>

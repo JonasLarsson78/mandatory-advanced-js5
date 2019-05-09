@@ -95,7 +95,7 @@ delModal = <div style={{pointerEvents: pointerEvent}} ref={element} className="m
 return (
     <>
     {delModal}
-    <button className="listBtn" onClick={del}> <i data-path={props.path} className="material-icons">delete_outline</i></button>
+    <button className="listBtn" onClick={del}> <i data-path={props.path} className="material-icons delete-icon">delete_outline</i></button>
     </>
 )
 
