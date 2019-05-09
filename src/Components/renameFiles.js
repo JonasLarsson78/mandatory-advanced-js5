@@ -24,6 +24,10 @@ const dbx = new Dropbox(
 const reName = (e) => {
   let old = e.target.dataset.path
   updateRename(old)
+  
+  let pos = window.pageYOffset
+  let newPos = pos + 300
+  inputEl.current.style.top = newPos + "px"
   inputEl.current.style.display = "block"
 }
 const newNameInput = (e) => {

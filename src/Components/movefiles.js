@@ -108,8 +108,6 @@ const MoveFiles = (props) => {
          }, 3000);
          clearTimeout()
          
-         //window.location =  window.location.origin + "/home" + movePath       
-          
         })
         .catch(error => {
           console.log(error);

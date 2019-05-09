@@ -57,7 +57,7 @@ const FavoriteList = (props) => {
                     data-name={data.name} 
                     data-folder={data.path_lower} 
                     data-tag={data[".tag"]}
-                    style={{background: "white"}}
+                    style={{background: "white", zIndex: "0"}}
                     className="listFiles"
                     >
                   <td 
