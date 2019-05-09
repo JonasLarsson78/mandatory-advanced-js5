@@ -23,14 +23,12 @@ const ListItems = (props) => {
   
   
 
-
-
-  const arrIdx = [".jpg", ".jpeg", ".png", ".pdf"] // Array med filer som vissar thumb...
+  const arrIdx = [".jpg", ".jpeg", ".png", ".pdf", 'mov'] // Array med filer som vissar thumb...
 
   
 
   const renderList = (data, index) => {
-
+   
 
 
     if(data.noSearchResult){

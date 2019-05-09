@@ -4,7 +4,7 @@ import {token$} from './store.js';
 
 const Search = (props) => {
 
-
+  
  let newFolder = props.folder.substring(5);
 
  const makeSerch = (e) => {
@@ -18,13 +18,15 @@ const Search = (props) => {
       );      
 
 
-    if(e.target.value.length === 0){
+    if(e.target.value.length < 1){  
+      props.searchUpdateMode(false)
+      
 
       dbx.filesListFolder({
         path: props.folder.substring(5),
       
             }).then(response =>{
-              console.log(response.entries)
+
               props.dataUpdate(response.entries)
   
                     dbx.filesGetThumbnailBatch({
@@ -38,7 +40,7 @@ const Search = (props) => {
                       }) 
                     }) 
                     .then(response => {   
-                      console.log(response.entries)
+
                       props.thumbnailUpdate(response.entries)
                       })
                       .catch(function(error) {
@@ -51,7 +53,10 @@ const Search = (props) => {
             });
 
     }
-    else if(e.target.value.length > 0){
+    if(e.target.value.length > 0){
+      
+      props.searchUpdateMode(true)
+      
       dbx.filesSearch({
        
         path: newFolder,
@@ -64,6 +69,8 @@ const Search = (props) => {
         
         if(response.matches.length === 0){
           props.dataUpdate(test)
+         
+
         }
         else{
           props.thumbnailUpdate([])
@@ -79,46 +86,12 @@ const Search = (props) => {
         }
        
 
-        
-
       })
     }
     
-    
+
   }
     
-      
-      
-     
-
-
-
-
-        
-      
-          
-     
-       
-          
-           
-          
-          
-        
-    
-     /*  .catch(function(error) {
-        if (error.response.status === 400){
-          console.log("Wrong input.")
-        }
-        if (error.response.status === 409){
-          console.log("Wrong search path.")
-        }
-           
-      }); */
-  
-
-
-
-
 return (
   
     <>

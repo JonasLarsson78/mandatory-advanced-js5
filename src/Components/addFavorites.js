@@ -29,7 +29,7 @@ const AddFavorites = (props) => {
     const isFavorite = !!favArray.find(x => x.id === data.id);
 
     //console.log(isFavorite);
-    console.log(favorites$.value)
+
 //////////////////////////////////////////////////////////////////////////////////////////////////
     const add = () => {
         updateFavoriteToken([...favArray, {...data}]);
