@@ -2,13 +2,18 @@ import React from 'react';
 import { Dropbox } from 'dropbox';
 import {token$} from './store.js';
 
+
+
+
 const Search = (props) => {
+
 
   
  let newFolder = props.folder.substring(5);
 
  const makeSerch = (e) => {
-
+   
+  
     const option = {
         fetch: fetch,
         accessToken: token$.value
@@ -65,10 +70,10 @@ const Search = (props) => {
 
       .then(response => {
         
-        let test = [{".tag": 'file', id: 1, noSearchResult: 'noResult'}]
+        let noResult = [{".tag": 'file', id: 1, noSearchResult: 'noResult'}]
         
         if(response.matches.length === 0){
-          props.dataUpdate(test)
+          props.dataUpdate(noResult)
          
 
         }

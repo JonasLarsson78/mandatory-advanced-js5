@@ -41,7 +41,7 @@ const ListItems = (props) => {
         
       )
     }
-
+   
 
    const thumbs = props.thumbnailsLoaded ? props.thumbnails[index] : undefined;
 
