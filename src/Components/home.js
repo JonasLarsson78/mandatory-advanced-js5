@@ -76,7 +76,7 @@ const Home = (props) => {
           
           })
           .then(response => {
-            updateOldData(response.entries)
+           updateOldData(data)
             
             let responseRev = response.entries.map(x => x.rev).filter(y => y !== undefined)
             let oldrespRev = oldData.map(x => x.rev).filter(y => y !== undefined)
@@ -86,7 +86,11 @@ const Home = (props) => {
             const diffRev = responseRev.filter(el => !oldrespRev.includes(el));
             const diffName = responseName.filter(el => !oldrespName.includes(el))
 
+            console.log(oldData.length)
+            console.log(response.entries.length)
+
             if(oldData.length < response.entries.length){
+             
               updateData(response.entries)
             }
 
@@ -150,6 +154,8 @@ const Home = (props) => {
             
 
             if(oldData.length < response.entries.length){
+              
+             
               updateData(response.entries)
               
             }
@@ -213,6 +219,7 @@ const Home = (props) => {
 
           updateThumbnails([]);
           updateData(response.entries)
+          updateOldData(response.entries)
 
         dbx.filesGetThumbnailBatch({
           
@@ -253,9 +260,11 @@ const Home = (props) => {
       
       })
       .then(response => {
+        
 
         updateThumbnails([]);
         updateData(response.entries)
+        updateOldData(response.entries)
 
           
         dbx.filesGetThumbnailBatch({
