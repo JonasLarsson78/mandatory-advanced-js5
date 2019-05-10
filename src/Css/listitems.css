@@ -87,6 +87,18 @@
     transition: font-size 0.2s;
 }
 
+.copyfiles-icon {
+    padding-top: 4px;
+    font-size: 22px;
+    color: #fff;
+    -webkit-text-stroke: 0.8px #4D4D4D;
+}
+
+.copyfiles-icon:hover {
+    font-size: 25px;
+    -webkit-text-stroke: 0.8px #029BB5;
+    transition: font-size 0.2s;
+}
 
 .listRenameInput{
     position: absolute;
@@ -100,12 +112,14 @@
     border-radius: 5px;
     box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 }
+
 .listRenameInputText{
     margin-right: 5px;
     height: 20px;
     margin-top: 5px;
     padding: 2px;
 }
+
 .listRenameClose{
     position: absolute;
     top: 5px;
@@ -113,9 +127,11 @@
     cursor: pointer;
     font-size: 20px;
 }
+
 .filesFolders{
     color: #00AFD6;
 }
+
 .listRenameText{
     font-size: 14px;
     color: #4D4D4D;

@@ -48,11 +48,6 @@ const Home = (props) => {
   }, [data, thumbnails]);
 
 
-
-  
-
-
-
     useEffect(() => {
       
        if(searchMode){

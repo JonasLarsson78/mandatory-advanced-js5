@@ -142,13 +142,16 @@ const CopyFiles = (props) => {
 
   const closeModal = () => {
       updateShowModal(false)
+      updateMovePath('')
+      updateStartPath('')
   }
 
     moveFolders = 
     <Router>
     <div className="moveModal" ref={ moveModal }>
+    <h3 className="movefiles-h3">Copy files</h3>
     <ModalBreadcrumbs />
-    <p>Move {props.name} ...to:</p>
+    <p className="movefiles-p">Copy <span className="movefiles-file">{ props.name }</span> ... to ... <span className="movefiles-file">{ movePath.slice(1)}</span></p>
     <p>{ fileTransfer }</p>
     <table>
       <tbody>
@@ -166,7 +169,7 @@ const CopyFiles = (props) => {
     return (
         <>
         { moveFolders }
-        <button className="listBtn" onClick={ () => startModal(props.path) }> <i className="material-icons movefiles-icon">file_copy</i></button>
+        <button className="listBtn" onClick={ () => startModal(props.path) }> <i className="material-icons copyfiles-icon">file_copy</i></button>
         </>
 
     )

@@ -114,7 +114,7 @@ const ListItems = (props) => {
               <AddFavorites data={data} favorites={props.favorites} favUpdate={props.favUpdate} id={data.id} path={data.path_lower} ></AddFavorites>
             </td>
             <td style={{width: "45px", textAlign: 'center'}}>
-              <CopyFiles data={data} favorites={props.favorites} favUpdate={props.favUpdate} path={data.path_lower} />
+              <CopyFiles data={data} favorites={props.favorites} favUpdate={props.favUpdate} path={data.path_lower} name={data.name} />
             </td>
           </tr>
          

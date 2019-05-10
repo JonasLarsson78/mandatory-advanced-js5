@@ -16,5 +16,7 @@ aside, header, main, div {
 
 body, table {
   border-collapse: collapse;
+  text-align: left;
+  color: #4D4D4D;
 }
 
