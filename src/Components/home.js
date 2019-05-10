@@ -133,7 +133,7 @@ const Home = (props) => {
           
           })
           .then(response => {
-            
+
             updateOldData(response.entries)
 
             let responseRev = response.entries.map(x => x.rev).filter(y => y !== undefined)
@@ -310,6 +310,9 @@ const Home = (props) => {
   const searchUpdateMode = (bool) => {
       updateSearchMode(bool)
   }
+  const upFavTok = (arr) => {
+    updateFavoriteToken(arr)
+  }
 
   if(token === null){
     return <Redirect to="/" />
@@ -372,7 +375,7 @@ const Home = (props) => {
       </main>
       <aside className="rightSide">
         <div className="aside"></div>
-         <FavoriteList data={data} />
+         <FavoriteList upFavTok={upFavTok} data={data} />
       </aside>
     </div>
     

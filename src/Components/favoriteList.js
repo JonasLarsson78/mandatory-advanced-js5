@@ -64,11 +64,12 @@ useEffect(() => {
         return checkIdFav.indexOf(val) !== -1;
         
       });
-      console.log(z) /* Funkar ju här!!! */
-      
-    //updateFavoriteToken(z)
-      /* Hur F*n uppdaterar jag fav!!! */
-    
+      let newFavArr = []
+      for (let i = 0; i < z.length; i++){
+        let newFav = fav.find( data => data.id === z[i] )
+        newFavArr.push(newFav)
+      }
+      updateFavoriteToken(newFavArr)
             })
   }, 5000);
 
