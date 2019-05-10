@@ -10,7 +10,6 @@ import '../Css/movefiles.css';
 const MoveFiles = (props) => {
     const moveModal = useRef(null);
     const moveMessRef = useRef(null);
-    const disableBtn = useRef(null);
     const [moveError, updateMoveError] = useState("")
     const [movePath, updateMovePath] = useState("")
     const [startPath, updateStartPath] = useState("")
@@ -19,6 +18,7 @@ const MoveFiles = (props) => {
     const [data, updateData] = useState([]);
     let moveFolders = '';
     const path = window.decodeURIComponent(window.location.hash.slice(1));
+
 
     /*========= API Request for List folders =========*/
     useEffect((e) => {
@@ -64,6 +64,7 @@ const MoveFiles = (props) => {
   useEffect(() => {
     if (!showModal) {
       window.location.hash = "/";
+
     }
   }, [showModal]);
 
@@ -125,19 +126,8 @@ let newName2 = startPath.substring(0, startPath.lastIndexOf("/"));
         });
     }
  /*==================*/
- if (path !== "/"){
-    for (let i = 0; i < data.length; i++){
-      if (data[i][".tag"] === "folder"){
-        if (newName2 === data[i].path_lower){
-          disableBtn.current.style.opacity = "0"
-        }
-      }
-    }
-  }
-  
-
+ 
   const renderModalData = (data) => {
-    
     
     if(data[".tag"] === 'folder'){ //FOLDER
       return( //FOLDERS
@@ -162,6 +152,15 @@ let newName2 = startPath.substring(0, startPath.lastIndexOf("/"));
       updateStartPath('')
   }
 
+  let btn;
+  
+  if (newName2.toLowerCase() !== movePath.toLowerCase()){
+    btn = <button className="modal-movefiles-button" style={{opacity: "1"}} onClick={ moveToFolder }>Move</button>
+  }
+  else{
+    btn = <button className="modal-movefiles-button" style={{opacity: "0"}}>Move</button>
+  }
+
     moveFolders = 
     <Router>
     <div className="moveModal" ref={ moveModal }>
@@ -175,7 +174,7 @@ let newName2 = startPath.substring(0, startPath.lastIndexOf("/"));
       </tbody>
     </table>
     { moveError }
-    <button ref={ disableBtn } className="modal-movefiles-button" onClick={ moveToFolder }>Move</button>
+    {btn}
     <i className="material-icons upload-close" onClick={closeModal}>close</i>
     <p ref={moveMessRef} style={{display: "none"}}>{props.name} moved...</p>
     </div>
