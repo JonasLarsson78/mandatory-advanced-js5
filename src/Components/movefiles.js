@@ -155,13 +155,15 @@ let newName2 = startPath.substring(0, startPath.lastIndexOf("/"));
 
   const closeModal = () => {
       updateShowModal(false)
+      updateMovePath('')
   }
 
     moveFolders = 
     <Router>
     <div className="moveModal" ref={ moveModal }>
+    <h3 className="movefiles-h3">Move files</h3>
     <ModalBreadcrumbs />
-    <p>Move {props.name} ...to:</p>
+    <p className="movefiles-p">Move <span className="movefiles-file">{props.name}</span> ... to ... <span className="movefiles-file">{ movePath.slice(1)}</span></p>
     <p>{ fileTransfer }</p>
     <table>
       <tbody>
