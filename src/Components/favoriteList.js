@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {favorites$} from './store.js';
+import {favorites$, updateFavoriteToken} from './store.js';
 import {Link} from "react-router-dom";
 import {downloadFile} from "./dowload"
 import { Dropbox } from 'dropbox';
@@ -25,6 +25,7 @@ A direct update of the favorite_state is not required, but obviously better.
 */
 
 const FavoriteList = (props) => {
+  
 /////////////////////////////////////////////////////////////////////////////////////////////////
   const [fav, updateFav] = useState([]);
 /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -35,7 +36,43 @@ const FavoriteList = (props) => {
 /////////////////////////////////////////////////////////////////////////////////////////////////
   let sortData = fav.sort((a, b) => (a[".tag"] > b[".tag"]) ? 1 : -1).reverse();
 /////////////////////////////////////////////////////////////////////////////////////////////////
+useEffect(() => {
+  
 
+  const option = {
+    fetch: fetch,
+    accessToken: token$.value
+  };
+  
+  const dbx = new Dropbox(
+    option,
+  );
+
+  setInterval(() => {
+    dbx.filesListFolder({
+      path: "",
+      recursive: true
+    
+    })
+    .then(response => {
+      let fav = [...favorites$.value]
+      let chekId = response.entries.map(x => x.id)
+      let checkIdFav = fav.map(x => x.id)
+     
+
+      let z = chekId.filter(function(val) {
+        return checkIdFav.indexOf(val) !== -1;
+        
+      });
+      console.log(z) /* Funkar ju här!!! */
+      
+    //updateFavoriteToken(z)
+      /* Hur F*n uppdaterar jag fav!!! */
+    
+            })
+  }, 5000);
+
+}, []);
 
 
     let data = sortData;

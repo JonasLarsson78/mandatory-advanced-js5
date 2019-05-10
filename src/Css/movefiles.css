@@ -28,6 +28,7 @@
   }
 
   .modal-movefiles-link {
+    opacity: 1;
     text-decoration: none;
     color: #4D4D4D;
     font-size: 16px;
