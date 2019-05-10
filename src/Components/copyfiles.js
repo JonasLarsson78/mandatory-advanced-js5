@@ -29,9 +29,11 @@ const CopyFiles = (props) => {
     useEffect((e) => {
       if (!showModal) {
         moveModal.current.style.display = 'none';
+        document.body.style.overflowY = "auto"
       } else {
+        document.body.style.overflowY = "hidden"
         moveModal.current.style.display = 'block';
-        moveModal.current.style.top = 'e.clientY'
+        
         const option = {
           fetch: fetch,
           accessToken: token$.value
@@ -148,7 +150,8 @@ const CopyFiles = (props) => {
 
     moveFolders = 
     <Router>
-    <div className="moveModal" ref={ moveModal }>
+      <div className="moveBack" ref={ moveModal }>
+    <div className="moveModal" >
     <h3 className="movefiles-h3">Copy files</h3>
     <ModalBreadcrumbs />
     <p className="movefiles-p">Copy <span className="movefiles-file">{ props.name }</span> ... to ... <span className="movefiles-file">{ movePath.slice(1)}</span></p>
@@ -162,6 +165,7 @@ const CopyFiles = (props) => {
     <button className="modal-movefiles-button" onClick={moveToFolder}>Move</button>
     <i className="material-icons upload-close" onClick={closeModal}>close</i>
     <p ref={moveMessRef} style={{display: "none"}}>{props.name} moved...</p>
+    </div>
     </div>
     </Router>
   

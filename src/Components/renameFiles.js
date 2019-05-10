@@ -25,10 +25,9 @@ const reName = (e) => {
   let old = e.target.dataset.path
   updateRename(old)
   
-  let pos = window.pageYOffset
-  let newPos = pos + 300
-  inputEl.current.style.top = newPos + "px"
+  
   inputEl.current.style.display = "block"
+  document.body.style.overflowY = "hidden"
 }
 const newNameInput = (e) => {
   let target = e.target.value
@@ -96,6 +95,7 @@ const addNewName = (e) => {
 
 
   inputEl.current.style.display = "none"
+  document.body.style.overflowY = "auto"
   clearInput.current.value = "";
   
 
@@ -103,9 +103,12 @@ const addNewName = (e) => {
 
 const addNewNameClose = () =>{
   inputEl.current.style.display = "none"
+  document.body.style.overflowY = "auto"
 }
 
-renameInput = <div className="listRenameInput" ref={inputEl} style={{display: "none"}}><div className="listRenameText"> Rename file</div><span className="listRenameClose" onClick={addNewNameClose}><i className="material-icons">close</i></span><input className="listRenameInputText" style={{outline: "none"}} ref={clearInput} placeholder="New filename..." type="text" onChange={newNameInput} /><button style={{outline: "none"}} className="listBtnRename" onClick={addNewName}>Ok</button></div>
+renameInput = 
+<div className="reNameBack" ref={inputEl} >
+<div className="listRenameInput"><div className="listRenameText"> Rename file</div><span className="listRenameClose" onClick={addNewNameClose}><i className="material-icons">close</i></span><input className="listRenameInputText" style={{outline: "none"}} ref={clearInput} placeholder="New filename..." type="text" onChange={newNameInput} /><button style={{outline: "none"}} className="listBtnRename" onClick={addNewName}>Ok</button></div></div>
 
 
 return(

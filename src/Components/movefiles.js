@@ -24,7 +24,9 @@ const MoveFiles = (props) => {
     useEffect((e) => {
       if (!showModal) {
         moveModal.current.style.display = 'none';
+        document.body.style.overflowY = "auto"
       } else {
+        document.body.style.overflowY = "hidden"
         moveModal.current.style.display = 'block';
         const option = {
           fetch: fetch,
@@ -72,14 +74,13 @@ const MoveFiles = (props) => {
    updateShowModal(true)
    updateStartPath(path)
   }
-
+  let newName2 = startPath.substring(0, startPath.lastIndexOf("/")); 
   const setPath = (e) => {
     updateMovePath(e.target.dataset.id)
-    
   }
 
 /*========= API Request for move files =========*/
-let newName2 = startPath.substring(0, startPath.lastIndexOf("/")); 
+
   const moveToFolder = () => {
         let index = startPath.lastIndexOf("/")
         let newName = startPath.substring(index)
@@ -151,19 +152,16 @@ let newName2 = startPath.substring(0, startPath.lastIndexOf("/"));
       updateMovePath('')
       updateStartPath('')
   }
-
-  let btn;
   
-  if (newName2.toLowerCase() !== movePath.toLowerCase()){
-    btn = <button className="modal-movefiles-button" style={{opacity: "1"}} onClick={ moveToFolder }>Move</button>
-  }
-  else{
-    btn = <button className="modal-movefiles-button" style={{opacity: "0"}}>Move</button>
-  }
+
+ 
+
+  let btn = newName2.toLowerCase() !== movePath.toLowerCase() ? <button className="modal-movefiles-button" style={{opacity: "1"}} onClick={ moveToFolder }>Move</button> : <button className="modal-movefiles-button" style={{opacity: "0"}}>Move</button>
 
     moveFolders = 
     <Router>
-    <div className="moveModal" ref={ moveModal }>
+      <div ref={ moveModal } className="moveBack">
+    <div className="moveModal" >
     <h3 className="movefiles-h3">Move files</h3>
     <ModalBreadcrumbs />
     <p className="movefiles-p">Move <span className="movefiles-file">{props.name}</span> ... to ... <span className="movefiles-file">{ movePath.slice(1)}</span></p>
@@ -177,6 +175,7 @@ let newName2 = startPath.substring(0, startPath.lastIndexOf("/"));
     {btn}
     <i className="material-icons upload-close" onClick={closeModal}>close</i>
     <p ref={moveMessRef} style={{display: "none"}}>{props.name} moved...</p>
+    </div>
     </div>
     </Router>
   

@@ -73,6 +73,19 @@
     -webkit-text-stroke: 1px #029BB5;
     transition: font-size 0.2s;
 }
+.reNameBack{
+    display: none;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    background-color: #00000078;
+    z-index: 500;
+    cursor: default;
+    overflow: hidden;
+}
 
 .movefiles-icon {
     padding-top: 4px;
