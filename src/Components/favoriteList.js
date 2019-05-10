@@ -28,6 +28,7 @@ const FavoriteList = (props) => {
   
 /////////////////////////////////////////////////////////////////////////////////////////////////
   const [fav, updateFav] = useState([]);
+  
 /////////////////////////////////////////////////////////////////////////////////////////////////
   useEffect(() => {
     const subscription = favorites$.subscribe(updateFav);
@@ -164,6 +165,7 @@ useEffect(() => {
         }
 
       return( //FOLDERS
+        
         <tr style={{background: "white"}} key={data.id} className="listFiles" data-name={data.name} data-folder={data.path_lower} data-tag={data[".tag"]}>
           <td>
           <i className="material-icons filesFolders">folder</i>
@@ -180,8 +182,8 @@ useEffect(() => {
     let renderingFavorites = data.map(renderFavorites);
     
     return (
-        <div className="favorite_list" style={{position: "relative", top: "52px", left: "8px"}} >
-          <span className="favoriteTitle" style={{fontWeight: "bold", fontSize: "14px"}}><i style={{color: "#ffd900", WebkitTextStroke: "1px #4d4d4d", fontSize: "12px"}} className="material-icons">star</i> Favorites:</span>
+        <div className="favorite_list" style={{position: "relative", top: "56px", left: "8px"}} >
+          <span className="favoriteTitle" style={{fontSize: "14px"}}><i style={{color: "#ffd900", WebkitTextStroke: "1px #4d4d4d", fontSize: "12px"}} className="material-icons">star</i> Favorites:</span>
           <table>
             <tbody>
               {renderingFavorites}
