@@ -156,6 +156,7 @@ let newName2 = startPath.substring(0, startPath.lastIndexOf("/"));
   const closeModal = () => {
       updateShowModal(false)
       updateMovePath('')
+      updateStartPath('')
   }
 
     moveFolders = 

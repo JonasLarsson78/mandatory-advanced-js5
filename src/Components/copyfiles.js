@@ -142,6 +142,8 @@ const CopyFiles = (props) => {
 
   const closeModal = () => {
       updateShowModal(false)
+      updateMovePath('')
+      updateStartPath('')
   }
 
     moveFolders = 
@@ -149,7 +151,7 @@ const CopyFiles = (props) => {
     <div className="moveModal" ref={ moveModal }>
     <h3 className="movefiles-h3">Copy files</h3>
     <ModalBreadcrumbs />
-    <p className="movefiles-p">Copy <span className="movefiles-file">{ startPath.slice(1) }</span> ... to ... <span className="movefiles-file">{ movePath.slice(1)}</span></p>
+    <p className="movefiles-p">Copy <span className="movefiles-file">{ props.name }</span> ... to ... <span className="movefiles-file">{ movePath.slice(1)}</span></p>
     <p>{ fileTransfer }</p>
     <table>
       <tbody>
