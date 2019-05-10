@@ -138,6 +138,7 @@ const Home = (props) => {
           
           })
           .then(response => {
+           
             updateOldData(response.entries)
 
             let responseRev = response.entries.map(x => x.rev).filter(y => y !== undefined)
