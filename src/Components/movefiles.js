@@ -77,12 +77,11 @@ const MoveFiles = (props) => {
   }
 
 /*========= API Request for move files =========*/
-    
+let newName2 = startPath.substring(0, startPath.lastIndexOf("/")); 
   const moveToFolder = () => {
         let index = startPath.lastIndexOf("/")
         let newName = startPath.substring(index)
         
-        let newName2 = startPath.substring(0, startPath.lastIndexOf("/"));
         updateMoveError('')
     
         const option = {
@@ -124,8 +123,23 @@ const MoveFiles = (props) => {
         });
     }
  /*==================*/
+ 
+    for (let i = 0; i < data.length; i++){
+      if (data[i][".tag"] === "folder"){
+        console.log(newName2)
+        console.log(data[i].path_lower)
+        if (newName2 === data[i].path_lower){
+
+          data.splice(i,1)
+        }
+        console.log(data)
+      }
+      
+    }
+
 
   const renderModalData = (data) => {
+    
     
     if(data[".tag"] === 'folder'){ //FOLDER
       return( //FOLDERS
