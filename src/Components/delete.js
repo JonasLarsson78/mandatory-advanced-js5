@@ -75,13 +75,13 @@ const yes = () => {
           });
     
     element.current.style.visibility = "hidden"
-    document.body.style.overflowY = "auto"
+    //document.body.style.overflowY = "auto"
     element.current.style.zIndex = "0";
 }
 
 const no = () => {
     element.current.style.visibility = "hidden"
-    document.body.style.overflowY = "auto"
+    //document.body.style.overflowY = "auto"
     element.current.style.zIndex = "0";
 }
 

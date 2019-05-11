@@ -24,7 +24,6 @@ const MoveFiles = (props) => {
     useEffect((e) => {
       if (!showModal) {
         moveModal.current.style.display = 'none';
-        document.body.style.overflowY = "auto"
       } else {
         document.body.style.overflowY = "hidden"
         moveModal.current.style.display = 'block';
@@ -53,6 +52,7 @@ const MoveFiles = (props) => {
           path: path,
         })
         .then(response => {
+          
           updateData(response.entries)
         })
         .catch(error => {
@@ -151,6 +151,7 @@ const MoveFiles = (props) => {
       updateShowModal(false)
       updateMovePath('')
       updateStartPath('')
+      document.body.style.overflowY = "auto"
   }
   
 

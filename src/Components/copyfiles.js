@@ -29,7 +29,7 @@ const CopyFiles = (props) => {
     useEffect((e) => {
       if (!showModal) {
         moveModal.current.style.display = 'none';
-        document.body.style.overflowY = "auto"
+        
       } else {
         document.body.style.overflowY = "hidden"
         moveModal.current.style.display = 'block';
@@ -79,6 +79,7 @@ const CopyFiles = (props) => {
 
   const setPath = (e) => {
     updateMovePath(e.target.dataset.id)
+
   }
 
       /*========= API Request for move files =========*/
@@ -146,6 +147,7 @@ const CopyFiles = (props) => {
       updateShowModal(false)
       updateMovePath('')
       updateStartPath('')
+      document.body.style.overflowY = "auto"
   }
 
     moveFolders = 
