@@ -26,6 +26,7 @@ const Home = (props) => {
   const [favorites, updateFavorites] = useState([]);
   const [oldData, updateOldData] = useState([])
   const [searchMode, updateSearchMode] = useState(false)
+  const [clearSearch, updateClearSearch] = useState(false)
 
 
   useEffect(() => {
@@ -81,9 +82,6 @@ const Home = (props) => {
             const diffRev = responseRev.filter(el => !oldrespRev.includes(el));
             const diffName = responseName.filter(el => !oldrespName.includes(el))
 
-            console.log(oldData.length)
-            console.log(response.entries.length)
-
             if(oldData.length < response.entries.length){
              
               updateData(response.entries)
@@ -107,6 +105,7 @@ const Home = (props) => {
                 
                  updateThumbnails(responseThumbs.entries)
                  updateData(response.entries)
+                 
                  
                 })
                 .catch(function(error) {
@@ -193,7 +192,7 @@ const Home = (props) => {
 
     
   useEffect(() => {
-
+    
     const option = {
       fetch: fetch,
       accessToken: token$.value
@@ -257,7 +256,7 @@ const Home = (props) => {
         updateThumbnails([]);
         updateData(response.entries)
         updateOldData(response.entries)
-
+       
           
         dbx.filesGetThumbnailBatch({
           
@@ -283,8 +282,8 @@ const Home = (props) => {
         console.log(error);
        });
     }
-   
-  }, [props.location.pathname])
+      clearSearchUpdate(false)
+  }, [props.location.pathname, clearSearch])
 
 
   const dataUpdate = (data) => {
@@ -311,6 +310,13 @@ const Home = (props) => {
       updateSearchMode(bool)
   }
 
+  const clearSearchUpdate = (bool) => {
+    updateClearSearch(bool)
+
+
+    
+  }
+
   if(token === null){
     return <Redirect to="/" />
   }
@@ -323,7 +329,7 @@ const Home = (props) => {
     <header className="mainHeader">
       <div className="header-logo-wrap"><img id="header-logo" src={ require('../Img/Logo_mybox.png') } alt="My Box logo"/> </div>
         <span className="headerContent">
-          <Search searchUpdateMode={searchUpdateMode} searchData={data} folder={props.location.pathname} dataUpdate={dataUpdate} thumbnailUpdate={thumbnailUpdate} />
+          <Search searchUpdateMode={searchUpdateMode} searchData={data} folder={props.location.pathname} dataUpdate={dataUpdate} thumbnailUpdate={thumbnailUpdate} clearSearch={clearSearch} clearSearchUpdate={clearSearchUpdate} />
           <span><UserAccount/></span>
           <span><LogOut updateTokenState={updateTokenState}/></span>
         </span>
@@ -335,7 +341,8 @@ const Home = (props) => {
         <CreateFolder folder={props.location.pathname} dataUpdate={dataUpdate} thumbnailUpdate={thumbnailUpdate} oldDataUpdate={oldDataUpdate}></CreateFolder></div>
       </aside>
       <main className="mainMain">
-      <Breadcrumbs /><br />
+      <label onClick={() => updateClearSearch(true)}>
+      <Breadcrumbs clearSearchUpdate={clearSearchUpdate}/><br /></label>
         <table className="mainTable">
           <thead>
             <tr className="home-thead-tr">
@@ -366,7 +373,7 @@ const Home = (props) => {
             </tr>
           </thead>
           <tbody>
-            <ListItems favorites={favorites} favUpdate={favUpdate} thumbnailsLoaded={thumbnailsLoaded} folder={props.location.pathname} dataUpdate={dataUpdate} thumbnailUpdate={thumbnailUpdate}  renderData={data} thumbnails={thumbnails}></ListItems>
+            <ListItems favorites={favorites} favUpdate={favUpdate} thumbnailsLoaded={thumbnailsLoaded} folder={props.location.pathname} dataUpdate={dataUpdate} thumbnailUpdate={thumbnailUpdate}  renderData={data} thumbnails={thumbnails} clearSearchUpdate={clearSearchUpdate}></ListItems>
           </tbody>
         </table>
       </main>

@@ -22,7 +22,9 @@ const ListItems = (props) => {
   
  //===================RENDER LIST====================
   
-  
+  const clearSearchFn = () => {
+    props.clearSearchUpdate(true)
+  }
 
 
 
@@ -165,7 +167,7 @@ return( //FOLDERS
     <i className="material-icons filesFolders">folder</i>
     </td>
     <td>
-      <Link className="listFolderLink" to={"/home" + data.path_lower}>{data.name}</Link>
+      <Link className="listFolderLink" to={"/home" + data.path_lower} onClick={clearSearchFn}>{data.name} </Link>
     </td>
     <td style={{width: "80px"}}>
       ...

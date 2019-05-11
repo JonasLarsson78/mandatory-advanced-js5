@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useRef}from 'react';
 import { Dropbox } from 'dropbox';
 import {token$} from './store.js';
 
@@ -6,13 +6,20 @@ import {token$} from './store.js';
 
 
 const Search = (props) => {
+  const inputRef = useRef(null);
+ 
+  
+  if(props.clearSearch === true){
+    inputRef.current.value = '';
+    props.searchUpdateMode(false)
 
-
+  }
   
  let newFolder = props.folder.substring(5);
 
  const makeSerch = (e) => {
-   
+  
+  
   
     const option = {
         fetch: fetch,
@@ -22,7 +29,7 @@ const Search = (props) => {
         option,
       );      
 
-
+      
     if(e.target.value.length < 1){  
       props.searchUpdateMode(false)
       
@@ -78,6 +85,7 @@ const Search = (props) => {
 
         }
         else{
+          props.clearSearchUpdate(false)
           props.thumbnailUpdate([])
          
          
@@ -94,14 +102,15 @@ const Search = (props) => {
       })
     }
     
-
+    
+    
   }
     
 return (
   
     <>
     <i className="material-icons header-serach-icon">search</i>
-    <input className="header-search" placeholder="Search..." type="text" onChange={makeSerch} />
+    <input className="header-search" placeholder="Search..." type="text" onChange={makeSerch} ref={inputRef} />
    
     </>
     )
