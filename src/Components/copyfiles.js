@@ -29,9 +29,11 @@ const CopyFiles = (props) => {
     useEffect((e) => {
       if (!showModal) {
         moveModal.current.style.display = 'none';
+        document.body.style.overflowY = "auto"
       } else {
+        document.body.style.overflowY = "hidden"
         moveModal.current.style.display = 'block';
-        moveModal.current.style.top = 'e.clientY'
+        
         const option = {
           fetch: fetch,
           accessToken: token$.value
@@ -142,13 +144,17 @@ const CopyFiles = (props) => {
 
   const closeModal = () => {
       updateShowModal(false)
+      updateMovePath('')
+      updateStartPath('')
   }
 
     moveFolders = 
     <Router>
-    <div className="moveModal" ref={ moveModal }>
+      <div className="moveBack" ref={ moveModal }>
+    <div className="moveModal" >
+    <h3 className="movefiles-h3">Copy files</h3>
     <ModalBreadcrumbs />
-    <p>Move {props.name} ...to:</p>
+    <p className="movefiles-p">Copy <span className="movefiles-file">{ props.name }</span> ... to ... <span className="movefiles-file">{ movePath.slice(1)}</span></p>
     <p>{ fileTransfer }</p>
     <table>
       <tbody>
@@ -160,13 +166,14 @@ const CopyFiles = (props) => {
     <i className="material-icons upload-close" onClick={closeModal}>close</i>
     <p ref={moveMessRef} style={{display: "none"}}>{props.name} moved...</p>
     </div>
+    </div>
     </Router>
   
     
     return (
         <>
         { moveFolders }
-        <button className="listBtn" onClick={ () => startModal(props.path) }> <i className="material-icons movefiles-icon">file_copy</i></button>
+        <button className="listBtn" onClick={ () => startModal(props.path) }> <i className="material-icons copyfiles-icon">file_copy</i></button>
         </>
 
     )

@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {favorites$} from './store.js';
+import {favorites$, updateFavoriteToken} from './store.js';
 import {Link} from "react-router-dom";
 import {downloadFile} from "./dowload"
 import { Dropbox } from 'dropbox';
@@ -25,8 +25,10 @@ A direct update of the favorite_state is not required, but obviously better.
 */
 
 const FavoriteList = (props) => {
+  
 /////////////////////////////////////////////////////////////////////////////////////////////////
   const [fav, updateFav] = useState([]);
+  
 /////////////////////////////////////////////////////////////////////////////////////////////////
   useEffect(() => {
     const subscription = favorites$.subscribe(updateFav);
@@ -35,7 +37,44 @@ const FavoriteList = (props) => {
 /////////////////////////////////////////////////////////////////////////////////////////////////
   let sortData = fav.sort((a, b) => (a[".tag"] > b[".tag"]) ? 1 : -1).reverse();
 /////////////////////////////////////////////////////////////////////////////////////////////////
+useEffect(() => {
+  
 
+  const option = {
+    fetch: fetch,
+    accessToken: token$.value
+  };
+  
+  const dbx = new Dropbox(
+    option,
+  );
+
+  setInterval(() => {
+    dbx.filesListFolder({
+      path: "",
+      recursive: true
+    
+    })
+    .then(response => {
+      let fav = [...favorites$.value]
+      let chekId = response.entries.map(x => x.id)
+      let checkIdFav = fav.map(x => x.id)
+     
+
+      let z = chekId.filter(function(val) {
+        return checkIdFav.indexOf(val) !== -1;
+        
+      });
+      let newFavArr = []
+      for (let i = 0; i < z.length; i++){
+        let newFav = fav.find( data => data.id === z[i] )
+        newFavArr.push(newFav)
+      }
+      updateFavoriteToken(newFavArr)
+            })
+  }, 5000);
+
+}, []);
 
 
     let data = sortData;
@@ -126,6 +165,7 @@ const FavoriteList = (props) => {
         }
 
       return( //FOLDERS
+        
         <tr style={{background: "white"}} key={data.id} className="listFiles" data-name={data.name} data-folder={data.path_lower} data-tag={data[".tag"]}>
           <td>
           <i className="material-icons filesFolders">folder</i>
@@ -142,8 +182,8 @@ const FavoriteList = (props) => {
     let renderingFavorites = data.map(renderFavorites);
     
     return (
-        <div className="favorite_list" style={{position: "relative", top: "52px", left: "8px"}} >
-          <span className="favoriteTitle" style={{fontWeight: "bold", fontSize: "14px"}}><i style={{color: "#ffd900", WebkitTextStroke: "1px #4d4d4d", fontSize: "12px"}} className="material-icons">star</i> Favorites:</span>
+        <div className="favorite_list" style={{position: "relative", top: "56px", left: "8px"}} >
+          <span className="favoriteTitle" style={{fontSize: "14px"}}><i style={{color: "#ffd900", WebkitTextStroke: "1px #4d4d4d", fontSize: "12px"}} className="material-icons">star</i> Favorites:</span>
           <table>
             <tbody>
               {renderingFavorites}

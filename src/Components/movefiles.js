@@ -10,7 +10,6 @@ import '../Css/movefiles.css';
 const MoveFiles = (props) => {
     const moveModal = useRef(null);
     const moveMessRef = useRef(null);
-    const disable = useRef(null);
     const [moveError, updateMoveError] = useState("")
     const [movePath, updateMovePath] = useState("")
     const [startPath, updateStartPath] = useState("")
@@ -20,11 +19,14 @@ const MoveFiles = (props) => {
     let moveFolders = '';
     const path = window.decodeURIComponent(window.location.hash.slice(1));
 
+
     /*========= API Request for List folders =========*/
     useEffect((e) => {
       if (!showModal) {
         moveModal.current.style.display = 'none';
+        document.body.style.overflowY = "auto"
       } else {
+        document.body.style.overflowY = "hidden"
         moveModal.current.style.display = 'block';
         const option = {
           fetch: fetch,
@@ -35,22 +37,22 @@ const MoveFiles = (props) => {
       );
   
       if (path === '/'){
+        
         dbx.filesListFolder({
           path: '',
         })
         .then(response => {
-          
           updateData(response.entries) 
         })
         .catch(error => {
           console.log(error);
         }); 
        } else {
+        
         dbx.filesListFolder({
           path: path,
         })
         .then(response => {
-         
           updateData(response.entries)
         })
         .catch(error => {
@@ -64,6 +66,7 @@ const MoveFiles = (props) => {
   useEffect(() => {
     if (!showModal) {
       window.location.hash = "/";
+
     }
   }, [showModal]);
 
@@ -71,13 +74,13 @@ const MoveFiles = (props) => {
    updateShowModal(true)
    updateStartPath(path)
   }
-
+  let newName2 = startPath.substring(0, startPath.lastIndexOf("/")); 
   const setPath = (e) => {
     updateMovePath(e.target.dataset.id)
   }
 
 /*========= API Request for move files =========*/
-let newName2 = startPath.substring(0, startPath.lastIndexOf("/")); 
+
   const moveToFolder = () => {
         let index = startPath.lastIndexOf("/")
         let newName = startPath.substring(index)
@@ -113,6 +116,7 @@ let newName2 = startPath.substring(0, startPath.lastIndexOf("/"));
           .then(response => {
             props.dataUpdate(response.entries)
             
+            
           })
             .catch(error => {
               console.log(error);
@@ -124,17 +128,7 @@ let newName2 = startPath.substring(0, startPath.lastIndexOf("/"));
     }
  /*==================*/
  
-    for (let i = 0; i < data.length; i++){
-      if (data[i][".tag"] === "folder"){
-        if (newName2 === data[i].path_lower){
-          data.splice(i,1)
-        }
-      }
-    }
-
-
   const renderModalData = (data) => {
-    
     
     if(data[".tag"] === 'folder'){ //FOLDER
       return( //FOLDERS
@@ -155,13 +149,22 @@ let newName2 = startPath.substring(0, startPath.lastIndexOf("/"));
 
   const closeModal = () => {
       updateShowModal(false)
+      updateMovePath('')
+      updateStartPath('')
   }
+  
+
+ 
+
+  let btn = newName2.toLowerCase() !== movePath.toLowerCase() ? <button className="modal-movefiles-button" style={{opacity: "1"}} onClick={ moveToFolder }>Move</button> : <button className="modal-movefiles-button" style={{opacity: "0"}}>Move</button>
 
     moveFolders = 
     <Router>
-    <div className="moveModal" ref={ moveModal }>
+      <div ref={ moveModal } className="moveBack">
+    <div className="moveModal" >
+    <h3 className="movefiles-h3">Move files</h3>
     <ModalBreadcrumbs />
-    <p>Move {props.name} ...to:</p>
+    <p className="movefiles-p">Move <span className="movefiles-file">{props.name}</span> ... to ... <span className="movefiles-file">{ movePath.slice(1)}</span></p>
     <p>{ fileTransfer }</p>
     <table>
       <tbody>
@@ -169,9 +172,10 @@ let newName2 = startPath.substring(0, startPath.lastIndexOf("/"));
       </tbody>
     </table>
     { moveError }
-    <button className="modal-movefiles-button" ref={ disable } onClick={ moveToFolder }>Move</button>
+    {btn}
     <i className="material-icons upload-close" onClick={closeModal}>close</i>
     <p ref={moveMessRef} style={{display: "none"}}>{props.name} moved...</p>
+    </div>
     </div>
     </Router>
   

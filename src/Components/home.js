@@ -82,6 +82,12 @@ const Home = (props) => {
             const diffRev = responseRev.filter(el => !oldrespRev.includes(el));
             const diffName = responseName.filter(el => !oldrespName.includes(el))
 
+<<<<<<< HEAD
+=======
+            //console.log(oldData.length)
+            //console.log(response.entries.length)
+
+>>>>>>> 5333fa6f5fac3dddfe53efcb8e56af798cff1c69
             if(oldData.length < response.entries.length){
              
               updateData(response.entries)
@@ -132,7 +138,7 @@ const Home = (props) => {
           
           })
           .then(response => {
-           
+
             updateOldData(response.entries)
 
             let responseRev = response.entries.map(x => x.rev).filter(y => y !== undefined)
@@ -309,6 +315,9 @@ const Home = (props) => {
   const searchUpdateMode = (bool) => {
       updateSearchMode(bool)
   }
+  const upFavTok = (arr) => {
+    updateFavoriteToken(arr)
+  }
 
   const clearSearchUpdate = (bool) => {
     updateClearSearch(bool)
@@ -379,7 +388,7 @@ const Home = (props) => {
       </main>
       <aside className="rightSide">
         <div className="aside"></div>
-         <FavoriteList data={data} />
+         <FavoriteList upFavTok={upFavTok} data={data} />
       </aside>
     </div>
     
