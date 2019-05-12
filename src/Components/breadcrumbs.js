@@ -7,7 +7,7 @@ import '../Css/breadcrumbs.css';
 
 const Breadcrumbs = withBreadcrumbs ([{ path: '/', breadcrumb: null }]) (({ breadcrumbs})=> (
 
- 
+  
 
   
     <>
@@ -16,11 +16,12 @@ const Breadcrumbs = withBreadcrumbs ([{ path: '/', breadcrumb: null }]) (({ brea
       {breadcrumbs.map(({
         match,
         breadcrumb,
-        props
+        location
+        
       }) => (
        
-        <span key={match.url} >
-          <NavLink to={match.url} className="breadcrumb-link"> {breadcrumb} 
+        <span key={match.url}>
+          <NavLink to={match.url} className="breadcrumb-link" onClick={() => console.log(breadcrumbs)}> {breadcrumb} 
           </NavLink><i className="material-icons breadcrumb">arrow_right</i>
         </span>
       ))}

@@ -27,6 +27,7 @@ const CopyFiles = (props) => {
     //console.log(path)
     /*========= API Request for List folders =========*/
     useEffect((e) => {
+     // console.log('Render copyfiles')
       if (!showModal) {
         moveModal.current.style.display = 'none';
         
@@ -112,6 +113,12 @@ const CopyFiles = (props) => {
             })
             .then(response => {
                 closeModal() 
+
+
+
+
+
+
             })
             .catch(error => {
               console.log(error);

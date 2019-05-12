@@ -62,6 +62,7 @@ const addNewName = (e) => {
           }).then(response =>{
             props.thumbnailUpdate([])
             props.dataUpdate(response.entries)
+            props.oldDataUpdate(response.entries)
 
                   dbx.filesGetThumbnailBatch({
                     entries: response.entries.map(entry => {

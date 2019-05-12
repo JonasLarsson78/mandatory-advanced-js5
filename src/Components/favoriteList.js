@@ -38,7 +38,7 @@ const FavoriteList = (props) => {
   let sortData = fav.sort((a, b) => (a[".tag"] > b[".tag"]) ? 1 : -1).reverse();
 /////////////////////////////////////////////////////////////////////////////////////////////////
 useEffect(() => {
-  
+
 
   const option = {
     fetch: fetch,

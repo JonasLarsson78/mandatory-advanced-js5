@@ -50,6 +50,8 @@ const Home = (props) => {
 
 
     useEffect(() => {
+
+      console.log('Render poll')
       
        if(searchMode){
         return;
@@ -186,13 +188,13 @@ const Home = (props) => {
     
     return () => clearInterval(poll);
 
-    }) 
+    }, [data, oldData, props.location.pathname, searchMode]) 
 
 
 
     
   useEffect(() => {
-    
+    console.log('render Home')
     const option = {
       fetch: fetch,
       accessToken: token$.value
@@ -252,30 +254,43 @@ const Home = (props) => {
       })
       .then(response => {
         
-
+        console.log(response.entries)
         updateThumbnails([]);
         updateData(response.entries)
         updateOldData(response.entries)
+
+
+        console.log(response.entries.length)
        
+
+        
+        
+          dbx.filesGetThumbnailBatch({
           
-        dbx.filesGetThumbnailBatch({
-          
-          entries: response.entries.map(entry => {
-          return{
-            path: entry.id,
-            format : {'.tag': 'jpeg'},
-            size: { '.tag': 'w32h32'},
-            mode: { '.tag': 'strict' }  
-            }
+            entries: response.entries.map(entry => {
+            return{
+              path: entry.id,
+              format : {'.tag': 'jpeg'},
+              size: { '.tag': 'w32h32'},
+              mode: { '.tag': 'strict' }  
+              }
+            }) 
           }) 
-        }) 
-        .then(response => {   
-          updateThumbnails(response.entries)
-          })
+          .then(response => {   
+            console.log(response)
+            updateThumbnails(response.entries)
+            console.log(response.entries)
+            })
+            
+            .catch(function(error) {
+              if(error.response.status === 409){
+                updateThumbnails([])
+              }
+             });
+
+        
           
-          .catch(function(error) {
-            console.log(error);
-           });
+        
            
       })
       .catch(function(error) {
@@ -332,7 +347,7 @@ const Home = (props) => {
     <header className="mainHeader">
       <div className="header-logo-wrap"><img id="header-logo" src={ require('../Img/Logo_mybox.png') } alt="My Box logo"/> </div>
         <span className="headerContent">
-          <Search searchUpdateMode={searchUpdateMode} searchData={data} folder={props.location.pathname} dataUpdate={dataUpdate} thumbnailUpdate={thumbnailUpdate} clearSearch={clearSearch} clearSearchUpdate={clearSearchUpdate} />
+          <Search searchUpdateMode={searchUpdateMode} searchData={data} folder={props.location.pathname} dataUpdate={dataUpdate} thumbnailUpdate={thumbnailUpdate} oldDataUpdate={oldDataUpdate} clearSearch={clearSearch} clearSearchUpdate={clearSearchUpdate} />
           <span><UserAccount/></span>
           <span><LogOut updateTokenState={updateTokenState}/></span>
         </span>
@@ -340,7 +355,7 @@ const Home = (props) => {
     <div className="mainWrapper">
       <aside className="leftSide">
         
-        <div className="left-link-wrap"><UploadFile folder={props.location.pathname} dataUpdate={dataUpdate} thumbnailUpdate={thumbnailUpdate}></UploadFile><br></br><br></br>
+        <div className="left-link-wrap"><UploadFile folder={props.location.pathname} dataUpdate={dataUpdate} thumbnailUpdate={thumbnailUpdate} oldDataUpdate={oldDataUpdate}></UploadFile><br></br><br></br>
         <CreateFolder folder={props.location.pathname} dataUpdate={dataUpdate} thumbnailUpdate={thumbnailUpdate} oldDataUpdate={oldDataUpdate}></CreateFolder></div>
       </aside>
       <main className="mainMain">
@@ -391,3 +406,90 @@ const Home = (props) => {
 }
 
 export default Home;
+
+
+
+
+/* 
+
+
+if(error.response.status === 409){
+              
+  let test = response.entries.map((x, index) => {
+    return {path: x.name}
+  })
+
+  
+  
+   for(let i = 0; i < test.length; i++){
+    console.log(test[i].path)
+
+    dbx.filesGetThumbnail({
+      path: newFolder + '/' + test[i].path,
+      format: "jpeg",
+      size: "w64h64",
+      mode: "strict"
+    })
+    .then(response => {
+     // console.log(response)
+      
+      let src = URL.createObjectURL(response.fileBlob)
+      
+      
+     
+      
+      newThumbarr.push(src)
+    })
+    .then(resp => {
+      console.log(newThumbarr)
+      updateThumbnails(newThumbarr)
+    })
+    
+  }
+     
+   
+} */
+
+/* let chunk; */
+/* 
+if(response.entries.length > 25){
+  let newCombinedArr = []
+ 
+  console.log('större')
+
+  
+  while (response.entries.length > 0) {
+    chunk = response.entries.splice(0,10)
+
+  console.log(chunk)
+  
+  dbx.filesGetThumbnailBatch({
+  
+    entries: chunk.map(entry => {
+    return{
+      path: entry.id,
+      format : {'.tag': 'jpeg'},
+      size: { '.tag': 'w32h32'},
+      mode: { '.tag': 'strict' }  
+      }
+    }) 
+  }) 
+  .then(response => {   
+    console.log(response.entries)
+    newCombinedArr.push(response.entries)
+
+    
+   // updateThumbnails(response.entries)
+   
+   
+    })
+    .then(res => {
+      console.log(newCombinedArr.flat())
+      updateThumbnails(newCombinedArr.flat())
+    })
+     
+  }
+
+  
+
+} */
