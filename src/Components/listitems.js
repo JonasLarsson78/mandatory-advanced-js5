@@ -19,7 +19,7 @@ import CopyFiles from './copyfiles.js'
 
 
 const ListItems = (props) => {
-  
+
  //===================RENDER LIST====================
   
   const clearSearchFn = () => {
@@ -106,8 +106,8 @@ const ListItems = (props) => {
             <td style={{width: "45px", textAlign: 'center'}}>
               <ReNameFolder dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} folder={props.folder} path={data.path_lower}/>
             </td>
-            <td style={{width: "45px", textAlign: 'center'}}>
-              <MoveFiles dataUpdate={props.dataUpdate} folder={props.folder} path={data.path_lower} name={data.name}/>
+            <td style={{width: "43px", textAlign: 'center'}}>
+              <MoveFiles dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} oldDataUpdate={props.oldDataUpdate} folder={props.folder} path={data.path_lower} name={data.name}/>
             </td>
             <td style={{width: "45px", textAlign: 'center'}}>
               <CopyFiles data={data} favorites={props.favorites} favUpdate={props.favUpdate} path={data.path_lower} />
@@ -179,7 +179,7 @@ return( //FOLDERS
       <ReNameFolder dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} folder={props.folder} path={data.path_lower}/>
     </td>
     <td style={{width: "45px", textAlign: 'center'}}>
-      <MoveFiles dataUpdate={props.dataUpdate} folder={props.folder} path={data.path_lower} name={data.name}/>
+      <MoveFiles dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} oldDataUpdate={props.oldDataUpdate} folder={props.folder} path={data.path_lower} name={data.name}/>
     </td>
     <td style={{width: "45px", textAlign: 'center'}}>
       <CopyFiles data={data} favorites={props.favorites} favUpdate={props.favUpdate} path={data.path_lower} />

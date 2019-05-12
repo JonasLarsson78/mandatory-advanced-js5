@@ -8,6 +8,7 @@ import '../Css/movefiles.css';
 
 
 const MoveFiles = (props) => {
+  
     const moveModal = useRef(null);
     const moveMessRef = useRef(null);
     const [moveError, updateMoveError] = useState("")
@@ -114,9 +115,32 @@ const MoveFiles = (props) => {
               path: newName2,
           })
           .then(response => {
+            console.log(props)
+            props.thumbnailUpdate([]);
+            props.oldDataUpdate(response.entries)
             props.dataUpdate(response.entries)
-            
-            
+
+
+
+            dbx.filesGetThumbnailBatch({
+          
+              entries: response.entries.map(entry => {
+              return{
+                path: entry.id,
+                format : {'.tag': 'jpeg'},
+                size: { '.tag': 'w32h32'},
+                mode: { '.tag': 'strict' }  
+                }
+              }) 
+            }) 
+            .then(response => {   
+              
+              props.thumbnailUpdate(response.entries)
+              })
+              .catch(function(error) {
+                console.log(error);
+               });
+
           })
             .catch(error => {
               console.log(error);
