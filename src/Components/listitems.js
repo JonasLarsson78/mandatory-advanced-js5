@@ -103,21 +103,23 @@ const ListItems = (props) => {
             <td style={{width: "200px"}}>
               {lastEdited(data.server_modified)}
             </td>
-            <td style={{width: "43px", textAlign: 'center'}}>
-              <Delete tag={data[".tag"]} name={data.name} dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} oldDataUpdate={props.oldDataUpdate} path={data.path_lower} folder={props.folder}/>
-            </td>
+            
             <td style={{width: "43px", textAlign: 'center'}}>
               <RenameFile dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} oldDataUpdate={props.oldDataUpdate} folder={props.folder} path={data.path_lower}/>
             </td>
             <td style={{width: "43px", textAlign: 'center'}}>
               <MoveFiles dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} oldDataUpdate={props.oldDataUpdate} folder={props.folder} path={data.path_lower} name={data.name}/>
             </td>
-            <td style={{width: "43px", textAlign: 'center'}}>
-              <AddFavorites data={data} favorites={props.favorites} favUpdate={props.favUpdate} id={data.id} path={data.path_lower} ></AddFavorites>
-            </td>
             <td style={{width: "45px", textAlign: 'center'}}>
               <CopyFiles data={data} favorites={props.favorites} favUpdate={props.favUpdate} path={data.path_lower} name={data.name} dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} oldDataUpdate={props.oldDataUpdate}/>
             </td>
+            <td style={{width: "45px", textAlign: 'center'}}>
+              <AddFavorites data={data} favorites={props.favorites} favUpdate={props.favUpdate} path={data.path_lower}></AddFavorites>
+            </td>
+            <td style={{width: "43px", textAlign: 'center'}}>
+              <Delete tag={data[".tag"]} name={data.name} dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} oldDataUpdate={props.oldDataUpdate} path={data.path_lower} folder={props.folder}/>
+            </td>
+            
           </tr>
          
         ) 
@@ -181,9 +183,7 @@ return( //FOLDERS
     <td style={{width: "200px"}}>
       ...
     </td>
-    <td style={{width: "45px", textAlign: 'center'}}>
-      <Delete tag={data[".tag"]} name={data.name} dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} oldDataUpdate={props.oldDataUpdate} path={data.path_lower} folder={props.folder}/>
-    </td>
+    
     <td style={{width: "45px", textAlign: 'center'}}>
       <ReNameFolder dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} oldDataUpdate={props.oldDataUpdate} folder={props.folder} path={data.path_lower}/>
     </td>
@@ -191,10 +191,14 @@ return( //FOLDERS
       <MoveFiles dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} oldDataUpdate={props.oldDataUpdate} folder={props.folder} path={data.path_lower} name={data.name}/>
     </td>
     <td style={{width: "45px", textAlign: 'center'}}>
-        <AddFavorites data={data} favorites={props.favorites} favUpdate={props.favUpdate} path={data.path_lower}></AddFavorites>
+    <CopyFiles data={data} favorites={props.favorites} favUpdate={props.favUpdate} path={data.path_lower} dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} oldDataUpdate={props.oldDataUpdate}/>
     </td>
     <td style={{width: "45px", textAlign: 'center'}}>
-        <CopyFiles data={data} favorites={props.favorites} favUpdate={props.favUpdate} path={data.path_lower} dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} oldDataUpdate={props.oldDataUpdate}/>
+      <AddFavorites data={data} favorites={props.favorites} favUpdate={props.favUpdate} path={data.path_lower}></AddFavorites>
+    </td>
+    
+    <td style={{width: "45px", textAlign: 'center'}}>
+      <Delete tag={data[".tag"]} name={data.name} dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} oldDataUpdate={props.oldDataUpdate} path={data.path_lower} folder={props.folder}/>
     </td>
   </tr>
     )
