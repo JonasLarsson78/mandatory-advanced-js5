@@ -37,8 +37,6 @@ const newNameInput = (e) => {
   let newPath = rename.substring(0, rename.lastIndexOf("/"));
   let fixNewname = newPath + "/" + target + newIdx;
   updateNewUrl(fixNewname);
-  console.log(rename)
-  console.log(newUrl)
 }
 
 const addNewName = (e) => {
