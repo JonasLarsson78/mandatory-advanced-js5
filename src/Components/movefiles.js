@@ -85,6 +85,7 @@ const MoveFiles = (props) => {
   }, [showModal]);
 
   const startModal = (path) => {
+    props.pollUpdateMode(true)
    updateShowModal(true)
    updateStartPath(path)
   }
@@ -153,6 +154,7 @@ const MoveFiles = (props) => {
           console.log(error);
           updateMoveError("File / Folder with the same name already exists!")
         });
+        props.pollUpdateMode(false)
     }
  /*==================*/
  
@@ -180,6 +182,7 @@ const MoveFiles = (props) => {
       updateMovePath('')
       updateStartPath('')
       document.body.style.overflowY = "auto"
+      props.pollUpdateMode(false)
   }
   
 
