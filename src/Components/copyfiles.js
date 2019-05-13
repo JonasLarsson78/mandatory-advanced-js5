@@ -159,7 +159,7 @@ const CopyFiles = (props) => {
       </tbody>
     </table>
     { moveError }
-    <button className="modal-movefiles-button" onClick={moveToFolder}>Move</button>
+    <button className="modal-movefiles-button" onClick={moveToFolder}>Copy</button>
     <i className="material-icons upload-close" onClick={closeModal}>close</i>
     <p ref={moveMessRef} style={{display: "none"}}>{props.name} moved...</p>
     </div>
