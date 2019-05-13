@@ -103,7 +103,7 @@ const CopyFiles = (props) => {
           dbx.filesCopyV2({
             from_path: startPath,
             to_path: movePath + newName,
-            autorename: true
+            autorename: false
           })
           .then(response => {
               //console.log(response.entries)

@@ -100,7 +100,7 @@ const MoveFiles = (props) => {
           dbx.filesMoveV2({
             from_path: startPath,
             to_path: movePath + newName,
-            autorename: true
+            autorename: false
           })
           .then(response => {
 
@@ -136,7 +136,7 @@ const MoveFiles = (props) => {
               }) 
             }) 
             .then(response => {   
-              
+              updateMoveError("")
               props.thumbnailUpdate(response.entries)
               })
               .catch(function(error) {
@@ -150,6 +150,7 @@ const MoveFiles = (props) => {
         })
         .catch(error => {
           console.log(error);
+          updateMoveError("File / Folder with the same name already exists!")
         });
     }
  /*==================*/

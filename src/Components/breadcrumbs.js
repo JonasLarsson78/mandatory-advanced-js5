@@ -5,10 +5,11 @@ import '../Css/breadcrumbs.css';
 
 
 
-const Breadcrumbs = withBreadcrumbs ([{ path: '/', breadcrumb: null }]) (({ breadcrumbs})=> (
-
+const Breadcrumbs = withBreadcrumbs ([{ path: '/', breadcrumb: null }]) (({ breadcrumbs})=> {
+  console.log(breadcrumbs);
   
 
+  return (
   
     <>
     <i className="material-icons-outlined breadcrumb-home" >home</i>
@@ -28,7 +29,9 @@ const Breadcrumbs = withBreadcrumbs ([{ path: '/', breadcrumb: null }]) (({ brea
     </React.Fragment>
     <br />
     </>
-  ));
+  );
+});
+
 
 
 export default Breadcrumbs;
