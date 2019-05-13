@@ -13,7 +13,6 @@ import LogOut from './logout'
 import FavoriteList from "./favoriteList.js"
 import {favorites$} from './store'
 import {updateFavoriteToken} from './store'
-import errorResponse from './error.js'
 import '../Css/home.css';
 
 
@@ -27,7 +26,7 @@ const Home = (props) => {
   const [favorites, updateFavorites] = useState([]);
   const [oldData, updateOldData] = useState([])
   const [searchMode, updateSearchMode] = useState(false)
-  const [errorMessage, updateErrorMessage] = useState('')
+  const [clearSearch, updateClearSearch] = useState(false)
 
 
   useEffect(() => {
@@ -51,6 +50,8 @@ const Home = (props) => {
 
 
     useEffect(() => {
+
+      console.log('Render poll')
       
        if(searchMode){
         return;
@@ -83,9 +84,6 @@ const Home = (props) => {
             const diffRev = responseRev.filter(el => !oldrespRev.includes(el));
             const diffName = responseName.filter(el => !oldrespName.includes(el))
 
-            console.log(oldData.length)
-            console.log(response.entries.length)
-
             if(oldData.length < response.entries.length){
              
               updateData(response.entries)
@@ -110,20 +108,13 @@ const Home = (props) => {
                  updateThumbnails(responseThumbs.entries)
                  updateData(response.entries)
                  
+                 
                 })
                 .catch(function(error) {
                   console.log(error);
-                  errorResponse()
-                  if (error.response.status >= 400 && error.response.status < 500 ) {
-                    updateErrorMessage('Something went wrong with your request, please try again')
-                  } 
-                  if (error.response.status >= 500 ) {
-                    updateErrorMessage('Something went wrong with the server, please try again')  
-                  } 
-                  else {
-                    updateErrorMessage('Something went wrong, please try again')  
-                  } 
                  });
+              
+
             }
 
           })
@@ -143,7 +134,7 @@ const Home = (props) => {
           
           })
           .then(response => {
-           
+
             updateOldData(response.entries)
 
             let responseRev = response.entries.map(x => x.rev).filter(y => y !== undefined)
@@ -197,13 +188,13 @@ const Home = (props) => {
     
     return () => clearInterval(poll);
 
-    }) 
+    }, [data, oldData, props.location.pathname, searchMode]) 
 
 
 
     
   useEffect(() => {
-
+    console.log('render Home')
     const option = {
       fetch: fetch,
       accessToken: token$.value
@@ -263,48 +254,58 @@ const Home = (props) => {
       })
       .then(response => {
         
-
+        console.log(response.entries)
         updateThumbnails([]);
         updateData(response.entries)
         updateOldData(response.entries)
 
+
+        console.log(response.entries.length)
+       
+
+        
+        
+          dbx.filesGetThumbnailBatch({
           
-        dbx.filesGetThumbnailBatch({
-          
-          entries: response.entries.map(entry => {
-          return{
-            path: entry.id,
-            format : {'.tag': 'jpeg'},
-            size: { '.tag': 'w32h32'},
-            mode: { '.tag': 'strict' }  
-            }
+            entries: response.entries.map(entry => {
+            return{
+              path: entry.id,
+              format : {'.tag': 'jpeg'},
+              size: { '.tag': 'w32h32'},
+              mode: { '.tag': 'strict' }  
+              }
+            }) 
           }) 
-        }) 
-        .then(response => {   
-          updateThumbnails(response.entries)
-          })
+          .then(response => {   
+            console.log(response)
+            updateThumbnails(response.entries)
+            console.log(response.entries)
+            })
+            
+            .catch(function(error) {
+              if(error.response.status === 409){
+                updateThumbnails([])
+              }
+             });
+
+        
           
-          .catch(function(error) {
-            console.log(error);
-           });
+        
            
       })
       .catch(function(error) {
         console.log(error);
        });
     }
-   
-  }, [props.location.pathname])
+      clearSearchUpdate(false)
+  }, [props.location.pathname, clearSearch])
 
 
   const dataUpdate = (data) => {
     updateOldData(data)
     updateData(data)
+    
   }
-
-  const errorMessageUpdate = (error) => {
-    updateErrorMessage(error)
-    }
 
   const thumbnailUpdate = (data) => {
     updateThumbnails(data)
@@ -323,6 +324,16 @@ const Home = (props) => {
   const searchUpdateMode = (bool) => {
       updateSearchMode(bool)
   }
+  const upFavTok = (arr) => {
+    updateFavoriteToken(arr)
+  }
+
+  const clearSearchUpdate = (bool) => {
+    updateClearSearch(bool)
+
+
+    
+  }
 
   if(token === null){
     return <Redirect to="/" />
@@ -336,7 +347,7 @@ const Home = (props) => {
     <header className="mainHeader">
       <div className="header-logo-wrap"><img id="header-logo" src={ require('../Img/Logo_mybox.png') } alt="My Box logo"/> </div>
         <span className="headerContent">
-          <Search searchUpdateMode={searchUpdateMode} searchData={data} folder={props.location.pathname} dataUpdate={dataUpdate} thumbnailUpdate={thumbnailUpdate} />
+          <Search searchUpdateMode={searchUpdateMode} searchData={data} folder={props.location.pathname} dataUpdate={dataUpdate} thumbnailUpdate={thumbnailUpdate} oldDataUpdate={oldDataUpdate} clearSearch={clearSearch} clearSearchUpdate={clearSearchUpdate} />
           <span><UserAccount/></span>
           <span><LogOut updateTokenState={updateTokenState}/></span>
         </span>
@@ -344,11 +355,12 @@ const Home = (props) => {
     <div className="mainWrapper">
       <aside className="leftSide">
         
-        <div className="left-link-wrap"><UploadFile folder={props.location.pathname} dataUpdate={dataUpdate} thumbnailUpdate={thumbnailUpdate}></UploadFile><br></br><br></br>
+        <div className="left-link-wrap"><UploadFile folder={props.location.pathname} dataUpdate={dataUpdate} thumbnailUpdate={thumbnailUpdate} oldDataUpdate={oldDataUpdate}></UploadFile><br></br><br></br>
         <CreateFolder folder={props.location.pathname} dataUpdate={dataUpdate} thumbnailUpdate={thumbnailUpdate} oldDataUpdate={oldDataUpdate}></CreateFolder></div>
       </aside>
       <main className="mainMain">
-      <Breadcrumbs /><br />
+      <label onClick={() => updateClearSearch(true)}>
+      <Breadcrumbs clearSearchUpdate={clearSearchUpdate}/><br /></label>
         <table className="mainTable">
           <thead>
             <tr className="home-thead-tr">
@@ -362,31 +374,30 @@ const Home = (props) => {
               Last edited
             </th>
             <th style={{ textAlign: 'center' }}>
-            Del
+             Ren
             </th>
             <th style={{ textAlign: 'center' }}>
-             Ren 
+             Mov 
             </th>
             <th style={{ textAlign: 'center' }}>
-             Mov
+             Cop
             </th>
             <th style={{ textAlign: 'center' }}>
               Fav
             </th>
             <th style={{ textAlign: 'center' }}>
-              Cop
+              Del
             </th>
             </tr>
           </thead>
           <tbody>
-            <ListItems error={ errorMessageUpdate }favorites={favorites} favUpdate={favUpdate} thumbnailsLoaded={thumbnailsLoaded} folder={props.location.pathname} dataUpdate={dataUpdate} thumbnailUpdate={thumbnailUpdate}  renderData={data} thumbnails={thumbnails}></ListItems>
+            <ListItems favorites={favorites} favUpdate={favUpdate} thumbnailsLoaded={thumbnailsLoaded} folder={props.location.pathname} dataUpdate={dataUpdate} thumbnailUpdate={thumbnailUpdate} oldDataUpdate={oldDataUpdate} renderData={data} thumbnails={thumbnails} clearSearchUpdate={clearSearchUpdate}></ListItems>
           </tbody>
         </table>
-        <p> { errorMessage }</p>
       </main>
       <aside className="rightSide">
         <div className="aside"></div>
-         <FavoriteList data={data} />
+         <FavoriteList upFavTok={upFavTok} data={data} />
       </aside>
     </div>
     
@@ -395,3 +406,90 @@ const Home = (props) => {
 }
 
 export default Home;
+
+
+
+
+/* 
+
+
+if(error.response.status === 409){
+              
+  let test = response.entries.map((x, index) => {
+    return {path: x.name}
+  })
+
+  
+  
+   for(let i = 0; i < test.length; i++){
+    console.log(test[i].path)
+
+    dbx.filesGetThumbnail({
+      path: newFolder + '/' + test[i].path,
+      format: "jpeg",
+      size: "w64h64",
+      mode: "strict"
+    })
+    .then(response => {
+     // console.log(response)
+      
+      let src = URL.createObjectURL(response.fileBlob)
+      
+      
+     
+      
+      newThumbarr.push(src)
+    })
+    .then(resp => {
+      console.log(newThumbarr)
+      updateThumbnails(newThumbarr)
+    })
+    
+  }
+     
+   
+} */
+
+/* let chunk; */
+/* 
+if(response.entries.length > 25){
+  let newCombinedArr = []
+ 
+  console.log('större')
+
+  
+  while (response.entries.length > 0) {
+    chunk = response.entries.splice(0,10)
+
+  console.log(chunk)
+  
+  dbx.filesGetThumbnailBatch({
+  
+    entries: chunk.map(entry => {
+    return{
+      path: entry.id,
+      format : {'.tag': 'jpeg'},
+      size: { '.tag': 'w32h32'},
+      mode: { '.tag': 'strict' }  
+      }
+    }) 
+  }) 
+  .then(response => {   
+    console.log(response.entries)
+    newCombinedArr.push(response.entries)
+
+    
+   // updateThumbnails(response.entries)
+   
+   
+    })
+    .then(res => {
+      console.log(newCombinedArr.flat())
+      updateThumbnails(newCombinedArr.flat())
+    })
+     
+  }
+
+  
+
+} */
