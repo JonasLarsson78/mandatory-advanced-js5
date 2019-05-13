@@ -1,5 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import { Dropbox } from 'dropbox';
+import chunk from 'lodash.chunk';
+import flatten from 'lodash.flatten';
 import { Redirect } from "react-router-dom";
 import {token$} from './store.js';
 import ListItems from './listitems';
@@ -15,6 +17,26 @@ import {favorites$} from './store'
 import {updateFavoriteToken} from './store'
 import '../Css/home.css';
 
+function getThumbnails(dbx, entries) {
+  const chunks = chunk(entries, 25);
+
+  const promises = chunks.map((x) => {
+    return dbx.filesGetThumbnailBatch({
+      entries: x.map(entry => {
+        return{
+          path: entry.id,
+          format : {'.tag': 'jpeg'},
+          size: { '.tag': 'w32h32'},
+          mode: { '.tag': 'strict' }  
+          }
+        })
+    });
+  });
+
+  return Promise.all(promises).then((results) => {
+    return flatten(results.map(x => x.entries));
+  });
+}
 
 
 
@@ -92,7 +114,7 @@ const Home = (props) => {
 
             if(oldData.length !== response.entries.length || diffRev.length > 0 || diffName.length > 0){
               
-              dbx.filesGetThumbnailBatch({
+              /* dbx.filesGetThumbnailBatch({
               
                 entries: response.entries.map(entry => {
                 return{
@@ -102,14 +124,22 @@ const Home = (props) => {
                   mode: { '.tag': 'strict' }  
                   }
                 }) 
-              }) 
-              .then(responseThumbs => {   
-                
+              })  
+               .then(responseThumbs => {   
+                  updateData(response.entries)
                  updateThumbnails(responseThumbs.entries)
-                 updateData(response.entries)
                  
                  
-                })
+                 
+                }) */
+
+                getThumbnails(dbx, response.entries)
+
+                .then(entries => {
+                  updateData(response.entries)
+                  updateThumbnails(entries)
+                  
+                }) 
                 .catch(function(error) {
                   console.log(error);
                  });
@@ -155,7 +185,13 @@ const Home = (props) => {
 
             if(oldData.length !== response.entries.length || diffRev.length > 0 || diffName.length > 0){
     
-            dbx.filesGetThumbnailBatch({
+
+              getThumbnails(dbx, response.entries)
+
+
+
+
+            /* dbx.filesGetThumbnailBatch({
               
               entries: response.entries.map(entry => {
               return{
@@ -166,9 +202,15 @@ const Home = (props) => {
                 }
               }) 
             }) 
-            .then(responseThumbs => {   
+            .then(responseThumbs => {
+              updateData(response.entries)   
               updateThumbnails(responseThumbs.entries)
-              updateData(response.entries)
+              
+              }) */
+               .then(entries => {
+                updateData(response.entries)
+                updateThumbnails(entries)
+                
               })
               
               .catch(function(error) {
@@ -214,20 +256,11 @@ const Home = (props) => {
           updateData(response.entries)
           updateOldData(response.entries)
 
-        dbx.filesGetThumbnailBatch({
-          
-          entries: response.entries.map(entry => {
-          return{
-            path: entry.id,
-            format : {'.tag': 'jpeg'},
-            size: { '.tag': 'w32h32'},
-            mode: { '.tag': 'strict' }  
-            }
-          }) 
-        }) 
-        .then(response => {   
-          
-            updateThumbnails(response.entries)
+        getThumbnails(dbx, response.entries)
+        
+        .then(entries => {   
+            
+            updateThumbnails(entries)
             
           })
           .catch(function(error) {
@@ -262,23 +295,12 @@ const Home = (props) => {
 
         console.log(response.entries.length)
        
-
+        getThumbnails(dbx, response.entries)
         
-        
-          dbx.filesGetThumbnailBatch({
-          
-            entries: response.entries.map(entry => {
-            return{
-              path: entry.id,
-              format : {'.tag': 'jpeg'},
-              size: { '.tag': 'w32h32'},
-              mode: { '.tag': 'strict' }  
-              }
-            }) 
-          }) 
-          .then(response => {   
+      
+          .then(entries => {   
             console.log(response)
-            updateThumbnails(response.entries)
+            updateThumbnails(entries)
             console.log(response.entries)
             })
             
