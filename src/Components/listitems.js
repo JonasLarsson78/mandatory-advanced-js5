@@ -9,8 +9,6 @@ import Delete from './delete'
 import RenameFile  from './renameFiles'
 import ReNameFolder from './renameFolder.js';
 import MoveFiles from './movefiles.js'
-import { Dropbox } from 'dropbox';
-import {token$} from './store.js';
 import AddFavorites from "./addFavorites.js";
 import CopyFiles from './copyfiles.js'
 

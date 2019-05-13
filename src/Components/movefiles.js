@@ -24,7 +24,6 @@ const MoveFiles = (props) => {
     /*========= API Request for List folders =========*/
     useEffect((e) => {
      // console.log('Render ...moveFiles')
-      console.log(path)
       if (!showModal) {
         moveModal.current.style.display = 'none';
       } else {
@@ -75,7 +74,7 @@ const MoveFiles = (props) => {
       }
     }
 
-    }, [showModal, path]);
+    }, [showModal, path, props.path]);
 
   useEffect(() => {
     if (!showModal) {

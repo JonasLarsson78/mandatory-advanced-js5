@@ -5,6 +5,8 @@ import {token$, favorites$, updateFavoriteToken} from './store.js';
 const ReNameFolder = (props) => {
   const inputElFolder = useRef(null);
   const clearInputFolder = useRef(null)
+  const okBtn = useRef(null)
+  const reNameMess = useRef(null)
   const [newUrl, updateNewUrl] = useState("");
   const [rename, updateRename] = useState("");
 
@@ -29,6 +31,15 @@ updateRename(old)
 }
 const newNameInputFolder = (e) => {
 let target = e.target.value
+
+if (target.includes("(") && target.includes(")")){
+  okBtn.current.style.display = "none"
+  reNameMess.current.style.display = "block"
+}
+else{
+  okBtn.current.style.display = "block"
+  reNameMess.current.style.display = "none"
+}
 
 let path = rename.split("/");
 let strippedPath = path.slice(0, path.length-1).join("/");
@@ -106,7 +117,7 @@ document.body.style.overflowY = "auto"
 
 renameInputFolder = 
 <div ref={inputElFolder} className="reNameBack">
-<div className="listRenameInput"><div className="listRenameText">Rename folder</div><span className="listRenameClose" onClick={addNewNameCloseFolder}><i className="material-icons">close</i></span><input placeholder="New foldername..." className="listRenameInputText" style={{outline: "none"}} ref={clearInputFolder} type="text" onChange={newNameInputFolder} /><button className="listBtnRename" style={{outline: "none"}} onClick={addNewNameFolder}>Ok</button></div></div>
+<div className="listRenameInput"><div className="listRenameText">Rename folder</div><span className="listRenameClose" onClick={addNewNameCloseFolder}><i className="material-icons">close</i></span><input placeholder="New foldername..." className="listRenameInputText" style={{outline: "none"}} ref={clearInputFolder} type="text" onChange={newNameInputFolder} /><button ref={okBtn} className="listBtnRename" style={{outline: "none"}} onClick={addNewNameFolder}>Ok</button></div><div ref={reNameMess} className="renameFoldeEerrorMess">No folder name whit ( ) !</div></div>
 
 
 return(
