@@ -44,19 +44,29 @@ const MoveFiles = (props) => {
           path: '',
         })
         .then(response => {
-          updateData(response.entries) 
+          let arr = []
+          let data = response.entries
+          for (let i = 0; i < data.length; i++) {
+            if (data[i].path_lower !== props.path)
+              arr.push(data[i])
+          }
+          updateData(arr) 
         })
         .catch(error => {
           console.log(error);
         }); 
        } else {
-        
         dbx.filesListFolder({
           path: path,
         })
         .then(response => {
-          
-          updateData(response.entries)
+          let arr = []
+          let data = response.entries
+          for (let i = 0; i < data.length; i++) {
+            if (data[i].path_lower !== props.path)
+              arr.push(data[i])
+          }
+          updateData(arr) 
         })
         .catch(error => {
           console.log(error);
