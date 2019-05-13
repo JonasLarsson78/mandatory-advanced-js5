@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import { Dropbox } from 'dropbox';
-import chunk from 'lodash.chunk';
-import flatten from 'lodash.flatten';
+import { getThumbnails } from './getthumbnails'
 import { Redirect } from "react-router-dom";
 import {token$} from './store.js';
 import ListItems from './listitems';
@@ -17,27 +16,6 @@ import {favorites$} from './store'
 import {updateFavoriteToken} from './store'
 import '../Css/home.css';
 
-function getThumbnails(dbx, entries) {
-  const chunks = chunk(entries, 25);
-
-  const promises = chunks.map((x) => {
-    return dbx.filesGetThumbnailBatch({
-      entries: x.map(entry => {
-        return{
-          path: entry.id,
-          format : {'.tag': 'jpeg'},
-          size: { '.tag': 'w32h32'},
-          mode: { '.tag': 'strict' }  
-          }
-        })
-    });
-  });
-
-  return Promise.all(promises).then((results) => {
-    return flatten(results.map(x => x.entries));
-  });
-}
-
 
 
 const Home = (props) => {
@@ -47,7 +25,7 @@ const Home = (props) => {
   const [thumbnailsLoaded, updateThumbnailsLoaded] = useState(false);
   const [favorites, updateFavorites] = useState([]);
   const [oldData, updateOldData] = useState([])
-  const [searchMode, updateSearchMode] = useState(false)
+  const [pollMode, updatePollMode] = useState(false)
   const [clearSearch, updateClearSearch] = useState(false)
 
 
@@ -73,14 +51,14 @@ const Home = (props) => {
 
     useEffect(() => {
 
-      console.log('Render poll')
+     
       
-       if(searchMode){
+       if(pollMode){
         return;
       }
         
       const poll = setInterval(() => {
-       
+        console.log('Useffect körs')
         const option = {
           fetch: fetch,
           accessToken: token$.value
@@ -96,7 +74,7 @@ const Home = (props) => {
           
           })
           .then(response => {
-           updateOldData(data)
+           //updateOldData(data)
             
             let responseRev = response.entries.map(x => x.rev).filter(y => y !== undefined)
             let oldrespRev = oldData.map(x => x.rev).filter(y => y !== undefined)
@@ -106,32 +84,17 @@ const Home = (props) => {
             const diffRev = responseRev.filter(el => !oldrespRev.includes(el));
             const diffName = responseName.filter(el => !oldrespName.includes(el))
 
-            if(oldData.length < response.entries.length){
-             
-              updateData(response.entries)
-            }
+            
 
+            /* if(oldData.length < response.entries.length){
+              console.log('poll körs root')
+              updateData(response.entries)
+            } */
+            console.log('Root mapp... Olddata ' + oldData.length)
+            console.log('Root mapp... response.entries ' + response.entries.length)
 
             if(oldData.length !== response.entries.length || diffRev.length > 0 || diffName.length > 0){
-              
-              /* dbx.filesGetThumbnailBatch({
-              
-                entries: response.entries.map(entry => {
-                return{
-                  path: entry.id,
-                  format : {'.tag': 'jpeg'},
-                  size: { '.tag': 'w32h32'},
-                  mode: { '.tag': 'strict' }  
-                  }
-                }) 
-              })  
-               .then(responseThumbs => {   
-                  updateData(response.entries)
-                 updateThumbnails(responseThumbs.entries)
-                 
-                 
-                 
-                }) */
+              console.log('poll körs root')
 
                 getThumbnails(dbx, response.entries)
 
@@ -176,37 +139,22 @@ const Home = (props) => {
             const diffName = responseName.filter(el => !oldrespName.includes(el))
 
 
-            if(oldData.length < response.entries.length){
-              
+            /* if(oldData.length < response.entries.length){
+              console.log('poll körs folder')
              
               updateData(response.entries)
               
-            }
+            } */
+
+            console.log('Folder mapp... Olddata ' + oldData.length)
+            console.log('Folder mapp... Response.entries ' + response.entries.length)
 
             if(oldData.length !== response.entries.length || diffRev.length > 0 || diffName.length > 0){
-    
+              console.log('poll körs folder')
 
               getThumbnails(dbx, response.entries)
 
 
-
-
-            /* dbx.filesGetThumbnailBatch({
-              
-              entries: response.entries.map(entry => {
-              return{
-                path: entry.id,
-                format : {'.tag': 'jpeg'},
-                size: { '.tag': 'w32h32'},
-                mode: { '.tag': 'strict' }  
-                }
-              }) 
-            }) 
-            .then(responseThumbs => {
-              updateData(response.entries)   
-              updateThumbnails(responseThumbs.entries)
-              
-              }) */
                .then(entries => {
                 updateData(response.entries)
                 updateThumbnails(entries)
@@ -230,13 +178,13 @@ const Home = (props) => {
     
     return () => clearInterval(poll);
 
-    }, [data, oldData, props.location.pathname, searchMode]) 
+    }, [data, oldData, props.location.pathname, pollMode]) 
 
 
 
     
   useEffect(() => {
-    updateSearchMode(true)
+    updatePollMode(true)
     console.log('render Home')
     const option = {
       fetch: fetch,
@@ -288,7 +236,7 @@ const Home = (props) => {
       })
       .then(response => {
         
-        console.log(response.entries)
+      
         updateThumbnails([]);
         updateData(response.entries)
         updateOldData(response.entries)
@@ -300,9 +248,9 @@ const Home = (props) => {
         
       
           .then(entries => {   
-            console.log(response)
+        
             updateThumbnails(entries)
-            console.log(response.entries)
+         
             })
             
             .catch(function(error) {
@@ -321,12 +269,12 @@ const Home = (props) => {
        });
     }
       clearSearchUpdate(false)
-      updateSearchMode(false)
+      updatePollMode(false)
   }, [props.location.pathname, clearSearch])
 
 
   const dataUpdate = (data) => {
-    updateOldData(data)
+    //updateOldData(data)
     updateData(data)
     
   }
@@ -345,8 +293,8 @@ const Home = (props) => {
     updateFavoriteToken(data);
   }
 
-  const searchUpdateMode = (bool) => {
-      updateSearchMode(bool)
+  const pollUpdateMode = (bool) => {
+      updatePollMode(bool)
   }
   const upFavTok = (arr) => {
     updateFavoriteToken(arr)
@@ -371,7 +319,7 @@ const Home = (props) => {
     <header className="mainHeader">
       <div className="header-logo-wrap"><img id="header-logo" src={ require('../Img/Logo_mybox.png') } alt="My Box logo"/> </div>
         <span className="headerContent">
-          <Search searchUpdateMode={searchUpdateMode} searchData={data} folder={props.location.pathname} dataUpdate={dataUpdate} thumbnailUpdate={thumbnailUpdate} oldDataUpdate={oldDataUpdate} clearSearch={clearSearch} clearSearchUpdate={clearSearchUpdate} />
+          <Search pollUpdateMode={pollUpdateMode} searchData={data} folder={props.location.pathname} dataUpdate={dataUpdate} thumbnailUpdate={thumbnailUpdate} oldDataUpdate={oldDataUpdate} clearSearch={clearSearch} clearSearchUpdate={clearSearchUpdate} />
           <span><UserAccount/></span>
           <span><LogOut updateTokenState={updateTokenState}/></span>
         </span>
@@ -380,7 +328,7 @@ const Home = (props) => {
       <aside className="leftSide">
         
         <div className="left-link-wrap"><UploadFile folder={props.location.pathname} dataUpdate={dataUpdate} thumbnailUpdate={thumbnailUpdate} oldDataUpdate={oldDataUpdate}></UploadFile><br></br><br></br>
-        <CreateFolder folder={props.location.pathname} dataUpdate={dataUpdate} thumbnailUpdate={thumbnailUpdate} oldDataUpdate={oldDataUpdate}></CreateFolder></div>
+        <CreateFolder folder={props.location.pathname} dataUpdate={dataUpdate} thumbnailUpdate={thumbnailUpdate} oldDataUpdate={oldDataUpdate} pollUpdateMode={pollUpdateMode}></CreateFolder></div>
       </aside>
       <main className="mainMain">
       <label onClick={() => updateClearSearch(true)}>
@@ -415,7 +363,7 @@ const Home = (props) => {
             </tr>
           </thead>
           <tbody>
-            <ListItems favorites={favorites} favUpdate={favUpdate} thumbnailsLoaded={thumbnailsLoaded} folder={props.location.pathname} dataUpdate={dataUpdate} thumbnailUpdate={thumbnailUpdate} oldDataUpdate={oldDataUpdate} renderData={data} thumbnails={thumbnails} clearSearchUpdate={clearSearchUpdate}></ListItems>
+            <ListItems favorites={favorites} favUpdate={favUpdate} thumbnailsLoaded={thumbnailsLoaded} folder={props.location.pathname} dataUpdate={dataUpdate} thumbnailUpdate={thumbnailUpdate} oldDataUpdate={oldDataUpdate} renderData={data} thumbnails={thumbnails} clearSearchUpdate={clearSearchUpdate} pollUpdateMode={pollUpdateMode}></ListItems>
           </tbody>
         </table>
       </main>
@@ -431,3 +379,174 @@ const Home = (props) => {
 
 export default Home;
 
+
+
+
+
+
+/* 
+
+
+
+useEffect(() => {
+
+     
+      
+  if(pollMode){
+   return;
+ }
+   
+ const poll = setInterval(() => {
+   console.log('Render poll')
+   const option = {
+     fetch: fetch,
+     accessToken: token$.value
+   };
+   const dbx = new Dropbox(
+     option,
+   );
+
+   
+   if(props.location.pathname === '/home'){
+     dbx.filesListFolder({
+       path: '',
+     
+     })
+     .then(response => {
+      updateOldData(data)
+       
+       let responseRev = response.entries.map(x => x.rev).filter(y => y !== undefined)
+       let oldrespRev = oldData.map(x => x.rev).filter(y => y !== undefined)
+       let responseName = response.entries.map(x => x.name).filter(y => y !== undefined)
+       let oldrespName = oldData.map(x => x.name).filter(y => y !== undefined)
+
+       const diffRev = responseRev.filter(el => !oldrespRev.includes(el));
+       const diffName = responseName.filter(el => !oldrespName.includes(el))
+
+       
+
+       if(oldData.length < response.entries.length){
+        
+         updateData(response.entries)
+       }
+
+
+       if(oldData.length !== response.entries.length || diffRev.length > 0 || diffName.length > 0){
+         
+         /* dbx.filesGetThumbnailBatch({
+         
+           entries: response.entries.map(entry => {
+           return{
+             path: entry.id,
+             format : {'.tag': 'jpeg'},
+             size: { '.tag': 'w32h32'},
+             mode: { '.tag': 'strict' }  
+             }
+           }) 
+         })  
+          .then(responseThumbs => {   
+             updateData(response.entries)
+            updateThumbnails(responseThumbs.entries)
+            
+            
+            
+           }) */
+
+    /*        getThumbnails(dbx, response.entries)
+
+           .then(entries => {
+             updateData(response.entries)
+             updateThumbnails(entries)
+             
+           }) 
+           .catch(function(error) {
+             console.log(error);
+            });
+         
+
+       }
+
+     })
+     
+     .catch(function(error) {
+       console.log(error);
+      });
+
+   }
+   else{
+     
+     let newFolder = props.location.pathname;
+     newFolder = newFolder.substring(5)
+
+     dbx.filesListFolder({
+       path: newFolder,
+     
+     })
+     .then(response => {
+
+       updateOldData(response.entries)
+
+       let responseRev = response.entries.map(x => x.rev).filter(y => y !== undefined)
+       let oldrespRev = oldData.map(x => x.rev).filter(y => y !== undefined)
+       let responseName = response.entries.map(x => x.name).filter(y => y !== undefined)
+       let oldrespName = oldData.map(x => x.name).filter(y => y !== undefined)
+
+       const diffRev = responseRev.filter(el => !oldrespRev.includes(el));
+       const diffName = responseName.filter(el => !oldrespName.includes(el))
+
+
+       if(oldData.length < response.entries.length){
+         
+        
+         updateData(response.entries)
+         
+       }
+
+       if(oldData.length !== response.entries.length || diffRev.length > 0 || diffName.length > 0){
+
+
+         getThumbnails(dbx, response.entries)
+ */
+
+
+
+       /* dbx.filesGetThumbnailBatch({
+         
+         entries: response.entries.map(entry => {
+         return{
+           path: entry.id,
+           format : {'.tag': 'jpeg'},
+           size: { '.tag': 'w32h32'},
+           mode: { '.tag': 'strict' }  
+           }
+         }) 
+       }) 
+       .then(responseThumbs => {
+         updateData(response.entries)   
+         updateThumbnails(responseThumbs.entries)
+         
+         }) */
+          /* .then(entries => {
+           updateData(response.entries)
+           updateThumbnails(entries)
+           
+         })
+         
+         .catch(function(error) {
+           console.log(error);
+          });
+         }
+
+     })
+   
+     .catch(function(error) {
+       console.log(error);
+      });
+   }
+ }, 5000);
+ 
+ 
+
+return () => clearInterval(poll);
+
+}, [data, oldData, props.location.pathname, pollMode]) */  

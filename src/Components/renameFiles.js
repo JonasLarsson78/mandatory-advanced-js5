@@ -1,6 +1,7 @@
 import React, {useState,useRef} from 'react';
 import { Dropbox } from 'dropbox';
 import {token$, favorites$, updateFavoriteToken} from './store.js';
+import { getThumbnails } from './getthumbnails'
 
 const RenameFile = (props) => {
 
@@ -64,19 +65,10 @@ const addNewName = (e) => {
             props.dataUpdate(response.entries)
             props.oldDataUpdate(response.entries)
 
-                  dbx.filesGetThumbnailBatch({
-                    entries: response.entries.map(entry => {
-                    return{
-                      path: entry.id,
-                      format : {'.tag': 'jpeg'},
-                      size: { '.tag': 'w32h32'},
-                      mode: { '.tag': 'strict' }  
-                      }
-                    }) 
-                  }) 
-                  .then(response => {   
+            getThumbnails(dbx, response.entries)
+                  .then(entries => {   
                     
-                    props.thumbnailUpdate(response.entries)
+                    props.thumbnailUpdate(entries)
                     })
                     .catch(function(error) {
                       console.log(error);

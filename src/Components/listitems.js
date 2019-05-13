@@ -106,16 +106,16 @@ const ListItems = (props) => {
               <RenameFile dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} oldDataUpdate={props.oldDataUpdate} folder={props.folder} path={data.path_lower}/>
             </td>
             <td style={{width: "43px", textAlign: 'center'}}>
-              <MoveFiles dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} oldDataUpdate={props.oldDataUpdate} folder={props.folder} path={data.path_lower} name={data.name}/>
+              <MoveFiles dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} oldDataUpdate={props.oldDataUpdate} folder={props.folder} path={data.path_lower} name={data.name} pollUpdateMode={props.pollUpdateMode}/>
             </td>
             <td style={{width: "45px", textAlign: 'center'}}>
-              <CopyFiles data={data} favorites={props.favorites} favUpdate={props.favUpdate} path={data.path_lower} name={data.name} dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} oldDataUpdate={props.oldDataUpdate}/>
+              <CopyFiles data={data} favorites={props.favorites} favUpdate={props.favUpdate} path={data.path_lower} name={data.name} dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} oldDataUpdate={props.oldDataUpdate} pollUpdateMode={props.pollUpdateMode}/>
             </td>
             <td style={{width: "45px", textAlign: 'center'}}>
               <AddFavorites data={data} favorites={props.favorites} favUpdate={props.favUpdate} path={data.path_lower}></AddFavorites>
             </td>
             <td style={{width: "43px", textAlign: 'center'}}>
-              <Delete tag={data[".tag"]} name={data.name} dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} oldDataUpdate={props.oldDataUpdate} path={data.path_lower} folder={props.folder}/>
+              <Delete tag={data[".tag"]} name={data.name} dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} oldDataUpdate={props.oldDataUpdate} path={data.path_lower} folder={props.folder} pollUpdateMode={props.pollUpdateMode}/>
             </td>
             
           </tr>
@@ -144,17 +144,18 @@ return( //FOLDERS
       <ReNameFolder dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} oldDataUpdate={props.oldDataUpdate} folder={props.folder} path={data.path_lower}/>
     </td>
     <td style={{width: "45px", textAlign: 'center'}}>
-      <MoveFiles dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} oldDataUpdate={props.oldDataUpdate} folder={props.folder} path={data.path_lower} name={data.name}/>
+      <MoveFiles dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} oldDataUpdate={props.oldDataUpdate} folder={props.folder} path={data.path_lower} name={data.name} pollUpdateMode={props.pollUpdateMode}/>
     </td>
     <td style={{width: "45px", textAlign: 'center'}}>
-    <CopyFiles data={data} favorites={props.favorites} favUpdate={props.favUpdate} path={data.path_lower} dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} oldDataUpdate={props.oldDataUpdate}/>
+    <CopyFiles data={data} favorites={props.favorites} favUpdate={props.favUpdate} path={data.path_lower} dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} oldDataUpdate={props.oldDataUpdate}
+    pollUpdateMode={props.pollUpdateMode}/>
     </td>
     <td style={{width: "45px", textAlign: 'center'}}>
       <AddFavorites data={data} favorites={props.favorites} favUpdate={props.favUpdate} path={data.path_lower}></AddFavorites>
     </td>
     
     <td style={{width: "45px", textAlign: 'center'}}>
-      <Delete tag={data[".tag"]} name={data.name} dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} oldDataUpdate={props.oldDataUpdate} path={data.path_lower} folder={props.folder}/>
+      <Delete tag={data[".tag"]} name={data.name} dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} oldDataUpdate={props.oldDataUpdate} path={data.path_lower} folder={props.folder} pollUpdateMode={props.pollUpdateMode}/>
     </td>
   </tr>
     )

@@ -19,12 +19,8 @@ const CopyFiles = (props) => {
     let moveFolders = '';
     const path = window.decodeURIComponent(window.location.hash.slice(1));
 
-
-    //console.log(props.folder)
-    //console.log(props.path)
-    //console.log(startPath)
-
-    //console.log(path)
+  
+    
     /*========= API Request for List folders =========*/
     useEffect((e) => {
      // console.log('Render copyfiles')
@@ -76,6 +72,7 @@ const CopyFiles = (props) => {
   const startModal = (path) => {
    updateShowModal(true)
    updateStartPath(path)
+   props.pollUpdateMode(true)
   }
 
   const setPath = (e) => {
@@ -152,6 +149,7 @@ const CopyFiles = (props) => {
 
   const closeModal = () => {
       updateShowModal(false)
+      props.pollUpdateMode(false)
       updateMovePath('')
       updateStartPath('')
       document.body.style.overflowY = "auto"
