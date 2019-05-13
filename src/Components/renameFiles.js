@@ -24,6 +24,7 @@ const dbx = new Dropbox(
 
 
 const reName = (e) => {
+  props.pollUpdateMode(true)
   let old = e.target.dataset.path
   updateRename(old)
   
@@ -89,13 +90,14 @@ const addNewName = (e) => {
   inputEl.current.style.display = "none"
   document.body.style.overflowY = "auto"
   clearInput.current.value = "";
-  
+  props.pollUpdateMode(false)
 
 }
 
 const addNewNameClose = () =>{
   inputEl.current.style.display = "none"
   document.body.style.overflowY = "auto"
+  props.pollUpdateMode(false)
 }
 
 renameInput = 

@@ -103,7 +103,7 @@ const ListItems = (props) => {
             </td>
             
             <td style={{width: "43px", textAlign: 'center'}}>
-              <RenameFile dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} oldDataUpdate={props.oldDataUpdate} folder={props.folder} path={data.path_lower}/>
+              <RenameFile dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} oldDataUpdate={props.oldDataUpdate} folder={props.folder} path={data.path_lower} pollUpdateMode={props.pollUpdateMode}/>
             </td>
             <td style={{width: "43px", textAlign: 'center'}}>
               <MoveFiles dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} oldDataUpdate={props.oldDataUpdate} folder={props.folder} path={data.path_lower} name={data.name} pollUpdateMode={props.pollUpdateMode}/>
@@ -141,7 +141,7 @@ return( //FOLDERS
     </td>
     
     <td style={{width: "45px", textAlign: 'center'}}>
-      <ReNameFolder dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} oldDataUpdate={props.oldDataUpdate} folder={props.folder} path={data.path_lower}/>
+      <ReNameFolder dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} oldDataUpdate={props.oldDataUpdate} folder={props.folder} path={data.path_lower} pollUpdateMode={props.pollUpdateMode}/>
     </td>
     <td style={{width: "45px", textAlign: 'center'}}>
       <MoveFiles dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} oldDataUpdate={props.oldDataUpdate} folder={props.folder} path={data.path_lower} name={data.name} pollUpdateMode={props.pollUpdateMode}/>
