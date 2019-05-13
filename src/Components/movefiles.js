@@ -4,6 +4,7 @@ import {token$, favorites$, updateFavoriteToken} from './store.js';
 import {Link}from "react-router-dom";
 import { HashRouter as Router} from "react-router-dom";
 import ModalBreadcrumbs from './modalbreadcrumb.js'
+import { getThumbnails } from './getthumbnails'
 import '../Css/movefiles.css';
 
 
@@ -132,22 +133,12 @@ const MoveFiles = (props) => {
             props.oldDataUpdate(response.entries)
             props.dataUpdate(response.entries)
 
+            getThumbnails(dbx, response.entries)
 
-
-            dbx.filesGetThumbnailBatch({
-          
-              entries: response.entries.map(entry => {
-              return{
-                path: entry.id,
-                format : {'.tag': 'jpeg'},
-                size: { '.tag': 'w32h32'},
-                mode: { '.tag': 'strict' }  
-                }
-              }) 
-            }) 
-            .then(response => {   
+            
+            .then(entries => {   
               updateMoveError("")
-              props.thumbnailUpdate(response.entries)
+              props.thumbnailUpdate(entries)
               })
               .catch(function(error) {
                 console.log(error);

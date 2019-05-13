@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import { Dropbox } from 'dropbox';
-import chunk from 'lodash.chunk';
-import flatten from 'lodash.flatten';
+import { getThumbnails } from './getthumbnails'
 import { Redirect } from "react-router-dom";
 import {token$} from './store.js';
 import ListItems from './listitems';
@@ -16,27 +15,6 @@ import FavoriteList from "./favoriteList.js"
 import {favorites$} from './store'
 import {updateFavoriteToken} from './store'
 import '../Css/home.css';
-
-function getThumbnails(dbx, entries) {
-  const chunks = chunk(entries, 25);
-
-  const promises = chunks.map((x) => {
-    return dbx.filesGetThumbnailBatch({
-      entries: x.map(entry => {
-        return{
-          path: entry.id,
-          format : {'.tag': 'jpeg'},
-          size: { '.tag': 'w32h32'},
-          mode: { '.tag': 'strict' }  
-          }
-        })
-    });
-  });
-
-  return Promise.all(promises).then((results) => {
-    return flatten(results.map(x => x.entries));
-  });
-}
 
 
 
@@ -73,14 +51,14 @@ const Home = (props) => {
 
     useEffect(() => {
 
-      console.log('Render poll')
+     
       
        if(searchMode){
         return;
       }
         
       const poll = setInterval(() => {
-       
+        console.log('Render poll')
         const option = {
           fetch: fetch,
           accessToken: token$.value
@@ -105,6 +83,8 @@ const Home = (props) => {
 
             const diffRev = responseRev.filter(el => !oldrespRev.includes(el));
             const diffName = responseName.filter(el => !oldrespName.includes(el))
+
+            
 
             if(oldData.length < response.entries.length){
              

@@ -1,6 +1,7 @@
 import React, {useState, useRef } from 'react';
 import { Dropbox } from 'dropbox';
 import {token$} from './store.js';
+import { getThumbnails } from './getthumbnails'
 import '../Css/createfolder.css';
 
 //import { BrowserRouter as Router, Route, Link, Redirect}from "react-router-dom";
@@ -52,20 +53,10 @@ const CreateFolder = (props) => {
         props.oldDataUpdate(response.entries)
         props.dataUpdate(response.entries)
         
-        dbx.filesGetThumbnailBatch({
+        getThumbnails(dbx, response.entries)
+        .then(entries => {   
           
-          entries: response.entries.map(entry => {
-          return{
-            path: entry.id,
-            format : {'.tag': 'jpeg'},
-            size: { '.tag': 'w32h32'},
-            mode: { '.tag': 'strict' }  
-            }
-          }) 
-        }) 
-        .then(response => {   
-          
-          props.thumbnailUpdate(response.entries)
+          props.thumbnailUpdate(entries)
           })
           .catch(function(error) {
             console.log(error);

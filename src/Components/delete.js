@@ -1,6 +1,7 @@
 import React, {useState, useRef} from 'react';
 import {token$, favorites$, updateFavoriteToken} from './store.js';
 import { Dropbox } from 'dropbox';
+import { getThumbnails } from './getthumbnails'
 import '../Css/modal.css'
 
 
@@ -47,19 +48,13 @@ const yes = () => {
                   props.thumbnailUpdate([])
                   props.dataUpdate(response.entries)
                   props.oldDataUpdate(response.entries)
-                        dbx.filesGetThumbnailBatch({
-                          entries: response.entries.map(entry => {
-                          return{
-                            path: entry.id,
-                            format : {'.tag': 'jpeg'},
-                            size: { '.tag': 'w32h32'},
-                            mode: { '.tag': 'strict' }  
-                            }
-                          }) 
-                        }) 
-                        .then(response => {   
+
+                  getThumbnails(dbx, response.entries)
+
+                        
+                        .then(entries => {   
                           
-                          props.thumbnailUpdate(response.entries)
+                          props.thumbnailUpdate(entries)
                           })
                           .catch(function(error) {
                             console.log(error);

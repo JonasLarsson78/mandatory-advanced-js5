@@ -2,6 +2,7 @@ import React, {useState,useRef} from 'react';
 import { Dropbox } from 'dropbox';
 import {token$} from './store.js';
 import '../Css/upload.css';
+import { getThumbnails } from './getthumbnails'
 
 
 
@@ -68,20 +69,10 @@ const UploadFile = (props) => {
                   props.dataUpdate(response.entries)
                   props.oldDataUpdate(response.entries)
           
-                  dbx.filesGetThumbnailBatch({
+                  getThumbnails(dbx, response.entries)
+                  .then(entries => {   
                     
-                    entries: response.entries.map(entry => {
-                    return{
-                      path: entry.id,
-                      format : {'.tag': 'jpeg'},
-                      size: { '.tag': 'w32h32'},
-                      mode: { '.tag': 'strict' }  
-                      }
-                    }) 
-                  }) 
-                  .then(response => {   
-                    
-                    props.thumbnailUpdate(response.entries)
+                    props.thumbnailUpdate(entries)
                     })
                     .catch(function(error) {
                       console.log(error);
@@ -160,20 +151,10 @@ const UploadFile = (props) => {
             props.dataUpdate(response.entries)
             props.oldDataUpdate(response.entries)
     
-            dbx.filesGetThumbnailBatch({
+            getThumbnails(dbx, response.entries)
+            .then(entries => {   
               
-              entries: response.entries.map(entry => {
-              return{
-                path: entry.id,
-                format : {'.tag': 'jpeg'},
-                size: { '.tag': 'w32h32'},
-                mode: { '.tag': 'strict' }  
-                }
-              }) 
-            }) 
-            .then(response => {   
-              
-              props.thumbnailUpdate(response.entries)
+              props.thumbnailUpdate(entries)
               })
               .catch(function(error) {
                 console.log(error);
