@@ -24,6 +24,7 @@ const ReNameFolder = (props) => {
 
 
 const reNameFolder = (e) => {
+props.pollUpdateMode(true)
 let old = e.target.dataset.path
 updateRename(old)
 
@@ -101,12 +102,13 @@ const addNewNameFolder = (e) => {
 inputElFolder.current.style.display = "none"
 document.body.style.overflowY = "auto"
 clearInputFolder.current.value = "";
-
+props.pollUpdateMode(false)
 
 }
 const addNewNameCloseFolder = () =>{
 inputElFolder.current.style.display = "none"
 document.body.style.overflowY = "auto"
+props.pollUpdateMode(false)
 }
 
 renameInputFolder = 

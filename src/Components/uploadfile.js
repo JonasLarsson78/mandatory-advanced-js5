@@ -177,10 +177,12 @@ const UploadFile = (props) => {
   }
     const closeModal = () => {
       uploadModal.current.style.display = 'none';
+      props.pollUpdateMode(false)
     }
 
     const startModal = () => {
       uploadModal.current.style.display = 'block';
+      props.pollUpdateMode(true)
     }
 
   
