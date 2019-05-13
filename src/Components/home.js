@@ -84,8 +84,11 @@ const Home = (props) => {
             const diffRev = responseRev.filter(el => !oldrespRev.includes(el));
             const diffName = responseName.filter(el => !oldrespName.includes(el))
 
-            
-
+            //Fullösning för att lösa fel i thumbnails när en mapp tas bort utifrån
+            if(response.entries.length < oldData.length){
+              
+              updateThumbnails([])
+            }
             /* if(oldData.length < response.entries.length){
               console.log('poll körs root')
               updateData(response.entries)
@@ -93,7 +96,7 @@ const Home = (props) => {
             console.log('Root mapp... Olddata ' + oldData.length)
             console.log('Root mapp... response.entries ' + response.entries.length)
 
-            if(response.entries.length !== oldData.length  || diffRev.length > 0 || diffName.length > 0){
+            if (response.entries.length !== oldData.length  || diffRev.length > 0 || diffName.length > 0){
               updatePollMode(true)
               console.log('poll körs root')
               console.log('poll stoppas tillfälligt root')
@@ -157,6 +160,12 @@ const Home = (props) => {
               updateData(response.entries)
               
             } */
+            if(response.entries.length < oldData.length){
+              
+              updateThumbnails([])
+              
+              
+            }
 
             console.log('Folder mapp... Olddata ' + oldData.length)
             console.log('Folder mapp... Response.entries ' + response.entries.length)
