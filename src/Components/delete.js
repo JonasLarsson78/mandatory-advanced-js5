@@ -46,7 +46,7 @@ const yes = () => {
                 }).then(response =>{
                   props.thumbnailUpdate([])
                   props.dataUpdate(response.entries)
-
+                  props.oldDataUpdate(response.entries)
                         dbx.filesGetThumbnailBatch({
                           entries: response.entries.map(entry => {
                           return{
@@ -75,13 +75,13 @@ const yes = () => {
           });
     
     element.current.style.visibility = "hidden"
-    document.body.style.overflowY = "auto"
+    //document.body.style.overflowY = "auto"
     element.current.style.zIndex = "0";
 }
 
 const no = () => {
     element.current.style.visibility = "hidden"
-    document.body.style.overflowY = "auto"
+    //document.body.style.overflowY = "auto"
     element.current.style.zIndex = "0";
 }
 

@@ -19,10 +19,12 @@ import CopyFiles from './copyfiles.js'
 
 
 const ListItems = (props) => {
-  
+
  //===================RENDER LIST====================
   
-  
+  const clearSearchFn = () => {
+    props.clearSearchUpdate(true)
+  }
 
 
 
@@ -101,26 +103,29 @@ const ListItems = (props) => {
             <td style={{width: "200px"}}>
               {lastEdited(data.server_modified)}
             </td>
+            
             <td style={{width: "43px", textAlign: 'center'}}>
-              <Delete tag={data[".tag"]} name={data.name} dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} path={data.path_lower} folder={props.folder}/>
+              <RenameFile dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} oldDataUpdate={props.oldDataUpdate} folder={props.folder} path={data.path_lower}/>
             </td>
             <td style={{width: "43px", textAlign: 'center'}}>
-              <RenameFile dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} folder={props.folder} path={data.path_lower}/>
-            </td>
-            <td style={{width: "43px", textAlign: 'center'}}>
-              <MoveFiles dataUpdate={props.dataUpdate} folder={props.folder} path={data.path_lower} name={data.name}/>
-            </td>
-            <td style={{width: "43px", textAlign: 'center'}}>
-              <AddFavorites data={data} favorites={props.favorites} favUpdate={props.favUpdate} id={data.id} path={data.path_lower} ></AddFavorites>
+              <MoveFiles dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} oldDataUpdate={props.oldDataUpdate} folder={props.folder} path={data.path_lower} name={data.name}/>
             </td>
             <td style={{width: "45px", textAlign: 'center'}}>
-              <CopyFiles data={data} favorites={props.favorites} favUpdate={props.favUpdate} path={data.path_lower} name={data.name} />
+              <CopyFiles data={data} favorites={props.favorites} favUpdate={props.favUpdate} path={data.path_lower} name={data.name} dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} oldDataUpdate={props.oldDataUpdate}/>
             </td>
+            <td style={{width: "45px", textAlign: 'center'}}>
+              <AddFavorites data={data} favorites={props.favorites} favUpdate={props.favUpdate} path={data.path_lower}></AddFavorites>
+            </td>
+            <td style={{width: "43px", textAlign: 'center'}}>
+              <Delete tag={data[".tag"]} name={data.name} dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} oldDataUpdate={props.oldDataUpdate} path={data.path_lower} folder={props.folder}/>
+            </td>
+            
           </tr>
          
         ) 
       }
   const renameBrackets = (rename, newUrl) =>{
+    console.log('renames')
     const option = {
       fetch: fetch,
       accessToken: token$.value
@@ -139,8 +144,13 @@ const ListItems = (props) => {
         path: props.folder.substring(5),
       })
       .then(response => {
+       
         props.dataUpdate(response.entries)
+
       })
+      .catch(error => {
+        console.log(error);
+      });
       
     })
     .catch(error => {
@@ -151,7 +161,7 @@ const ListItems = (props) => {
 
 if(data[".tag"] === 'folder'){ //FOLDER
 
-  if (data.name.includes("(")){
+    if (data.name.includes("(")){
 
     let brak = data.name.replace(/[()]/g,'')
     let newName = data.path_lower.substring(0, data.path_lower.lastIndexOf("/")) + "/" + brak;
@@ -165,7 +175,7 @@ return( //FOLDERS
     <i className="material-icons filesFolders">folder</i>
     </td>
     <td>
-      <Link className="listFolderLink" to={"/home" + data.path_lower}>{data.name}</Link>
+      <Link className="listFolderLink" to={"/home" + data.path_lower} onClick={clearSearchFn}>{data.name} </Link>
     </td>
     <td style={{width: "80px"}}>
       ...
@@ -173,20 +183,22 @@ return( //FOLDERS
     <td style={{width: "200px"}}>
       ...
     </td>
+    
     <td style={{width: "45px", textAlign: 'center'}}>
-      <Delete tag={data[".tag"]} name={data.name} dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} path={data.path_lower} folder={props.folder}/>
+      <ReNameFolder dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} oldDataUpdate={props.oldDataUpdate} folder={props.folder} path={data.path_lower}/>
     </td>
     <td style={{width: "45px", textAlign: 'center'}}>
-      <ReNameFolder dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} folder={props.folder} path={data.path_lower}/>
+      <MoveFiles dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} oldDataUpdate={props.oldDataUpdate} folder={props.folder} path={data.path_lower} name={data.name}/>
     </td>
     <td style={{width: "45px", textAlign: 'center'}}>
-      <MoveFiles dataUpdate={props.dataUpdate} folder={props.folder} path={data.path_lower} name={data.name}/>
+    <CopyFiles data={data} favorites={props.favorites} favUpdate={props.favUpdate} path={data.path_lower} dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} oldDataUpdate={props.oldDataUpdate}/>
     </td>
     <td style={{width: "45px", textAlign: 'center'}}>
-        <AddFavorites data={data} favorites={props.favorites} favUpdate={props.favUpdate} path={data.path_lower}></AddFavorites>
+      <AddFavorites data={data} favorites={props.favorites} favUpdate={props.favUpdate} path={data.path_lower}></AddFavorites>
     </td>
+    
     <td style={{width: "45px", textAlign: 'center'}}>
-        <CopyFiles data={data} favorites={props.favorites} favUpdate={props.favUpdate} path={data.path_lower} />
+      <Delete tag={data[".tag"]} name={data.name} dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} oldDataUpdate={props.oldDataUpdate} path={data.path_lower} folder={props.folder}/>
     </td>
   </tr>
     )

@@ -3,6 +3,7 @@ import { Dropbox } from 'dropbox';
 import {token$, favorites$, updateFavoriteToken} from './store.js';
 
 const RenameFile = (props) => {
+
   const inputEl = useRef(null);
   const clearInput = useRef(null)
   const [newUrl, updateNewUrl] = useState("");
@@ -25,10 +26,9 @@ const reName = (e) => {
   let old = e.target.dataset.path
   updateRename(old)
   
-  let pos = window.pageYOffset
-  let newPos = pos + 300
-  inputEl.current.style.top = newPos + "px"
+  
   inputEl.current.style.display = "block"
+  document.body.style.overflowY = "hidden"
 }
 const newNameInput = (e) => {
   let target = e.target.value
@@ -37,8 +37,6 @@ const newNameInput = (e) => {
   let newPath = rename.substring(0, rename.lastIndexOf("/"));
   let fixNewname = newPath + "/" + target + newIdx;
   updateNewUrl(fixNewname);
-  console.log(rename)
-  console.log(newUrl)
 }
 
 const addNewName = (e) => {
@@ -64,6 +62,7 @@ const addNewName = (e) => {
           }).then(response =>{
             props.thumbnailUpdate([])
             props.dataUpdate(response.entries)
+            props.oldDataUpdate(response.entries)
 
                   dbx.filesGetThumbnailBatch({
                     entries: response.entries.map(entry => {
@@ -96,6 +95,7 @@ const addNewName = (e) => {
 
 
   inputEl.current.style.display = "none"
+  document.body.style.overflowY = "auto"
   clearInput.current.value = "";
   
 
@@ -103,9 +103,12 @@ const addNewName = (e) => {
 
 const addNewNameClose = () =>{
   inputEl.current.style.display = "none"
+  document.body.style.overflowY = "auto"
 }
 
-renameInput = <div className="listRenameInput" ref={inputEl} style={{display: "none"}}><div className="listRenameText"> Rename file</div><span className="listRenameClose" onClick={addNewNameClose}><i className="material-icons">close</i></span><input className="listRenameInputText" style={{outline: "none"}} ref={clearInput} placeholder="New filename..." type="text" onChange={newNameInput} /><button style={{outline: "none"}} className="listBtnRename" onClick={addNewName}>Ok</button></div>
+renameInput = 
+<div className="reNameBack" ref={inputEl} >
+<div className="listRenameInput"><div className="listRenameText"> Rename file</div><span className="listRenameClose" onClick={addNewNameClose}><i className="material-icons">close</i></span><input className="listRenameInputText" style={{outline: "none"}} ref={clearInput} placeholder="New filename..." type="text" onChange={newNameInput} /><button style={{outline: "none"}} className="listBtnRename" onClick={addNewName}>Ok</button></div></div>
 
 
 return(

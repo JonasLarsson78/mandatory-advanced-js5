@@ -66,6 +66,7 @@ const UploadFile = (props) => {
           
                   props.thumbnailUpdate([]);
                   props.dataUpdate(response.entries)
+                  props.oldDataUpdate(response.entries)
           
                   dbx.filesGetThumbnailBatch({
                     
@@ -157,6 +158,7 @@ const UploadFile = (props) => {
     
             props.thumbnailUpdate([]);
             props.dataUpdate(response.entries)
+            props.oldDataUpdate(response.entries)
     
             dbx.filesGetThumbnailBatch({
               

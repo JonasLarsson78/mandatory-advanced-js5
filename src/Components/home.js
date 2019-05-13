@@ -13,6 +13,7 @@ import LogOut from './logout'
 import FavoriteList from "./favoriteList.js"
 import {favorites$} from './store'
 import {updateFavoriteToken} from './store'
+import errorResponse from './error.js'
 import '../Css/home.css';
 
 
@@ -112,9 +113,17 @@ const Home = (props) => {
                 })
                 .catch(function(error) {
                   console.log(error);
+                  errorResponse()
+                  if (error.response.status >= 400 && error.response.status < 500 ) {
+                    updateErrorMessage('Something went wrong with your request, please try again')
+                  } 
+                  if (error.response.status >= 500 ) {
+                    updateErrorMessage('Something went wrong with the server, please try again')  
+                  } 
+                  else {
+                    updateErrorMessage('Something went wrong, please try again')  
+                  } 
                  });
-              
-
             }
 
           })
@@ -291,8 +300,11 @@ const Home = (props) => {
   const dataUpdate = (data) => {
     updateOldData(data)
     updateData(data)
-    
   }
+
+  const errorMessageUpdate = (error) => {
+    updateErrorMessage(error)
+    }
 
   const thumbnailUpdate = (data) => {
     updateThumbnails(data)
@@ -367,7 +379,7 @@ const Home = (props) => {
             </tr>
           </thead>
           <tbody>
-            <ListItems favorites={favorites} favUpdate={favUpdate} thumbnailsLoaded={thumbnailsLoaded} folder={props.location.pathname} dataUpdate={dataUpdate} thumbnailUpdate={thumbnailUpdate}  renderData={data} thumbnails={thumbnails}></ListItems>
+            <ListItems error={ errorMessageUpdate }favorites={favorites} favUpdate={favUpdate} thumbnailsLoaded={thumbnailsLoaded} folder={props.location.pathname} dataUpdate={dataUpdate} thumbnailUpdate={thumbnailUpdate}  renderData={data} thumbnails={thumbnails}></ListItems>
           </tbody>
         </table>
         <p> { errorMessage }</p>

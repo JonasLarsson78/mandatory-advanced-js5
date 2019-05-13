@@ -24,10 +24,8 @@ const reNameFolder = (e) => {
 let old = e.target.dataset.path
 updateRename(old)
 
-let pos = window.pageYOffset
-  let newPos = pos + 300
-  inputElFolder.current.style.top = newPos + "px"
   inputElFolder.current.style.display = "block"
+  document.body.style.overflowY = "hidden"
 }
 const newNameInputFolder = (e) => {
 let target = e.target.value
@@ -63,6 +61,7 @@ const addNewNameFolder = (e) => {
               }).then(response =>{
                 props.thumbnailUpdate([])
                 props.dataUpdate(response.entries)
+                props.oldDataUpdate(response.entries)
     
                       dbx.filesGetThumbnailBatch({
                         entries: response.entries.map(entry => {
@@ -95,15 +94,19 @@ const addNewNameFolder = (e) => {
 
 
 inputElFolder.current.style.display = "none"
+document.body.style.overflowY = "auto"
 clearInputFolder.current.value = "";
 
 
 }
 const addNewNameCloseFolder = () =>{
 inputElFolder.current.style.display = "none"
+document.body.style.overflowY = "auto"
 }
 
-renameInputFolder = <div className="listRenameInput" ref={inputElFolder} style={{display: "none"}}><div className="listRenameText">Rename folder</div><span className="listRenameClose" onClick={addNewNameCloseFolder}><i className="material-icons">close</i></span><input placeholder="New foldername..." className="listRenameInputText" style={{outline: "none"}} ref={clearInputFolder} type="text" onChange={newNameInputFolder} /><button className="listBtnRename" style={{outline: "none"}} onClick={addNewNameFolder}>Ok</button></div>
+renameInputFolder = 
+<div ref={inputElFolder} className="reNameBack">
+<div className="listRenameInput"><div className="listRenameText">Rename folder</div><span className="listRenameClose" onClick={addNewNameCloseFolder}><i className="material-icons">close</i></span><input placeholder="New foldername..." className="listRenameInputText" style={{outline: "none"}} ref={clearInputFolder} type="text" onChange={newNameInputFolder} /><button className="listBtnRename" style={{outline: "none"}} onClick={addNewNameFolder}>Ok</button></div></div>
 
 
 return(
