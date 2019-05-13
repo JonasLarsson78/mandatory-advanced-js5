@@ -13,6 +13,7 @@ let delModal;
 
 let pointerEvent = "visible"
 const del = (e) => {
+  props.pollUpdateMode(true)
   updateDelFile(e.target.dataset.path) 
   element.current.style.visibility = "visible"
   element.current.style.zIndex = "500";
@@ -72,12 +73,15 @@ const yes = () => {
     element.current.style.visibility = "hidden"
     //document.body.style.overflowY = "auto"
     element.current.style.zIndex = "0";
+    props.pollUpdateMode(false)
 }
 
 const no = () => {
+    
     element.current.style.visibility = "hidden"
     document.body.style.overflowY = "auto"
     element.current.style.zIndex = "0";
+    props.pollUpdateMode(false)
 }
 
 delModal = <div style={{pointerEvents: pointerEvent}} ref={element} className="modalBack">

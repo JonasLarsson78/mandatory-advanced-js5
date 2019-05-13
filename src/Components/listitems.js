@@ -115,7 +115,7 @@ const ListItems = (props) => {
               <AddFavorites data={data} favorites={props.favorites} favUpdate={props.favUpdate} path={data.path_lower}></AddFavorites>
             </td>
             <td style={{width: "43px", textAlign: 'center'}}>
-              <Delete tag={data[".tag"]} name={data.name} dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} oldDataUpdate={props.oldDataUpdate} path={data.path_lower} folder={props.folder}/>
+              <Delete tag={data[".tag"]} name={data.name} dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} oldDataUpdate={props.oldDataUpdate} path={data.path_lower} folder={props.folder} pollUpdateMode={props.pollUpdateMode}/>
             </td>
             
           </tr>
@@ -155,7 +155,7 @@ return( //FOLDERS
     </td>
     
     <td style={{width: "45px", textAlign: 'center'}}>
-      <Delete tag={data[".tag"]} name={data.name} dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} oldDataUpdate={props.oldDataUpdate} path={data.path_lower} folder={props.folder}/>
+      <Delete tag={data[".tag"]} name={data.name} dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} oldDataUpdate={props.oldDataUpdate} path={data.path_lower} folder={props.folder} pollUpdateMode={props.pollUpdateMode}/>
     </td>
   </tr>
     )
