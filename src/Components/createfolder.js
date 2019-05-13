@@ -77,11 +77,13 @@ const CreateFolder = (props) => {
 
   const closeModal = () => {
     uploadModal.current.style.display = 'none';
+    props.pollUpdateMode(false)
   }
 
   const startModal = () => {
     uploadModal.current.style.display = 'block';
     inputRef.current.value = '';
+    props.pollUpdateMode(true)
   }
 
   uploadFolder = 

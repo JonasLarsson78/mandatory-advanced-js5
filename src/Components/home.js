@@ -328,7 +328,7 @@ const Home = (props) => {
       <aside className="leftSide">
         
         <div className="left-link-wrap"><UploadFile folder={props.location.pathname} dataUpdate={dataUpdate} thumbnailUpdate={thumbnailUpdate} oldDataUpdate={oldDataUpdate}></UploadFile><br></br><br></br>
-        <CreateFolder folder={props.location.pathname} dataUpdate={dataUpdate} thumbnailUpdate={thumbnailUpdate} oldDataUpdate={oldDataUpdate}></CreateFolder></div>
+        <CreateFolder folder={props.location.pathname} dataUpdate={dataUpdate} thumbnailUpdate={thumbnailUpdate} oldDataUpdate={oldDataUpdate} pollUpdateMode={pollUpdateMode}></CreateFolder></div>
       </aside>
       <main className="mainMain">
       <label onClick={() => updateClearSearch(true)}>
