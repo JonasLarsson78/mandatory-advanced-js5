@@ -96,7 +96,7 @@ const Home = (props) => {
           
           })
           .then(response => {
-           //updateOldData(data)
+           updateOldData(data)
             
             let responseRev = response.entries.map(x => x.rev).filter(y => y !== undefined)
             let oldrespRev = oldData.map(x => x.rev).filter(y => y !== undefined)
@@ -106,13 +106,13 @@ const Home = (props) => {
             const diffRev = responseRev.filter(el => !oldrespRev.includes(el));
             const diffName = responseName.filter(el => !oldrespName.includes(el))
 
-            /* if(oldData.length < response.entries.length){
+            if(oldData.length < response.entries.length){
              
               updateData(response.entries)
-            } */
+            }
 
 
-           /*  if(oldData.length !== response.entries.length || diffRev.length > 0 || diffName.length > 0){ */
+            if(oldData.length !== response.entries.length || diffRev.length > 0 || diffName.length > 0){
               
               /* dbx.filesGetThumbnailBatch({
               
@@ -145,7 +145,7 @@ const Home = (props) => {
                  });
               
 
-           /*  } */
+            }
 
           })
           
@@ -165,7 +165,7 @@ const Home = (props) => {
           })
           .then(response => {
 
-            //updateOldData(response.entries)
+            updateOldData(response.entries)
 
             let responseRev = response.entries.map(x => x.rev).filter(y => y !== undefined)
             let oldrespRev = oldData.map(x => x.rev).filter(y => y !== undefined)
@@ -175,15 +175,15 @@ const Home = (props) => {
             const diffRev = responseRev.filter(el => !oldrespRev.includes(el));
             const diffName = responseName.filter(el => !oldrespName.includes(el))
 
-            /////kanske inte behövs
-            /* if(oldData.length < response.entries.length){
+
+            if(oldData.length < response.entries.length){
               
              
               updateData(response.entries)
               
-            } */
+            }
 
-            /* if(oldData.length !== response.entries.length || diffRev.length > 0 || diffName.length > 0){ */
+            if(oldData.length !== response.entries.length || diffRev.length > 0 || diffName.length > 0){
     
 
               getThumbnails(dbx, response.entries)
@@ -216,7 +216,7 @@ const Home = (props) => {
               .catch(function(error) {
                 console.log(error);
                });
-           /*    } */
+              }
 
           })
         
