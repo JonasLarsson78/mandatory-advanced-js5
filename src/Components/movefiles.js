@@ -195,7 +195,7 @@ const MoveFiles = (props) => {
 
  
 
-  let btn = newName2.toLowerCase() !== movePath.toLowerCase() ? <button className="modal-movefiles-button" style={{opacity: "1"}} onClick={ moveToFolder }>Move</button> : <button className="modal-movefiles-button" style={{opacity: "0"}}>Move</button>
+  
 
     moveFolders = 
     <Router>
@@ -211,7 +211,7 @@ const MoveFiles = (props) => {
       </tbody>
     </table>
     { moveError }
-    {btn}
+    <button className="modal-movefiles-button" onClick={ moveToFolder }>Move</button>
     <i className="material-icons upload-close" onClick={closeModal}>close</i>
     <p ref={moveMessRef} style={{display: "none"}}>{props.name} moved...</p>
     </div>
