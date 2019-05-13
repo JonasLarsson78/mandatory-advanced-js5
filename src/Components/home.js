@@ -93,21 +93,33 @@ const Home = (props) => {
             console.log('Root mapp... Olddata ' + oldData.length)
             console.log('Root mapp... response.entries ' + response.entries.length)
 
-            if(oldData.length !== response.entries.length || diffRev.length > 0 || diffName.length > 0){
+            if(response.entries.length !== oldData.length  || diffRev.length > 0 || diffName.length > 0){
+              updatePollMode(true)
               console.log('poll körs root')
+              console.log('poll stoppas tillfälligt root')
 
                 getThumbnails(dbx, response.entries)
 
                 .then(entries => {
                   updateData(response.entries)
+                  updateOldData(response.entries)
                   updateThumbnails(entries)
                   
                 }) 
+                .then(rep => {
+                  updatePollMode(false)
+                  console.log('Poll startar igen root')
+
+                })
                 .catch(function(error) {
                   console.log(error);
                  });
               
 
+            }
+            else{
+              console.log('Poll har inte körts för root')
+              return;
             }
 
           })
@@ -128,7 +140,7 @@ const Home = (props) => {
           })
           .then(response => {
 
-            updateOldData(response.entries)
+            //updateOldData(response.entries)
 
             let responseRev = response.entries.map(x => x.rev).filter(y => y !== undefined)
             let oldrespRev = oldData.map(x => x.rev).filter(y => y !== undefined)
@@ -149,21 +161,33 @@ const Home = (props) => {
             console.log('Folder mapp... Olddata ' + oldData.length)
             console.log('Folder mapp... Response.entries ' + response.entries.length)
 
-            if(oldData.length !== response.entries.length || diffRev.length > 0 || diffName.length > 0){
+            if(response.entries.length !== oldData.length || diffRev.length > 0 || diffName.length > 0){
+              // testa stoppa pollning här tills alla filer är klara...
+              updatePollMode(true)
               console.log('poll körs folder')
+              console.log('poll stoppas tillfälligt folder')
 
               getThumbnails(dbx, response.entries)
 
 
                .then(entries => {
                 updateData(response.entries)
+                updateOldData(response.entries)
                 updateThumbnails(entries)
                 
+              })
+              .then(rep => {
+                updatePollMode(false)
+                console.log('Poll startar igen folder')
               })
               
               .catch(function(error) {
                 console.log(error);
                });
+              }
+              else{
+                console.log('Poll har inte körts för folder')
+                return;
               }
 
           })
