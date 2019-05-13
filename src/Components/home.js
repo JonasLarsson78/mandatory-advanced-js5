@@ -13,6 +13,7 @@ import LogOut from './logout'
 import FavoriteList from "./favoriteList.js"
 import {favorites$} from './store'
 import {updateFavoriteToken} from './store'
+import errorResponse from './error.js'
 import '../Css/home.css';
 
 
@@ -112,6 +113,7 @@ const Home = (props) => {
                 })
                 .catch(function(error) {
                   console.log(error);
+                  errorResponse()
                   if (error.response.status >= 400 && error.response.status < 500 ) {
                     updateErrorMessage('Something went wrong with your request, please try again')
                   } 
