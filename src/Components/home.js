@@ -96,7 +96,7 @@ const Home = (props) => {
           
           })
           .then(response => {
-           updateOldData(data)
+           //updateOldData(data)
             
             let responseRev = response.entries.map(x => x.rev).filter(y => y !== undefined)
             let oldrespRev = oldData.map(x => x.rev).filter(y => y !== undefined)
@@ -106,13 +106,13 @@ const Home = (props) => {
             const diffRev = responseRev.filter(el => !oldrespRev.includes(el));
             const diffName = responseName.filter(el => !oldrespName.includes(el))
 
-            if(oldData.length < response.entries.length){
+            /* if(oldData.length < response.entries.length){
              
               updateData(response.entries)
-            }
+            } */
 
 
-            if(oldData.length !== response.entries.length || diffRev.length > 0 || diffName.length > 0){
+           /*  if(oldData.length !== response.entries.length || diffRev.length > 0 || diffName.length > 0){ */
               
               /* dbx.filesGetThumbnailBatch({
               
@@ -145,7 +145,7 @@ const Home = (props) => {
                  });
               
 
-            }
+           /*  } */
 
           })
           
@@ -165,7 +165,7 @@ const Home = (props) => {
           })
           .then(response => {
 
-            updateOldData(response.entries)
+            //updateOldData(response.entries)
 
             let responseRev = response.entries.map(x => x.rev).filter(y => y !== undefined)
             let oldrespRev = oldData.map(x => x.rev).filter(y => y !== undefined)
@@ -175,15 +175,15 @@ const Home = (props) => {
             const diffRev = responseRev.filter(el => !oldrespRev.includes(el));
             const diffName = responseName.filter(el => !oldrespName.includes(el))
 
-
-            if(oldData.length < response.entries.length){
+            /////kanske inte behövs
+            /* if(oldData.length < response.entries.length){
               
              
               updateData(response.entries)
               
-            }
+            } */
 
-            if(oldData.length !== response.entries.length || diffRev.length > 0 || diffName.length > 0){
+            /* if(oldData.length !== response.entries.length || diffRev.length > 0 || diffName.length > 0){ */
     
 
               getThumbnails(dbx, response.entries)
@@ -216,7 +216,7 @@ const Home = (props) => {
               .catch(function(error) {
                 console.log(error);
                });
-              }
+           /*    } */
 
           })
         
@@ -236,6 +236,7 @@ const Home = (props) => {
 
     
   useEffect(() => {
+    updateSearchMode(true)
     console.log('render Home')
     const option = {
       fetch: fetch,
@@ -320,6 +321,7 @@ const Home = (props) => {
        });
     }
       clearSearchUpdate(false)
+      updateSearchMode(false)
   }, [props.location.pathname, clearSearch])
 
 
@@ -429,89 +431,3 @@ const Home = (props) => {
 
 export default Home;
 
-
-
-
-/* 
-
-
-if(error.response.status === 409){
-              
-  let test = response.entries.map((x, index) => {
-    return {path: x.name}
-  })
-
-  
-  
-   for(let i = 0; i < test.length; i++){
-    console.log(test[i].path)
-
-    dbx.filesGetThumbnail({
-      path: newFolder + '/' + test[i].path,
-      format: "jpeg",
-      size: "w64h64",
-      mode: "strict"
-    })
-    .then(response => {
-     // console.log(response)
-      
-      let src = URL.createObjectURL(response.fileBlob)
-      
-      
-     
-      
-      newThumbarr.push(src)
-    })
-    .then(resp => {
-      console.log(newThumbarr)
-      updateThumbnails(newThumbarr)
-    })
-    
-  }
-     
-   
-} */
-
-/* let chunk; */
-/* 
-if(response.entries.length > 25){
-  let newCombinedArr = []
- 
-  console.log('större')
-
-  
-  while (response.entries.length > 0) {
-    chunk = response.entries.splice(0,10)
-
-  console.log(chunk)
-  
-  dbx.filesGetThumbnailBatch({
-  
-    entries: chunk.map(entry => {
-    return{
-      path: entry.id,
-      format : {'.tag': 'jpeg'},
-      size: { '.tag': 'w32h32'},
-      mode: { '.tag': 'strict' }  
-      }
-    }) 
-  }) 
-  .then(response => {   
-    console.log(response.entries)
-    newCombinedArr.push(response.entries)
-
-    
-   // updateThumbnails(response.entries)
-   
-   
-    })
-    .then(res => {
-      console.log(newCombinedArr.flat())
-      updateThumbnails(newCombinedArr.flat())
-    })
-     
-  }
-
-  
-
-} */
