@@ -11,7 +11,7 @@ const Search = (props) => {
   
   if(props.clearSearch === true){
     inputRef.current.value = '';
-    props.searchUpdateMode(false)
+    props.pollUpdateMode(false)
 
   }
   
@@ -31,7 +31,7 @@ const Search = (props) => {
 
       
     if(e.target.value.length < 1){  
-      props.searchUpdateMode(false)
+      props.pollUpdateMode(false)
       
 
       dbx.filesListFolder({
@@ -60,7 +60,7 @@ const Search = (props) => {
     }
     if(e.target.value.length > 0){
       
-      props.searchUpdateMode(true)
+      props.pollUpdateMode(true)
       
       dbx.filesSearch({
        
