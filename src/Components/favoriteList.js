@@ -70,6 +70,7 @@ useEffect(() => {
         let newFav = fav.find( data => data.id === z[i] )
         newFavArr.push(newFav)
       }
+      console.log("Poll Fav")
       updateFavoriteToken(newFavArr)
             })
   }, 5000);
