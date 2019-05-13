@@ -58,7 +58,7 @@ const Home = (props) => {
       }
         
       const poll = setInterval(() => {
-        console.log('Useffect körs')
+        //console.log('Useffect körs')
         const option = {
           fetch: fetch,
           accessToken: token$.value
@@ -85,25 +85,27 @@ const Home = (props) => {
             const diffName = responseName.filter(el => !oldrespName.includes(el))
 
             //Fullösning för att lösa fel i thumbnails när en mapp tas bort utifrån
-            if(response.entries.length < oldData.length){
+             if(response.entries.length < oldData.length){
               
               updateThumbnails([])
+              updateData(response.entries)
             }
             /* if(oldData.length < response.entries.length){
               console.log('poll körs root')
               updateData(response.entries)
             } */
-            console.log('Root mapp... Olddata ' + oldData.length)
-            console.log('Root mapp... response.entries ' + response.entries.length)
+           //console.log('Root mapp... Olddata ' + oldData.length)
+           // console.log('Root mapp... response.entries ' + response.entries.length)
 
             if (response.entries.length !== oldData.length  || diffRev.length > 0 || diffName.length > 0){
               updatePollMode(true)
               console.log('poll körs root')
               console.log('poll stoppas tillfälligt root')
-
+              
                 getThumbnails(dbx, response.entries)
 
                 .then(entries => {
+                 
                   updateData(response.entries)
                   updateOldData(response.entries)
                   updateThumbnails(entries)
@@ -163,12 +165,12 @@ const Home = (props) => {
             if(response.entries.length < oldData.length){
               
               updateThumbnails([])
-              
+              updateData(response.entries)
               
             }
 
-            console.log('Folder mapp... Olddata ' + oldData.length)
-            console.log('Folder mapp... Response.entries ' + response.entries.length)
+            //console.log('Folder mapp... Olddata ' + oldData.length)
+            //console.log('Folder mapp... Response.entries ' + response.entries.length)
 
             if(response.entries.length !== oldData.length || diffRev.length > 0 || diffName.length > 0){
               // testa stoppa pollning här tills alla filer är klara...
@@ -233,7 +235,7 @@ const Home = (props) => {
       })
       .then(response => {
         
-
+        console.log('bilder börjar hämtas')
           updateThumbnails([]);
           updateData(response.entries)
           updateOldData(response.entries)
@@ -241,7 +243,7 @@ const Home = (props) => {
         getThumbnails(dbx, response.entries)
         
         .then(entries => {   
-            
+          console.log('bilder klara')
             updateThumbnails(entries)
             
           })
@@ -269,19 +271,19 @@ const Home = (props) => {
       })
       .then(response => {
         
-      
+        
         updateThumbnails([]);
         updateData(response.entries)
         updateOldData(response.entries)
 
 
         console.log(response.entries.length)
-       
+       console.log('bilder börjar hämtas')
         getThumbnails(dbx, response.entries)
         
       
           .then(entries => {   
-        
+            console.log('bilder klara')
             updateThumbnails(entries)
          
             })
