@@ -34,11 +34,13 @@ const newNameInputFolder = (e) => {
 let target = e.target.value
 
 if (target.includes("(") && target.includes(")")){
-  okBtn.current.style.display = "none"
+  okBtn.current.style.pointerEvents = "none"
+  okBtn.current.style.background = "gray"
   reNameMess.current.style.display = "block"
 }
 else{
-  okBtn.current.style.display = "block"
+  okBtn.current.style.pointerEvents = "visible" 
+  okBtn.current.style.background = "#029BB5"
   reNameMess.current.style.display = "none"
 }
 
