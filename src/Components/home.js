@@ -236,6 +236,7 @@ const Home = (props) => {
 
     
   useEffect(() => {
+    updateSearchMode(true)
     console.log('render Home')
     const option = {
       fetch: fetch,
@@ -320,6 +321,7 @@ const Home = (props) => {
        });
     }
       clearSearchUpdate(false)
+      updateSearchMode(false)
   }, [props.location.pathname, clearSearch])
 
 
@@ -429,89 +431,3 @@ const Home = (props) => {
 
 export default Home;
 
-
-
-
-/* 
-
-
-if(error.response.status === 409){
-              
-  let test = response.entries.map((x, index) => {
-    return {path: x.name}
-  })
-
-  
-  
-   for(let i = 0; i < test.length; i++){
-    console.log(test[i].path)
-
-    dbx.filesGetThumbnail({
-      path: newFolder + '/' + test[i].path,
-      format: "jpeg",
-      size: "w64h64",
-      mode: "strict"
-    })
-    .then(response => {
-     // console.log(response)
-      
-      let src = URL.createObjectURL(response.fileBlob)
-      
-      
-     
-      
-      newThumbarr.push(src)
-    })
-    .then(resp => {
-      console.log(newThumbarr)
-      updateThumbnails(newThumbarr)
-    })
-    
-  }
-     
-   
-} */
-
-/* let chunk; */
-/* 
-if(response.entries.length > 25){
-  let newCombinedArr = []
- 
-  console.log('större')
-
-  
-  while (response.entries.length > 0) {
-    chunk = response.entries.splice(0,10)
-
-  console.log(chunk)
-  
-  dbx.filesGetThumbnailBatch({
-  
-    entries: chunk.map(entry => {
-    return{
-      path: entry.id,
-      format : {'.tag': 'jpeg'},
-      size: { '.tag': 'w32h32'},
-      mode: { '.tag': 'strict' }  
-      }
-    }) 
-  }) 
-  .then(response => {   
-    console.log(response.entries)
-    newCombinedArr.push(response.entries)
-
-    
-   // updateThumbnails(response.entries)
-   
-   
-    })
-    .then(res => {
-      console.log(newCombinedArr.flat())
-      updateThumbnails(newCombinedArr.flat())
-    })
-     
-  }
-
-  
-
-} */
