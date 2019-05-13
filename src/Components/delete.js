@@ -81,7 +81,7 @@ const yes = () => {
 
 const no = () => {
     element.current.style.visibility = "hidden"
-    //document.body.style.overflowY = "auto"
+    document.body.style.overflowY = "auto"
     element.current.style.zIndex = "0";
 }
 

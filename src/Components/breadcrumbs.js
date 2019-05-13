@@ -6,7 +6,7 @@ import '../Css/breadcrumbs.css';
 
 
 const Breadcrumbs = withBreadcrumbs ([{ path: '/', breadcrumb: null }]) (({ breadcrumbs})=> {
-  console.log(breadcrumbs);
+  //console.log(breadcrumbs);
   
 
   return (

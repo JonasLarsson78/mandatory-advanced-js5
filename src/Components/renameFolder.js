@@ -44,7 +44,7 @@ const addNewNameFolder = (e) => {
     dbx.filesMoveV2({
         from_path: rename,
         to_path: newUrl,
-        autorename: true
+        autorename: false
       })
       .then(response => {
 
