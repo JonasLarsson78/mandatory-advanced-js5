@@ -428,7 +428,7 @@ const Home = (props) => {
       </main>
       <aside className="rightSide">
         <div className="aside"></div>
-         <FavoriteList upFavTok={upFavTok} data={data} />
+         <FavoriteList updateErrorMessage={ updateErrorMessage } upFavTok={upFavTok} data={data} />
       </aside>
     </div>
     </>

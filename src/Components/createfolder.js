@@ -8,8 +8,6 @@ import '../Css/createfolder.css';
 
 
 const CreateFolder = (props) => {
- 
-
   const [input, updateInput] = useState('')
   const [hide, updateHide] = useState("none");
   let newFolder = props.folder
