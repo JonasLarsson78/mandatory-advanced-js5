@@ -131,47 +131,11 @@ useEffect(() => {
         /////IF FILES ENDS////
 
 
-        const renameBrackets = (rename, newUrl) =>{
-          const option = {
-            fetch: fetch,
-            accessToken: token$.value
-          };
-          
-          const dbx = new Dropbox(
-            option,
-          );
-          dbx.filesMoveV2({
-            from_path: rename,
-            to_path: newUrl,
-            autorename: true
-          })
-          .then(response => {
-            dbx.filesListFolder({
-              path: props.folder.substring(5),
-            })
-            .then(response => {
-              props.dataUpdate(response.entries)
-            })
-            
-          })
-          .catch(error => {
-            console.log(error);
-          });
-        
-        }
+       
 
       /////IF FOLDER STARTS////
       if(data[".tag"] === 'folder'){ //FOLDER
 
-
-        if (data.name.includes("(")){
-
-          let brak = data.name.replace(/[()]/g,'')
-          let newName = data.path_lower.substring(0, data.path_lower.lastIndexOf("/")) + "/" + brak;
-          
-          renameBrackets(data.path_lower, newName)
-          data.name = brak
-        }
 
       return( //FOLDERS
         

@@ -27,7 +27,7 @@ const Home = (props) => {
   const [favorites, updateFavorites] = useState([]);
   const [oldData, updateOldData] = useState([])
   const [pollMode, updatePollMode] = useState(false)
-  const [clearSearch, updateClearSearch] = useState(false)
+  const [clearSearch, updateClearSearch] = useState(true)
   const [errorMessage, updateErrorMessage] = useState('')
 
 
