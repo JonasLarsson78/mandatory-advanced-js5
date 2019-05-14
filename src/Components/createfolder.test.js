@@ -40,10 +40,16 @@ it ("Input sets state which sets value", () => {
 })
 
 
-var sinon = require('sinon');
+/* var sinon = require('sinon');
 
 
-
+it('should call update once', function() {
+    var update = sinon.spy(startModal, 'props.pollUpdateMode');
+    
+    update.restore();
+    sinon.assert.calledOnce(update);
+  });
+ */
 /*
 spy.calledOnce
 true if spy was called exactly once
