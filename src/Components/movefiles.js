@@ -3,7 +3,7 @@ import { Dropbox } from 'dropbox';
 import {token$, favorites$, updateFavoriteToken} from './store.js';
 import {Link}from "react-router-dom";
 import { HashRouter as Router} from "react-router-dom";
-import ModalBreadcrumbs from './modalbreadcrumb.js'
+import ModalBreadcrumbs from './modalbreadcrumbs'
 import { getThumbnails } from './getthumbnails'
 import '../Css/movefiles.css';
 

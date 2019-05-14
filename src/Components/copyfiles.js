@@ -3,7 +3,7 @@ import { Dropbox } from 'dropbox';
 import { token$ } from './store.js';
 import {Link}from "react-router-dom";
 import { HashRouter as Router} from "react-router-dom";
-import ModalBreadcrumbs from './modalbreadcrumb.js'
+import ModalBreadcrumbs from './modalbreadcrumbs'
 import '../Css/movefiles.css';
 
 
