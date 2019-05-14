@@ -337,10 +337,6 @@ const Home = (props) => {
     updateData(data)
   }
 
-  const errorMessageUpdate = (error) => {
-    updateErrorMessage(error)
-  }
-
   const thumbnailUpdate = (data) => {
     updateThumbnails(data)
   } 
@@ -426,7 +422,7 @@ const Home = (props) => {
             </tr>
           </thead>
           <tbody>
-            <ListItems error={ errorMessageUpdate } favorites={favorites} favUpdate={favUpdate} thumbnailsLoaded={thumbnailsLoaded} folder={props.location.pathname} dataUpdate={dataUpdate} thumbnailUpdate={thumbnailUpdate} oldDataUpdate={oldDataUpdate} renderData={data} thumbnails={thumbnails} clearSearchUpdate={clearSearchUpdate} pollUpdateMode={pollUpdateMode}></ListItems>
+            <ListItems updateErrorMessage={ updateErrorMessage } favorites={favorites} favUpdate={favUpdate} thumbnailsLoaded={thumbnailsLoaded} folder={props.location.pathname} dataUpdate={dataUpdate} thumbnailUpdate={thumbnailUpdate} oldDataUpdate={oldDataUpdate} renderData={data} thumbnails={thumbnails} clearSearchUpdate={clearSearchUpdate} pollUpdateMode={pollUpdateMode}></ListItems>
           </tbody>
         </table>
       </main>

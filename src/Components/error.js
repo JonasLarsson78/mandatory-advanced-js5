@@ -18,7 +18,7 @@ export const errorFunction = (error, updateErrorMessage) => {
     }
     else if (error.response.status === 409) {
         //File or folder not found at the specified path.
-        updateErrorMessage("The path your trying to reach is not exists. Please try again.")
+        updateErrorMessage("Conflict with folders with the same name. Try another path!")
     }
     else if (error.response.status === 429) {
         //Your app is making too many requests for the given user or team and is being rate limited. Your app should wait for the number of seconds specified in the "Retry-After" response header before trying again.The Content-Type of the response can be JSON or plaintext. If it is JSON, it will be typeRateLimitErrorYou can find more information in the data ingress guide.
