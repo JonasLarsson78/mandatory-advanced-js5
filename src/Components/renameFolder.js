@@ -1,10 +1,13 @@
 import React, {useState,useRef} from 'react';
 import { Dropbox } from 'dropbox';
-import {token$} from './store.js';
+import {token$, favorites$, updateFavoriteToken} from './store.js';
+import { getThumbnails } from './getthumbnails'
 
 const ReNameFolder = (props) => {
   const inputElFolder = useRef(null);
   const clearInputFolder = useRef(null)
+  const okBtn = useRef(null)
+  const reNameMess = useRef(null)
   const [newUrl, updateNewUrl] = useState("");
   const [rename, updateRename] = useState("");
 
@@ -21,12 +24,26 @@ const ReNameFolder = (props) => {
 
 
 const reNameFolder = (e) => {
+props.pollUpdateMode(true)
 let old = e.target.dataset.path
 updateRename(old)
-inputElFolder.current.style.display = "block"
+
+  inputElFolder.current.style.display = "block"
+  document.body.style.overflowY = "hidden"
 }
 const newNameInputFolder = (e) => {
 let target = e.target.value
+
+if (target.includes("(") && target.includes(")")){
+  okBtn.current.style.pointerEvents = "none"
+  okBtn.current.style.background = "gray"
+  reNameMess.current.style.display = "block"
+}
+else{
+  okBtn.current.style.pointerEvents = "visible" 
+  okBtn.current.style.background = "#029BB5"
+  reNameMess.current.style.display = "none"
+}
 
 let path = rename.split("/");
 let strippedPath = path.slice(0, path.length-1).join("/");
@@ -42,30 +59,29 @@ const addNewNameFolder = (e) => {
     dbx.filesMoveV2({
         from_path: rename,
         to_path: newUrl,
-        autorename: true
+        autorename: false
       })
       .then(response => {
-        
+
+        for (let i=0; i<favorites$.value.length; i++) {
+          if (favorites$.value[i].id === response.metadata.id) {
+              let newArray = [...favorites$.value];
+              newArray[i] = response.metadata;
+              updateFavoriteToken(newArray);
+          }
+        }
         dbx.filesListFolder({
           path: props.folder.substring(5),
         
               }).then(response =>{
                 props.thumbnailUpdate([])
                 props.dataUpdate(response.entries)
+                props.oldDataUpdate(response.entries)
     
-                      dbx.filesGetThumbnailBatch({
-                        entries: response.entries.map(entry => {
-                        return{
-                          path: entry.id,
-                          format : {'.tag': 'jpeg'},
-                          size: { '.tag': 'w32h32'},
-                          mode: { '.tag': 'strict' }  
-                          }
-                        }) 
-                      }) 
-                      .then(response => {   
+                getThumbnails(dbx, response.entries)
+                      .then(entries => {   
                         
-                        props.thumbnailUpdate(response.entries)
+                        props.thumbnailUpdate(entries)
                         })
                         .catch(function(error) {
                           console.log(error);
@@ -84,21 +100,26 @@ const addNewNameFolder = (e) => {
 
 
 inputElFolder.current.style.display = "none"
+document.body.style.overflowY = "auto"
 clearInputFolder.current.value = "";
-
+props.pollUpdateMode(false)
 
 }
 const addNewNameCloseFolder = () =>{
 inputElFolder.current.style.display = "none"
+document.body.style.overflowY = "auto"
+props.pollUpdateMode(false)
 }
 
-renameInputFolder = <div className="listRenameInput" ref={inputElFolder} style={{display: "none"}}><div className="listRenameText">Rename folder</div><span className="listRenameClose" onClick={addNewNameCloseFolder}><i className="material-icons">close</i></span><input placeholder="New foldername..." className="listRenameInputText" style={{outline: "none"}} ref={clearInputFolder} type="text" onChange={newNameInputFolder} /><button className="listBtnRename" style={{outline: "none"}} onClick={addNewNameFolder}>Ok</button></div>
+renameInputFolder = 
+<div ref={inputElFolder} className="reNameBack">
+<div className="listRenameInput"><div className="listRenameText">Rename folder</div><span className="listRenameClose" onClick={addNewNameCloseFolder}><i className="material-icons">close</i></span><input placeholder="New foldername..." className="listRenameInputText" style={{outline: "none"}} ref={clearInputFolder} type="text" onChange={newNameInputFolder} /><button ref={okBtn} className="listBtnRename" style={{outline: "none"}} onClick={addNewNameFolder}>Ok</button></div><div ref={reNameMess} className="renameFoldeEerrorMess">No folder name whit ( ) !</div></div>
 
 
 return(
   <>
   {renameInputFolder}
-  <button className="listBtn" onClick={reNameFolder}><i data-path={props.path} className="material-icons">edit</i></button>  </>
+  <button className="listBtn" onClick={reNameFolder}><i data-path={props.path} className="material-icons rename-icon">edit</i></button>  </>
 )
 
 }

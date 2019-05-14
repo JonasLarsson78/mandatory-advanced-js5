@@ -14,20 +14,20 @@ body{
     display: flex;
     flex-flow: row wrap;
     justify-content: space-between;
+    align-content: center;
     width: 100%;
     height: 150px;
     border: 0px solid black;
 }
 
 #header-logo {
-    width: 200px;
-    margin: 50px 0 0 40px;
+    width: 230px;
+    margin-left: 20px;
 }
 
 .header-search {
     width: 200px;
     height: 25px;
-    margin-top: 28px;
     margin-right: 50px;
     border-radius: 5px;
     outline: none;
@@ -37,8 +37,8 @@ body{
 }
 .header-serach-icon{
     position: relative;
+    top: 5px;
     height: 50px;
-    top: 32px;
     color: #4d4d4d;
 }
 .headerContent{
@@ -49,11 +49,11 @@ body{
 }
 .headerLogOutBtn{
     position: relative;
-    top: 30px;
+    top: 5px;
     margin-right: 20px;
     margin-left: 10px;
     height: 25px;
-    border:none;
+    border: none;
     border-radius: 5px;
     color: white;
     background-color: #00AFD6;
@@ -69,6 +69,10 @@ body{
 .mainWrapper {
     display: flex;
     flex-flow: row wrap;
+}
+
+.home-thead-tr {
+    border-bottom: 1px solid #ddd;
 }
 
 .leftSide{
@@ -93,39 +97,46 @@ body{
     position: relative;
     top: 10px;
     color: #fff;
-    border: 0px solid red;
 }
 
 .mainMain{
     flex-grow: 2;
     width: 60%;
-    border: 0px solid red;
 }
-
 
 .rightSide {
     width: 250px;
-    border: 0px solid green;
 }
+
 .mainTable{
     width: 100%;
     border-collapse: collapse;
     margin-bottom: 50px;
 }
-th{
+th {
     text-align: left;
-    font-size: 14px;
+    padding: 10px 0;
+    font-size: 12px;
+    color: #4D4D4D;
+    font-weight: 500;
+    background: #ffffff;
 }
+
 tr:nth-child(even) {
     background: #ffffff;
 }
+
 tr:nth-child(odd) {
     background: #f5f5f5;
 }
+
 .hoverStar{
     color :#ffffff;
-    -webkit-text-stroke: 1px #4d4d4d;
+    font-size: 22px;
+    -webkit-text-stroke: 0.7px #4d4d4d;
 }
 .hoverStar:hover{
-    color: #ffed88;
+    font-size: 26px;
+    -webkit-text-stroke: 0.9px #029BB5;
+    transition: font-size 0.2s;
 }

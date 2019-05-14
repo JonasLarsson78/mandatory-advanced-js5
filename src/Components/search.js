@@ -1,14 +1,26 @@
-import React from 'react';
+import React, {useRef}from 'react';
 import { Dropbox } from 'dropbox';
 import {token$} from './store.js';
+import { getThumbnails } from './getthumbnails'
+
+
 
 const Search = (props) => {
+  const inputRef = useRef(null);
+ 
+  
+  if(props.clearSearch === true){
+    inputRef.current.value = '';
+    props.pollUpdateMode(false)
 
-
+  }
+  
  let newFolder = props.folder.substring(5);
 
  const makeSerch = (e) => {
-
+  
+  
+  
     const option = {
         fetch: fetch,
         accessToken: token$.value
@@ -17,29 +29,24 @@ const Search = (props) => {
         option,
       );      
 
-
-    if(e.target.value.length === 0){
+      
+    if(e.target.value.length < 1){  
+      props.pollUpdateMode(false)
+      
 
       dbx.filesListFolder({
         path: props.folder.substring(5),
       
             }).then(response =>{
-              console.log(response.entries)
+              props.thumbnailUpdate([])
               props.dataUpdate(response.entries)
+              props.oldDataUpdate(response.entries)
   
-                    dbx.filesGetThumbnailBatch({
-                      entries: response.entries.map(entry => {
-                      return{
-                        path: entry.id,
-                        format : {'.tag': 'jpeg'},
-                        size: { '.tag': 'w32h32'},
-                        mode: { '.tag': 'strict' }  
-                        }
-                      }) 
-                    }) 
-                    .then(response => {   
-                      console.log(response.entries)
-                      props.thumbnailUpdate(response.entries)
+              getThumbnails(dbx, response.entries)
+
+                    .then(entries => {   
+
+                      props.thumbnailUpdate(entries)
                       })
                       .catch(function(error) {
                         console.log(error);
@@ -51,7 +58,10 @@ const Search = (props) => {
             });
 
     }
-    else if(e.target.value.length > 0){
+    if(e.target.value.length > 0){
+      
+      props.pollUpdateMode(true)
+      
       dbx.filesSearch({
        
         path: newFolder,
@@ -60,12 +70,15 @@ const Search = (props) => {
 
       .then(response => {
         
-        let test = [{".tag": 'file', id: 1, noSearchResult: 'noResult'}]
+        let noResult = [{".tag": 'file', id: 1, noSearchResult: 'noResult'}]
         
         if(response.matches.length === 0){
-          props.dataUpdate(test)
+          props.dataUpdate(noResult)
+         
+
         }
         else{
+          props.clearSearchUpdate(false)
           props.thumbnailUpdate([])
          
          
@@ -79,51 +92,18 @@ const Search = (props) => {
         }
        
 
-        
-
       })
     }
     
     
+    
   }
     
-      
-      
-     
-
-
-
-
-        
-      
-          
-     
-       
-          
-           
-          
-          
-        
-    
-     /*  .catch(function(error) {
-        if (error.response.status === 400){
-          console.log("Wrong input.")
-        }
-        if (error.response.status === 409){
-          console.log("Wrong search path.")
-        }
-           
-      }); */
-  
-
-
-
-
 return (
   
     <>
     <i className="material-icons header-serach-icon">search</i>
-    <input className="header-search" placeholder="Search..." type="text" onChange={makeSerch} />
+    <input className="header-search" placeholder="Search..." type="text" onChange={makeSerch} ref={inputRef} />
    
     </>
     )

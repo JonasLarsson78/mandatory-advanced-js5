@@ -1,15 +1,13 @@
 import React, {useState, useRef, useEffect} from 'react';
 import { Dropbox } from 'dropbox';
-import {token$, favorites$, updateFavoriteToken} from './store.js';
+import { token$ } from './store.js';
 import {Link}from "react-router-dom";
 import { HashRouter as Router} from "react-router-dom";
 import ModalBreadcrumbs from './modalbreadcrumb.js'
-import { getThumbnails } from './getthumbnails'
 import '../Css/movefiles.css';
 
 
-const MoveFiles = (props) => {
-  
+const CopyFiles = (props) => {
     const moveModal = useRef(null);
     const moveMessRef = useRef(null);
     const [moveError, updateMoveError] = useState("")
@@ -21,15 +19,18 @@ const MoveFiles = (props) => {
     let moveFolders = '';
     const path = window.decodeURIComponent(window.location.hash.slice(1));
 
-
+  
+    
     /*========= API Request for List folders =========*/
     useEffect((e) => {
-     // console.log('Render ...moveFiles')
+     // console.log('Render copyfiles')
       if (!showModal) {
         moveModal.current.style.display = 'none';
+        
       } else {
         document.body.style.overflowY = "hidden"
         moveModal.current.style.display = 'block';
+        
         const option = {
           fetch: fetch,
           accessToken: token$.value
@@ -39,67 +40,54 @@ const MoveFiles = (props) => {
       );
   
       if (path === '/'){
-        
         dbx.filesListFolder({
           path: '',
         })
         .then(response => {
-          let arr = []
-          let data = response.entries
-          for (let i = 0; i < data.length; i++) {
-            if (data[i].path_lower !== props.path)
-              arr.push(data[i])
-          }
-          updateData(arr)  
+          updateData(response.entries)          
         })
         .catch(error => {
           console.log(error);
         }); 
        } else {
-        
         dbx.filesListFolder({
           path: path,
         })
         .then(response => {
-          let arr = []
-          let data = response.entries
-          for (let i = 0; i < data.length; i++) {
-            if (data[i].path_lower !== props.path)
-              arr.push(data[i])
-          }
-          updateData(arr) 
+          updateData(response.entries)
         })
         .catch(error => {
           console.log(error);
         }); 
       }
     }
-
-    }, [showModal, path, props.path]);
+    }, [showModal, path]);
 
   useEffect(() => {
     if (!showModal) {
       window.location.hash = "/";
-
     }
   }, [showModal]);
 
   const startModal = (path) => {
-    props.pollUpdateMode(true)
    updateShowModal(true)
    updateStartPath(path)
+   props.pollUpdateMode(true)
   }
-  let newName2 = startPath.substring(0, startPath.lastIndexOf("/")); 
+
   const setPath = (e) => {
     updateMovePath(e.target.dataset.id)
+
   }
 
-/*========= API Request for move files =========*/
+      /*========= API Request for move files =========*/
 
   const moveToFolder = () => {
+      if (startPath === movePath) {
+        updateMoveError('You cant move files in same directory')
+      } else {
         let index = startPath.lastIndexOf("/")
         let newName = startPath.substring(index)
-        
         updateMoveError('')
     
         const option = {
@@ -109,57 +97,40 @@ const MoveFiles = (props) => {
           const dbx = new Dropbox(
             option,
           );
-          dbx.filesMoveV2({
+          dbx.filesCopyV2({
             from_path: startPath,
             to_path: movePath + newName,
             autorename: false
           })
           .then(response => {
-
-            for (let i=0; i<favorites$.value.length; i++) {
-              if (favorites$.value[i].id === response.metadata.id) {
-                  let newArray = [...favorites$.value];
-                  newArray[i] = response.metadata;
-                  updateFavoriteToken(newArray);
-              }
-            }
-
-            updateFileTransfer('File transfered')
+              //console.log(response.entries)
+            updateFileTransfer('File Moved')
             dbx.filesListFolder({
-              path: newName2,
-          })
-          .then(response => {
-            console.log(props)
-            props.thumbnailUpdate([]);
-            props.oldDataUpdate(response.entries)
-            props.dataUpdate(response.entries)
+              path: movePath,
+            })
+            .then(response => {
+                closeModal() 
 
-            getThumbnails(dbx, response.entries)
 
-            
-            .then(entries => {   
-              updateMoveError("")
-              props.thumbnailUpdate(entries)
-              })
-              .catch(function(error) {
-                console.log(error);
-               });
 
-          })
+
+
+
+            })
             .catch(error => {
               console.log(error);
-          }); 
-        })
-        .catch(error => {
-          console.log(error);
-          updateMoveError("File / Folder with the same name already exists!")
-        });
-        props.pollUpdateMode(false)
+            }); 
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      }
     }
  /*==================*/
- 
+
   const renderModalData = (data) => {
-    
+    //console.log(startPath)
+    //console.log(data.path_lower)
     if(data[".tag"] === 'folder'){ //FOLDER
       return( //FOLDERS
         <tr key={data.id} className="modal-movefiles-tr" data-name={data.name} data-folder={data.path_display} data-tag={data[".tag"]}>
@@ -172,31 +143,25 @@ const MoveFiles = (props) => {
         </tr>
           )
         } 
-      
   }
 
   let mapping = data.map(renderModalData)
 
   const closeModal = () => {
       updateShowModal(false)
+      props.pollUpdateMode(false)
       updateMovePath('')
       updateStartPath('')
       document.body.style.overflowY = "auto"
-      props.pollUpdateMode(false)
   }
-  
-
- 
-
-  
 
     moveFolders = 
     <Router>
-      <div ref={ moveModal } className="moveBack">
+      <div className="moveBack" ref={ moveModal }>
     <div className="moveModal" >
-    <h3 className="movefiles-h3">Move files</h3>
+    <h3 className="movefiles-h3">Copy files</h3>
     <ModalBreadcrumbs />
-    <p className="movefiles-p">Move <span className="movefiles-file">{props.name}</span> ... to ... <span className="movefiles-file">{ movePath.slice(1)}</span></p>
+    <p className="movefiles-p">Copy <span className="movefiles-file">{ props.name }</span> ... to ... <span className="movefiles-file">{ movePath.slice(1)}</span></p>
     <p>{ fileTransfer }</p>
     <table>
       <tbody>
@@ -204,7 +169,7 @@ const MoveFiles = (props) => {
       </tbody>
     </table>
     { moveError }
-    <button className="modal-movefiles-button" onClick={ moveToFolder }>Move</button>
+    <button className="modal-movefiles-button" onClick={moveToFolder}>Move</button>
     <i className="material-icons upload-close" onClick={closeModal}>close</i>
     <p ref={moveMessRef} style={{display: "none"}}>{props.name} moved...</p>
     </div>
@@ -215,16 +180,11 @@ const MoveFiles = (props) => {
     return (
         <>
         { moveFolders }
-        <button className="listBtn" onClick={ () => startModal(props.path) }> <i className="material-icons movefiles-icon">swap_horiz</i></button>
+        <button className="listBtn" onClick={ () => startModal(props.path) }> <i className="material-icons copyfiles-icon">file_copy</i></button>
         </>
 
     )
 
 }
 
-export default MoveFiles;
-
-
-
-
-
+export default CopyFiles;

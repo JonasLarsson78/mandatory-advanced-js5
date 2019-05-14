@@ -1,14 +1,82 @@
 .moveModal {
     position: absolute;
-    display: none;
     width: 500px;
-    height: 400px;
+    min-height: 400px;
     padding: 15px;
     border-radius: 5px;
     background-color: #efefef;
     left: 50%;
-    top: 50%;
+    top: 450px;
+    text-align: left;
     transform: translate(-50%, -50%);
     z-index: 500;
     box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    overflow: hidden;
+  }
+
+  .movefiles-h3 {
+    font-size: 18px;
+    color: #4D4D4D;
+    margin-bottom: 5px;
+  }
+
+  .movefiles-p {
+    color: #4D4D4D;
+  }
+
+  .movefiles-file {
+    font-weight: 600;
+    color: #00AFD6;
+  }
+
+  .modal-movefiles-tr {
+    width: 300px;
+  }
+
+  .modal-movefiles-td-icon {
+    width: 50px;
+    padding: 0 10px;
+  }
+ 
+  .modal-movefiles-td-link {
+    width: 100%;
+    padding: 5px;
+  }
+
+  .modal-movefiles-link {
+    text-decoration: none;
+    color: #4D4D4D;
+    font-size: 16px;
+  }
+
+  .modal-movefiles-link:hover {
+    color: #00AFD6;
+  }
+
+  .modal-movefiles-button {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    width: 120px;
+    height: 25px;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    background-color: #00AFD6;
+    outline: none;
+    cursor: pointer;
+    text-transform: uppercase;
+  }
+  .moveBack{
+    position: fixed;
+    display: none;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    background-color: #00000078;
+    z-index: 500;
+    cursor: default;
+    overflow: hidden;
   }

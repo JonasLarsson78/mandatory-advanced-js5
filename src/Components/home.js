@@ -1,5 +1,6 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import { Dropbox } from 'dropbox';
+import { getThumbnails } from './getthumbnails'
 import { Redirect } from "react-router-dom";
 import {token$} from './store.js';
 import ListItems from './listitems';
@@ -16,12 +17,23 @@ import {updateFavoriteToken} from './store'
 import '../Css/home.css';
 
 
+
 const Home = (props) => {
   const [token, updateTokenState] = useState(token$.value)
   const [data, updateData] = useState([]);
   const [thumbnails, updateThumbnails] = useState([])
   const [thumbnailsLoaded, updateThumbnailsLoaded] = useState(false);
   const [favorites, updateFavorites] = useState([]);
+  const [oldData, updateOldData] = useState([])
+  const [pollMode, updatePollMode] = useState(false)
+  const [clearSearch, updateClearSearch] = useState(false)
+
+
+  const dataRef = useRef([]);
+
+  useEffect(() => {
+    dataRef.current = data;
+  }, [data]);
 
   useEffect(() => {
     const subscription = favorites$.subscribe(updateFavorites);
@@ -43,15 +55,16 @@ const Home = (props) => {
   }, [data, thumbnails]);
 
 
-  
-
-
-
     useEffect(() => {
-      console.log('poll')
 
-
+     
+      
+       if(pollMode){
+        return;
+      }
+        
       const poll = setInterval(() => {
+        //console.log('Useffect körs')
         const option = {
           fetch: fetch,
           accessToken: token$.value
@@ -59,43 +72,80 @@ const Home = (props) => {
         const dbx = new Dropbox(
           option,
         );
+
+        const dataTmp = dataRef.current;
+
+        
         if(props.location.pathname === '/home'){
           dbx.filesListFolder({
             path: '',
           
           })
           .then(response => {
+            if (dataRef.current !== dataTmp) {
+           
+              return;
+            }
+           
+           //updateOldData(data)
             
-            updateThumbnails([]);
-            updateData(response.entries)
-            
-    
-            dbx.filesGetThumbnailBatch({
+            let responseRev = response.entries.map(x => x.rev).filter(y => y !== undefined)
+            let oldrespRev = oldData.map(x => x.rev).filter(y => y !== undefined)
+            let responseName = response.entries.map(x => x.name).filter(y => y !== undefined)
+            let oldrespName = oldData.map(x => x.name).filter(y => y !== undefined)
+
+            const diffRev = responseRev.filter(el => !oldrespRev.includes(el));
+            const diffName = responseName.filter(el => !oldrespName.includes(el))
+
+            //Fullösning för att lösa fel i thumbnails när en mapp tas bort utifrån
+             if(response.entries.length < oldData.length){
               
-              entries: response.entries.map(entry => {
-              return{
-                path: entry.id,
-                format : {'.tag': 'jpeg'},
-                size: { '.tag': 'w32h32'},
-                mode: { '.tag': 'strict' }  
-                }
-              }) 
-            }) 
-            .then(response => {   
-               updateThumbnails(response.entries)
-              })
-              .catch(function(error) {
-                console.log(error);
-               });
-               
-    
+              updateThumbnails([])
+              updateData(response.entries)
+            }
+            /* if(oldData.length < response.entries.length){
+              console.log('poll körs root')
+              updateData(response.entries)
+            } */
+           //console.log('Root mapp... Olddata ' + oldData.length)
+           // console.log('Root mapp... response.entries ' + response.entries.length)
+
+            if (response.entries.length !== oldData.length  || diffRev.length > 0 || diffName.length > 0){
+              updatePollMode(true)
+              console.log('poll körs root')
+              console.log('poll stoppas tillfälligt root')
+              
+                getThumbnails(dbx, response.entries)
+
+                .then(entries => {
+                 
+                  updateData(response.entries)
+                  updateOldData(response.entries)
+                  updateThumbnails(entries)
+                  
+                }) 
+                .then(rep => {
+                  updatePollMode(false)
+                  console.log('Poll startar igen root')
+
+                })
+                .catch(function(error) {
+                  console.log(error);
+                 });
+              
+
+            }
+            else{
+              console.log('Poll har inte körts för root')
+              return;
+            }
+
           })
           
           .catch(function(error) {
             console.log(error);
            });
     
-         
         }
         else{
           
@@ -107,33 +157,69 @@ const Home = (props) => {
           
           })
           .then(response => {
-            
-           updateThumbnails([]);
-            updateData(response.entries)
-    
-    
-    
-            dbx.filesGetThumbnailBatch({
+            if (dataRef.current !== dataTmp) {
+           
+              return;
+            }
+
+            //updateOldData(response.entries)
+
+            let responseRev = response.entries.map(x => x.rev).filter(y => y !== undefined)
+            let oldrespRev = oldData.map(x => x.rev).filter(y => y !== undefined)
+            let responseName = response.entries.map(x => x.name).filter(y => y !== undefined)
+            let oldrespName = oldData.map(x => x.name).filter(y => y !== undefined)
+
+            const diffRev = responseRev.filter(el => !oldrespRev.includes(el));
+            const diffName = responseName.filter(el => !oldrespName.includes(el))
+
+
+            /* if(oldData.length < response.entries.length){
+              console.log('poll körs folder')
+             
+              updateData(response.entries)
               
-              entries: response.entries.map(entry => {
-              return{
-                path: entry.id,
-                format : {'.tag': 'jpeg'},
-                size: { '.tag': 'w32h32'},
-                mode: { '.tag': 'strict' }  
-                }
-              }) 
-            }) 
-            .then(response => {   
-              console.log(response)
-              updateThumbnails(response.entries)
+            } */
+            if(response.entries.length < oldData.length){
+              
+              updateThumbnails([])
+              updateData(response.entries)
+              
+            }
+
+            //console.log('Folder mapp... Olddata ' + oldData.length)
+            //console.log('Folder mapp... Response.entries ' + response.entries.length)
+
+            if(response.entries.length !== oldData.length || diffRev.length > 0 || diffName.length > 0){
+              // testa stoppa pollning här tills alla filer är klara...
+              updatePollMode(true)
+              console.log('poll körs folder')
+              console.log('poll stoppas tillfälligt folder')
+
+              getThumbnails(dbx, response.entries)
+
+
+               .then(entries => {
+                updateData(response.entries)
+                updateOldData(response.entries)
+                updateThumbnails(entries)
+                
+              })
+              .then(rep => {
+                updatePollMode(false)
+                console.log('Poll startar igen folder')
               })
               
               .catch(function(error) {
                 console.log(error);
                });
-               
+              }
+              else{
+                console.log('Poll har inte körts för folder')
+                return;
+              }
+
           })
+        
           .catch(function(error) {
             console.log(error);
            });
@@ -144,19 +230,14 @@ const Home = (props) => {
     
     return () => clearInterval(poll);
 
-    }, [props.location.pathname, data, thumbnails])
+    }, [data, oldData, props.location.pathname, pollMode]) 
+
+
 
     
-  
-
-
-
-
-  
-
   useEffect(() => {
-
-  
+    updatePollMode(true)
+    console.log('render Home')
     const option = {
       fetch: fetch,
       accessToken: token$.value
@@ -170,24 +251,21 @@ const Home = (props) => {
       
       })
       .then(response => {
-        
-        updateThumbnails([]);
-        updateData(response.entries)
-        
+        console.log('bilder börjar hämtas')
+          updateThumbnails([]);
+          updateData(response.entries)
+          updateOldData(response.entries)
 
-        dbx.filesGetThumbnailBatch({
+        getThumbnails(dbx, response.entries)
+        
+        .then(entries => {  
+          if (response.entries !== dataRef.current) {
+            return;
+          }
           
-          entries: response.entries.map(entry => {
-          return{
-            path: entry.id,
-            format : {'.tag': 'jpeg'},
-            size: { '.tag': 'w32h32'},
-            mode: { '.tag': 'strict' }  
-            }
-          }) 
-        }) 
-        .then(response => {   
-            updateThumbnails(response.entries)
+          console.log('bilder klara')
+            updateThumbnails(entries)
+            
           })
           .catch(function(error) {
             console.log(error);
@@ -213,51 +291,75 @@ const Home = (props) => {
       })
       .then(response => {
         
+        
         updateThumbnails([]);
         updateData(response.entries)
+        updateOldData(response.entries)
 
 
+        console.log(response.entries.length)
+       console.log('bilder börjar hämtas')
+        getThumbnails(dbx, response.entries)
+        
+      
+          .then(entries => {   
+            console.log('bilder klara')
+            updateThumbnails(entries)
+         
+            })
+            
+            .catch(function(error) {
+              if(error.response.status === 409){
+                updateThumbnails([])
+              }
+             });
 
-        dbx.filesGetThumbnailBatch({
+        
           
-          entries: response.entries.map(entry => {
-          return{
-            path: entry.id,
-            format : {'.tag': 'jpeg'},
-            size: { '.tag': 'w32h32'},
-            mode: { '.tag': 'strict' }  
-            }
-          }) 
-        }) 
-        .then(response => {   
-          console.log(response)
-          updateThumbnails(response.entries)
-          })
-          
-          .catch(function(error) {
-            console.log(error);
-           });
+        
            
       })
       .catch(function(error) {
         console.log(error);
        });
     }
-   
-  }, [props.location.pathname])
+      clearSearchUpdate(false)
+      updatePollMode(false)
+  }, [props.location.pathname, clearSearch])
 
 
   const dataUpdate = (data) => {
+    //updateOldData(data)
     updateData(data)
+    
   }
 
   const thumbnailUpdate = (data) => {
     updateThumbnails(data)
   } 
 
+  const oldDataUpdate = (data) => {
+    updateOldData(data)
+    
+  }
+
   const favUpdate = (data) => {
     updateFavorites(data);
     updateFavoriteToken(data);
+  }
+
+  const pollUpdateMode = (bool) => {
+      updatePollMode(bool)
+  }
+  const upFavTok = (arr) => {
+    updateFavoriteToken(arr)
+  }
+
+  const clearSearchUpdate = (bool) => {
+    updateClearSearch(bool)
+
+
+    
   }
 
   if(token === null){
@@ -272,7 +374,7 @@ const Home = (props) => {
     <header className="mainHeader">
       <div className="header-logo-wrap"><img id="header-logo" src={ require('../Img/Logo_mybox.png') } alt="My Box logo"/> </div>
         <span className="headerContent">
-          <Search searchData={data} folder={props.location.pathname} dataUpdate={dataUpdate} thumbnailUpdate={thumbnailUpdate} />
+          <Search pollUpdateMode={pollUpdateMode} searchData={data} folder={props.location.pathname} dataUpdate={dataUpdate} thumbnailUpdate={thumbnailUpdate} oldDataUpdate={oldDataUpdate} clearSearch={clearSearch} clearSearchUpdate={clearSearchUpdate} />
           <span><UserAccount/></span>
           <span><LogOut updateTokenState={updateTokenState}/></span>
         </span>
@@ -280,46 +382,49 @@ const Home = (props) => {
     <div className="mainWrapper">
       <aside className="leftSide">
         
-        <div className="left-link-wrap"><UploadFile folder={props.location.pathname} dataUpdate={dataUpdate} thumbnailUpdate={thumbnailUpdate}></UploadFile><br></br><br></br>
-        <CreateFolder folder={props.location.pathname} dataUpdate={dataUpdate} thumbnailUpdate={thumbnailUpdate}></CreateFolder></div>
+        <div className="left-link-wrap"><UploadFile folder={props.location.pathname} dataUpdate={dataUpdate} thumbnailUpdate={thumbnailUpdate} oldDataUpdate={oldDataUpdate} pollUpdateMode={pollUpdateMode}></UploadFile><br></br><br></br>
+        <CreateFolder folder={props.location.pathname} dataUpdate={dataUpdate} thumbnailUpdate={thumbnailUpdate} oldDataUpdate={oldDataUpdate} pollUpdateMode={pollUpdateMode}></CreateFolder></div>
       </aside>
       <main className="mainMain">
-      <Breadcrumbs /><br />
+      <label onClick={() => updateClearSearch(true)}>
+      <Breadcrumbs clearSearchUpdate={clearSearchUpdate}/><br /></label>
         <table className="mainTable">
           <thead>
-            <th>
-            <i className="material-icons filesFolders">all_inbox</i>
+            <tr className="home-thead-tr">
+            <th colSpan="2">
+              Name
             </th>
             <th>
-              Name:
+              File size
             </th>
             <th>
-              File size:
+              Last edited
             </th>
-            <th>
-              Last edited:
+            <th style={{ textAlign: 'center' }}>
+             Ren
             </th>
-            <th>
-            Del:
+            <th style={{ textAlign: 'center' }}>
+             Mov 
             </th>
-            <th>
-             Ren: 
+            <th style={{ textAlign: 'center' }}>
+             Cop
             </th>
-            <th>
-             Mov:
+            <th style={{ textAlign: 'center' }}>
+              Fav
             </th>
-            <th>
-              Fav:
+            <th style={{ textAlign: 'center' }}>
+              Del
             </th>
+            </tr>
           </thead>
           <tbody>
-            <ListItems favorites={favorites} favUpdate={favUpdate} thumbnailsLoaded={thumbnailsLoaded} folder={props.location.pathname} dataUpdate={dataUpdate} thumbnailUpdate={thumbnailUpdate}  renderData={data} thumbnails={thumbnails}></ListItems>
+            <ListItems favorites={favorites} favUpdate={favUpdate} thumbnailsLoaded={thumbnailsLoaded} folder={props.location.pathname} dataUpdate={dataUpdate} thumbnailUpdate={thumbnailUpdate} oldDataUpdate={oldDataUpdate} renderData={data} thumbnails={thumbnails} clearSearchUpdate={clearSearchUpdate} pollUpdateMode={pollUpdateMode}></ListItems>
           </tbody>
         </table>
       </main>
       <aside className="rightSide">
         <div className="aside"></div>
-         <FavoriteList />
+         <FavoriteList upFavTok={upFavTok} data={data} />
       </aside>
     </div>
     
@@ -328,3 +433,6 @@ const Home = (props) => {
 }
 
 export default Home;
+
+
+

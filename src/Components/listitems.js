@@ -9,26 +9,27 @@ import Delete from './delete'
 import RenameFile  from './renameFiles'
 import ReNameFolder from './renameFolder.js';
 import MoveFiles from './movefiles.js'
-import { Dropbox } from 'dropbox';
-import {token$} from './store.js';
 import AddFavorites from "./addFavorites.js";
+import CopyFiles from './copyfiles.js'
 
 
 
 
 
 const ListItems = (props) => {
-  
+
  //===================RENDER LIST====================
   
-  
+  const clearSearchFn = () => {
+    props.clearSearchUpdate(true)
+  }
 
 
 
-  const arrIdx = [".jpg", ".jpeg", ".png", ".pdf"] // Array med filer som vissar thumb...
+  const arrIdx = [".jpg", ".jpeg", ".png", ".pdf", ".mp3", ".id3", ".wav", ".mp4", ".mov"] // Array med filer som vissar thumb...
 
   const renderList = (data, index) => {
-
+   
 
 
     if(data.noSearchResult){
@@ -40,7 +41,7 @@ const ListItems = (props) => {
         
       )
     }
-
+   
 
    const thumbs = props.thumbnailsLoaded ? props.thumbnails[index] : undefined;
 
@@ -50,6 +51,19 @@ const ListItems = (props) => {
       
       let idx = data.name.lastIndexOf('.');
       let newIdx = data.name.substring(idx);
+      /*------------- Audio idx files -----------------------------------*/
+      let audioIdx = [".wav", ".mp3", ".id3"]
+      if (audioIdx.includes(newIdx)){
+        newThumbs = <i className="material-icons filesFolders">audiotrack</i>
+      }
+      /* --------------------------------------------------------------- */
+
+       /*------------- Vidio idx files -----------------------------------*/
+      let videoIdx = [".mov", ".mp4"]
+      if (videoIdx.includes(newIdx)){
+        newThumbs = <i className="material-icons filesFolders">local_movies</i>
+      }
+      /* --------------------------------------------------------------- */
 
       if (!arrIdx.includes(newIdx)){
         newThumbs = <i className="material-icons-outlined filesFolders">insert_drive_file</i>
@@ -69,8 +83,7 @@ const ListItems = (props) => {
               title={"Download: " + data.name} 
               data-name={data.name} 
               data-folder={data.path_lower} 
-              data-tag={data[".tag"]}
-              onClick={downloadFile}
+              data-tag={data[".tag"]} onClick={downloadFile}
               style={{width: "40px"}}>
                 {newThumbs}
             </td>
@@ -78,97 +91,71 @@ const ListItems = (props) => {
               title={"Download: " + data.name} 
               data-name={data.name} 
               data-folder={data.path_lower} 
-              data-tag={data[".tag"]}
-              onClick={downloadFile}
-              >
+              data-tag={data[".tag"]} onClick={downloadFile}
+            >
             {data.name}
             </td>
-            <td style={{width: "100px"}}>
+            <td style={{width: "80px"}}>
               {readableBytes(data.size)}
             </td>
-            <td style={{width: "300px"}}>
+            <td style={{width: "200px"}}>
               {lastEdited(data.server_modified)}
             </td>
-            <td style={{width: "30px"}}>
-              <Delete tag={data[".tag"]} name={data.name} dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} path={data.path_lower} folder={props.folder}/>
+            
+            <td style={{width: "43px", textAlign: 'center'}}>
+              <RenameFile dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} oldDataUpdate={props.oldDataUpdate} folder={props.folder} path={data.path_lower} pollUpdateMode={props.pollUpdateMode}/>
             </td>
-            <td style={{width: "30px"}}>
-              <RenameFile dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} folder={props.folder} path={data.path_lower}/>
+            <td style={{width: "43px", textAlign: 'center'}}>
+              <MoveFiles dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} oldDataUpdate={props.oldDataUpdate} folder={props.folder} path={data.path_lower} name={data.name} pollUpdateMode={props.pollUpdateMode}/>
             </td>
-            <td style={{width: "30px"}}>
-            <MoveFiles dataUpdate={props.dataUpdate} folder={props.folder} path={data.path_lower} name={data.name}/>
+            <td style={{width: "45px", textAlign: 'center'}}>
+              <CopyFiles data={data} favorites={props.favorites} favUpdate={props.favUpdate} path={data.path_lower} name={data.name} dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} oldDataUpdate={props.oldDataUpdate} pollUpdateMode={props.pollUpdateMode}/>
             </td>
-            <td style={{width: "30px"}}>
-              <AddFavorites data={data} favorites={props.favorites} favUpdate={props.favUpdate} id={data.id} path={data.path_lower} ></AddFavorites>
+            <td style={{width: "45px", textAlign: 'center'}}>
+              <AddFavorites data={data} favorites={props.favorites} favUpdate={props.favUpdate} path={data.path_lower}></AddFavorites>
             </td>
+            <td style={{width: "43px", textAlign: 'center'}}>
+              <Delete tag={data[".tag"]} name={data.name} dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} oldDataUpdate={props.oldDataUpdate} path={data.path_lower} folder={props.folder} pollUpdateMode={props.pollUpdateMode}/>
+            </td>
+            
           </tr>
          
         ) 
       }
-  const renameBrackets = (rename, newUrl) =>{
-    const option = {
-      fetch: fetch,
-      accessToken: token$.value
-    };
-    
-    const dbx = new Dropbox(
-      option,
-    );
-    dbx.filesMoveV2({
-      from_path: rename,
-      to_path: newUrl,
-      autorename: true
-    })
-    .then(response => {
-      dbx.filesListFolder({
-        path: props.folder.substring(5),
-      })
-      .then(response => {
-        props.dataUpdate(response.entries)
-      })
-      
-    })
-    .catch(error => {
-      console.log(error);
-    });
-  
-  }
-
+ 
 if(data[".tag"] === 'folder'){ //FOLDER
 
-  if (data.name.includes("(")){
-
-    let brak = data.name.replace(/[()]/g,'')
-    let newName = data.path_lower.substring(0, data.path_lower.lastIndexOf("/")) + "/" + brak;
-    
-    renameBrackets(data.path_lower, newName)
-    data.name = brak
-  }
 return( //FOLDERS
   <tr key={data.id} className="listFiles" data-name={data.name} data-folder={data.path_lower} data-tag={data[".tag"]}>
     <td style={{width: "40px"}}>
     <i className="material-icons filesFolders">folder</i>
     </td>
     <td>
-      <Link className="listFolderLink" to={"/home" + data.path_lower}>{data.name}</Link>
+      <Link className="listFolderLink" to={"/home" + data.path_lower} onClick={clearSearchFn}>{data.name} </Link>
     </td>
-    <td style={{width: "100px"}}>
+    <td style={{width: "80px"}}>
       ...
     </td>
-    <td style={{width: "250px"}}>
+    <td style={{width: "200px"}}>
       ...
     </td>
-    <td style={{width: "30px"}}>
-      <Delete tag={data[".tag"]} name={data.name} dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} path={data.path_lower} folder={props.folder}/>
+    
+    <td style={{width: "45px", textAlign: 'center'}}>
+      <ReNameFolder dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} oldDataUpdate={props.oldDataUpdate} folder={props.folder} path={data.path_lower} pollUpdateMode={props.pollUpdateMode}/>
     </td>
-    <td style={{width: "30px"}}>
-      <ReNameFolder dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} folder={props.folder} path={data.path_lower}/>
+    <td style={{width: "45px", textAlign: 'center'}}>
+      <MoveFiles dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} oldDataUpdate={props.oldDataUpdate} folder={props.folder} path={data.path_lower} name={data.name} pollUpdateMode={props.pollUpdateMode}/>
     </td>
-    <td style={{width: "30px"}}>
-      <MoveFiles dataUpdate={props.dataUpdate} folder={props.folder} path={data.path_lower} name={data.name}/>
+    <td style={{width: "45px", textAlign: 'center'}}>
+    <CopyFiles data={data} favorites={props.favorites} favUpdate={props.favUpdate} path={data.path_lower} dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} oldDataUpdate={props.oldDataUpdate}
+    pollUpdateMode={props.pollUpdateMode}/>
     </td>
-    <td style={{width: "30px"}}>
-        <AddFavorites data={data} favorites={props.favorites} favUpdate={props.favUpdate} path={data.path_lower}></AddFavorites>
+    <td style={{width: "45px", textAlign: 'center'}}>
+      <AddFavorites data={data} favorites={props.favorites} favUpdate={props.favUpdate} path={data.path_lower}></AddFavorites>
+    </td>
+    
+    <td style={{width: "45px", textAlign: 'center'}}>
+      <Delete tag={data[".tag"]} name={data.name} dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} oldDataUpdate={props.oldDataUpdate} path={data.path_lower} folder={props.folder} pollUpdateMode={props.pollUpdateMode}/>
     </td>
   </tr>
     )

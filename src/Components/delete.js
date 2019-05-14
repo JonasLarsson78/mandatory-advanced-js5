@@ -1,6 +1,7 @@
 import React, {useState, useRef} from 'react';
 import {token$, favorites$, updateFavoriteToken} from './store.js';
 import { Dropbox } from 'dropbox';
+import { getThumbnails } from './getthumbnails'
 import '../Css/modal.css'
 
 
@@ -12,8 +13,11 @@ let delModal;
 
 let pointerEvent = "visible"
 const del = (e) => {
+  props.pollUpdateMode(true)
   updateDelFile(e.target.dataset.path) 
   element.current.style.visibility = "visible"
+  element.current.style.zIndex = "500";
+  document.body.style.overflowY = "hidden"
 }
 
 const yes = () => {
@@ -44,20 +48,14 @@ const yes = () => {
                 }).then(response =>{
                   props.thumbnailUpdate([])
                   props.dataUpdate(response.entries)
+                  props.oldDataUpdate(response.entries)
 
-                        dbx.filesGetThumbnailBatch({
-                          entries: response.entries.map(entry => {
-                          return{
-                            path: entry.id,
-                            format : {'.tag': 'jpeg'},
-                            size: { '.tag': 'w32h32'},
-                            mode: { '.tag': 'strict' }  
-                            }
-                          }) 
-                        }) 
-                        .then(response => {   
+                  getThumbnails(dbx, response.entries)
+
+                        
+                        .then(entries => {   
                           
-                          props.thumbnailUpdate(response.entries)
+                          props.thumbnailUpdate(entries)
                           })
                           .catch(function(error) {
                             console.log(error);
@@ -73,12 +71,17 @@ const yes = () => {
           });
     
     element.current.style.visibility = "hidden"
+    //document.body.style.overflowY = "auto"
     element.current.style.zIndex = "0";
+    props.pollUpdateMode(false)
 }
 
 const no = () => {
+    
     element.current.style.visibility = "hidden"
+    document.body.style.overflowY = "auto"
     element.current.style.zIndex = "0";
+    props.pollUpdateMode(false)
 }
 
 delModal = <div style={{pointerEvents: pointerEvent}} ref={element} className="modalBack">
@@ -94,7 +97,7 @@ delModal = <div style={{pointerEvents: pointerEvent}} ref={element} className="m
 return (
     <>
     {delModal}
-    <button className="listBtn" onClick={del}> <i data-path={props.path} className="material-icons">delete_outline</i></button>
+    <button className="listBtn" onClick={del}> <i data-path={props.path} className="material-icons delete-icon">delete_outline</i></button>
     </>
 )
 

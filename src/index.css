@@ -7,9 +7,16 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  
 }
 
 aside, header, main, div {
   box-sizing: border-box;
+}
+
+body, table {
+  border-collapse: collapse;
+  text-align: left;
+  color: #4D4D4D;
 }
 

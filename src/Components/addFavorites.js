@@ -39,7 +39,7 @@ const AddFavorites = (props) => {
     }
 /////////////////////////////////////////////////////////////////////////////////////////////////
     if (isFavorite) {
-        return <button className="listBtn" onClick={remove}><i style={{color: "#ffd900", WebkitTextStroke: "1px #4d4d4d"}} className="material-icons">star</i></button>;
+        return <button className="listBtn" onClick={remove}><i style={{color: "#ffd900", fontSize:'22px', WebkitTextStroke: "0.7px #4d4d4d"}} className="material-icons">star</i></button>;
     }
 
     return <button className="listBtn" onClick={add}><i className="material-icons hoverStar">star</i></button>;

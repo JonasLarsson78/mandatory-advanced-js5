@@ -10,6 +10,7 @@ const Auth = () => {
   const [error, errorUpdate] = useState(false)
   
   useEffect(() => {
+    console.log('render Auth')
     const hash = window.location.hash
     let errorHash = "#error_description=The+user+chose+not+to+give+your+app+access+to+their+Dropbox+account.&error=access_denied";
     if (hash === errorHash){
