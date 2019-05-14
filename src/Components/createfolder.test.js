@@ -43,8 +43,17 @@ it ("Input sets state which sets value", () => {
 var sinon = require('sinon');
 
 
+it('should call update(true) once', function() {
+    var pollUpdateMode = sinon.spy();
+    const wrapper = shallow(<CreateFolder pollUpdateMode={pollUpdateMode} folder="/home/foo" />);
+    wrapper.find(".upload-folder-button").simulate("click");
+    expect(pollUpdateMode.calledWith(true)).to.be.true;
+  });
 
-/*
-spy.calledOnce
-true if spy was called exactly once
-*/
+  it('should call update(false) once', function() {
+    var pollUpdateMode = sinon.spy();
+    const wrapper = shallow(<CreateFolder pollUpdateMode={pollUpdateMode} folder="/home/foo" />);
+    wrapper.find(".upload-folder-button").simulate("click");
+    wrapper.find("#testi").simulate("click");
+    expect(pollUpdateMode.calledWith(false)).to.be.true;
+  });
