@@ -1,0 +1,53 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`matches snapshot 1`] = `
+<Fragment>
+  <button
+    className="upload-folder-button"
+    onClick={[Function]}
+  >
+    <i
+      className="material-icons-outlined folder-icon-create-folder"
+    >
+       create_new_folder
+    </i>
+    Create new folder
+  </button>
+  <div
+    className="upload-modal-folder"
+    style={
+      Object {
+        "display": "none",
+      }
+    }
+  >
+    <label
+      className="upload-folder-label"
+      htmlFor="folder"
+    >
+      Type in new folder name
+    </label>
+    <input
+      className="upload-folder-input"
+      id="folder"
+      onChange={[Function]}
+      type="text"
+      value=""
+    />
+    <i
+      className="material-icons upload-close"
+      id="testi"
+      onClick={[Function]}
+    >
+      close
+    </i>
+    <br />
+    <button
+      className="upload-folder-modal-button"
+      onClick={[Function]}
+    >
+      Create new Folder
+    </button>
+  </div>
+</Fragment>
+`;

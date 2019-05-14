@@ -16,6 +16,7 @@ import CopyFiles from './copyfiles.js'
 
 
 
+
 const ListItems = (props) => {
 
  //===================RENDER LIST====================
@@ -103,19 +104,19 @@ const ListItems = (props) => {
             </td>
             
             <td style={{width: "43px", textAlign: 'center'}}>
-              <RenameFile dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} oldDataUpdate={props.oldDataUpdate} folder={props.folder} path={data.path_lower} pollUpdateMode={props.pollUpdateMode}/>
+              <RenameFile updateErrorMessage={ props.updateErrorMessage } dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} oldDataUpdate={props.oldDataUpdate} folder={props.folder} path={data.path_lower} pollUpdateMode={props.pollUpdateMode}/>
             </td>
             <td style={{width: "43px", textAlign: 'center'}}>
-              <MoveFiles dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} oldDataUpdate={props.oldDataUpdate} folder={props.folder} path={data.path_lower} name={data.name} pollUpdateMode={props.pollUpdateMode}/>
+              <MoveFiles updateErrorMessage={ props.updateErrorMessage } dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} oldDataUpdate={props.oldDataUpdate} folder={props.folder} path={data.path_lower} name={data.name} pollUpdateMode={props.pollUpdateMode}/>
             </td>
             <td style={{width: "45px", textAlign: 'center'}}>
-              <CopyFiles data={data} favorites={props.favorites} favUpdate={props.favUpdate} path={data.path_lower} name={data.name} dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} oldDataUpdate={props.oldDataUpdate} pollUpdateMode={props.pollUpdateMode}/>
+              <CopyFiles updateErrorMessage={ props.updateErrorMessage } data={data} favorites={props.favorites} favUpdate={props.favUpdate} path={data.path_lower} name={data.name} dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} oldDataUpdate={props.oldDataUpdate} pollUpdateMode={props.pollUpdateMode}/>
             </td>
             <td style={{width: "45px", textAlign: 'center'}}>
               <AddFavorites data={data} favorites={props.favorites} favUpdate={props.favUpdate} path={data.path_lower}></AddFavorites>
             </td>
             <td style={{width: "43px", textAlign: 'center'}}>
-              <Delete tag={data[".tag"]} name={data.name} dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} oldDataUpdate={props.oldDataUpdate} path={data.path_lower} folder={props.folder} pollUpdateMode={props.pollUpdateMode}/>
+              <Delete updateErrorMessage={ props.updateErrorMessage } tag={data[".tag"]} name={data.name} dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} oldDataUpdate={props.oldDataUpdate} path={data.path_lower} folder={props.folder} pollUpdateMode={props.pollUpdateMode}/>
             </td>
             
           </tr>
@@ -141,21 +142,21 @@ return( //FOLDERS
     </td>
     
     <td style={{width: "45px", textAlign: 'center'}}>
-      <ReNameFolder dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} oldDataUpdate={props.oldDataUpdate} folder={props.folder} path={data.path_lower} pollUpdateMode={props.pollUpdateMode}/>
+      <ReNameFolder updateErrorMessage={ props.updateErrorMessage } dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} oldDataUpdate={props.oldDataUpdate} folder={props.folder} path={data.path_lower} pollUpdateMode={props.pollUpdateMode}/>
     </td>
     <td style={{width: "45px", textAlign: 'center'}}>
-      <MoveFiles dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} oldDataUpdate={props.oldDataUpdate} folder={props.folder} path={data.path_lower} name={data.name} pollUpdateMode={props.pollUpdateMode}/>
+      <MoveFiles updateErrorMessage={ props.updateErrorMessage } dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} oldDataUpdate={props.oldDataUpdate} folder={props.folder} path={data.path_lower} name={data.name} pollUpdateMode={props.pollUpdateMode}/>
     </td>
     <td style={{width: "45px", textAlign: 'center'}}>
-    <CopyFiles data={data} favorites={props.favorites} favUpdate={props.favUpdate} path={data.path_lower} dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} oldDataUpdate={props.oldDataUpdate}
-    pollUpdateMode={props.pollUpdateMode}/>
+      <CopyFiles updateErrorMessage={ props.updateErrorMessage } data={data} favorites={props.favorites} favUpdate={props.favUpdate} path={data.path_lower} dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} oldDataUpdate={props.oldDataUpdate}
+        pollUpdateMode={props.pollUpdateMode}/>
     </td>
     <td style={{width: "45px", textAlign: 'center'}}>
       <AddFavorites data={data} favorites={props.favorites} favUpdate={props.favUpdate} path={data.path_lower}></AddFavorites>
     </td>
     
     <td style={{width: "45px", textAlign: 'center'}}>
-      <Delete tag={data[".tag"]} name={data.name} dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} oldDataUpdate={props.oldDataUpdate} path={data.path_lower} folder={props.folder} pollUpdateMode={props.pollUpdateMode}/>
+      <Delete updateErrorMessage={ props.updateErrorMessage } tag={data[".tag"]} name={data.name} dataUpdate={props.dataUpdate} thumbnailUpdate={props.thumbnailUpdate} oldDataUpdate={props.oldDataUpdate} path={data.path_lower} folder={props.folder} pollUpdateMode={props.pollUpdateMode}/>
     </td>
   </tr>
     )

@@ -14,6 +14,7 @@ import LogOut from './logout'
 import FavoriteList from "./favoriteList.js"
 import {favorites$} from './store'
 import {updateFavoriteToken} from './store'
+import { errorFunction } from './error.js'
 import '../Css/home.css';
 
 
@@ -26,7 +27,8 @@ const Home = (props) => {
   const [favorites, updateFavorites] = useState([]);
   const [oldData, updateOldData] = useState([])
   const [pollMode, updatePollMode] = useState(false)
-  const [clearSearch, updateClearSearch] = useState(true)
+  const [clearSearch, updateClearSearch] = useState(false)
+  const [errorMessage, updateErrorMessage] = useState('')
 
 
   const dataRef = useRef([]);
@@ -126,7 +128,8 @@ const Home = (props) => {
 
                 })
                 .catch(function(error) {
-                  console.log(error);
+                  errorFunction(error, updateErrorMessage)
+                  console.log('Home Thumbnails rad 136');
                  });
               
 
@@ -139,7 +142,8 @@ const Home = (props) => {
           })
           
           .catch(function(error) {
-            console.log(error);
+            errorFunction(error, updateErrorMessage)
+            console.log('Home filesrequest 150');
            });
     
         }
@@ -200,7 +204,8 @@ const Home = (props) => {
               })
               
               .catch(function(error) {
-                console.log(error);
+                errorFunction(error, updateErrorMessage)
+                console.log('Home Poll folder 218');
                });
               }
               else{
@@ -211,7 +216,8 @@ const Home = (props) => {
           })
         
           .catch(function(error) {
-            console.log(error);
+            errorFunction(error, updateErrorMessage)
+            console.log('Home Poll interval 230');
            });
         }
       }, 5000);
@@ -267,14 +273,16 @@ const Home = (props) => {
             
           })
           .catch(function(error) {
-            console.log(error);
+            errorFunction(error, updateErrorMessage)
+            console.log('Home filesrequest folder 278');
            });
            
 
       })
       
       .catch(function(error) {
-        console.log(error);
+        errorFunction(error, updateErrorMessage)
+            console.log('Home Update Poll 286');
        });
 
      
@@ -314,18 +322,14 @@ const Home = (props) => {
             })
             
             .catch(function(error) {
-              if(error.response.status === 409){
-                updateThumbnails([])
-              }
+              errorFunction(error, updateErrorMessage)
+              console.log('Home Request newfolder 321');
              });
 
-        
-          
-        
-           
       })
       .catch(function(error) {
-        console.log(error);
+        errorFunction(error, updateErrorMessage)
+        console.log('Home filesrequest 327');
        });
     }
       updateClearSearch(false)
@@ -336,7 +340,6 @@ const Home = (props) => {
   const dataUpdate = (data) => {
     //updateOldData(data)
     updateData(data)
-    
   }
 
   const thumbnailUpdate = (data) => {
@@ -393,6 +396,7 @@ const Home = (props) => {
       <main className="mainMain">
       <label onClick={() => updateClearSearch(true)}>
       <Breadcrumbs clearSearchUpdate={clearSearchUpdate}/><br /></label>
+      <p style={{ color: 'red' }}> { errorMessage }</p>
         <table className="mainTable">
           <thead>
             <tr className="home-thead-tr">
@@ -423,7 +427,7 @@ const Home = (props) => {
             </tr>
           </thead>
           <tbody>
-            <ListItems favorites={favorites} favUpdate={favUpdate} thumbnailsLoaded={thumbnailsLoaded} folder={props.location.pathname} dataUpdate={dataUpdate} thumbnailUpdate={thumbnailUpdate} oldDataUpdate={oldDataUpdate} renderData={data} thumbnails={thumbnails} clearSearchUpdate={clearSearchUpdate} pollUpdateMode={pollUpdateMode}></ListItems>
+            <ListItems updateErrorMessage={ updateErrorMessage } favorites={favorites} favUpdate={favUpdate} thumbnailsLoaded={thumbnailsLoaded} folder={props.location.pathname} dataUpdate={dataUpdate} thumbnailUpdate={thumbnailUpdate} oldDataUpdate={oldDataUpdate} renderData={data} thumbnails={thumbnails} clearSearchUpdate={clearSearchUpdate} pollUpdateMode={pollUpdateMode}></ListItems>
           </tbody>
         </table>
       </main>
@@ -432,7 +436,6 @@ const Home = (props) => {
          <FavoriteList upFavTok={upFavTok} data={data} />
       </aside>
     </div>
-    
     </>
   )
 }

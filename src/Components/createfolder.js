@@ -11,7 +11,7 @@ const CreateFolder = (props) => {
  
 
   const [input, updateInput] = useState('')
-  const inputRef = useRef(null);
+  const [hide, updateHide] = useState("none");
   let newFolder = props.folder
   newFolder = newFolder.substring(5);
 
@@ -35,7 +35,7 @@ const CreateFolder = (props) => {
     );
     dbx.filesCreateFolderV2({
       path: newFolder + '/'+ input,
-      autorename: true
+      autorename: false
     })
     .then(response => { 
        
@@ -76,21 +76,23 @@ const CreateFolder = (props) => {
 
 
   const closeModal = () => {
-    uploadModal.current.style.display = 'none';
+    //uploadModal.current.style.display = 'none';
+    updateHide("none")
     props.pollUpdateMode(false)
   }
 
   const startModal = () => {
-    uploadModal.current.style.display = 'block';
-    inputRef.current.value = '';
+    //uploadModal.current.style.display = 'block';
+    updateHide("block")
+    updateInput("");
     props.pollUpdateMode(true)
   }
 
   uploadFolder = 
-    <div className="upload-modal-folder" ref={ uploadModal }>
+    <div className="upload-modal-folder" style={{display: hide}} ref={ uploadModal }>
       <label htmlFor="folder" className="upload-folder-label">Type in new folder name</label>
-      <input className="upload-folder-input" type="text" id="folder" onChange={changeInput} ref={inputRef}></input>
-      <i className="material-icons upload-close" onClick={ closeModal }>close</i>
+      <input className="upload-folder-input" type="text" id="folder" onChange={changeInput} value={input}></input>
+      <i className="material-icons upload-close" id="testi" onClick={ closeModal }>close</i>
       <br /><button className="upload-folder-modal-button" onClick={createFolder}>Create new Folder</button>
     </div>
 
