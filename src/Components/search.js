@@ -1,4 +1,4 @@
-import React, {useRef}from 'react';
+import React, {useRef, useEffect}from 'react';
 import { Dropbox } from 'dropbox';
 import {token$} from './store.js';
 import { getThumbnails } from './getthumbnails'
@@ -7,13 +7,18 @@ import { getThumbnails } from './getthumbnails'
 
 const Search = (props) => {
   const inputRef = useRef(null);
- 
   
-  if(props.clearSearch === true){
-    inputRef.current.value = '';
-    props.pollUpdateMode(false)
+  const { clearSearch, pollUpdateMode } = props;
 
-  }
+  useEffect(() => {
+    if(clearSearch === true){
+      inputRef.current.value = '';
+      pollUpdateMode(false)
+    }
+  }, [clearSearch, pollUpdateMode])
+
+  
+
   
  let newFolder = props.folder.substring(5);
 
@@ -59,7 +64,7 @@ const Search = (props) => {
 
     }
     if(e.target.value.length > 0){
-      
+     //props.clearSearchUpdate(false)
       props.pollUpdateMode(true)
       
       dbx.filesSearch({
@@ -78,7 +83,7 @@ const Search = (props) => {
 
         }
         else{
-          props.clearSearchUpdate(false)
+         props.clearSearchUpdate(false)
           props.thumbnailUpdate([])
          
          
