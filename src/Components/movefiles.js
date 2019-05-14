@@ -5,6 +5,7 @@ import {Link}from "react-router-dom";
 import { HashRouter as Router} from "react-router-dom";
 import ModalBreadcrumbs from './modalbreadcrumbs'
 import { getThumbnails } from './getthumbnails'
+import { errorFunction } from './error.js'
 import '../Css/movefiles.css';
 
 
@@ -53,7 +54,8 @@ const MoveFiles = (props) => {
           updateData(arr)  
         })
         .catch(error => {
-          console.log(error);
+          console.log('MoveFiles FileslistFolder home 57');
+          errorFunction(error, updateMoveError)
         }); 
        } else {
         
@@ -70,7 +72,8 @@ const MoveFiles = (props) => {
           updateData(arr) 
         })
         .catch(error => {
-          console.log(error);
+          console.log('MoveFiles FileslistFolder path 74');
+          errorFunction(error, updateMoveError)
         }); 
       }
     }
@@ -142,17 +145,19 @@ const MoveFiles = (props) => {
               props.thumbnailUpdate(entries)
               })
               .catch(function(error) {
-                console.log(error);
+                console.log('MoveFiles FilesMove2 146');
+                errorFunction(error, updateMoveError)
                });
-
           })
             .catch(error => {
-              console.log(error);
+              console.log('MoveFiles FilesMove2 150');
+              errorFunction(error, updateMoveError)
           }); 
         })
         .catch(error => {
-          console.log(error);
-          updateMoveError("File / Folder with the same name already exists!")
+          console.log('MoveFiles FilesMove2 155');
+          errorFunction(error, updateMoveError)
+          //updateMoveError("File / Folder with the same name already exists!")
         });
         props.pollUpdateMode(false)
     }
@@ -203,7 +208,7 @@ const MoveFiles = (props) => {
       { mapping }
       </tbody>
     </table>
-    { moveError }
+    <p style={{ color: 'red'}}> { moveError } </p>
     <button className="modal-movefiles-button" onClick={ moveToFolder }>Move</button>
     <i className="material-icons upload-close" onClick={closeModal}>close</i>
     <p ref={moveMessRef} style={{display: "none"}}>{props.name} moved...</p>

@@ -2,6 +2,7 @@ import React, {useState,useRef} from 'react';
 import { Dropbox } from 'dropbox';
 import {token$, favorites$, updateFavoriteToken} from './store.js';
 import { getThumbnails } from './getthumbnails'
+import { errorFunction } from './error.js'
 
 const ReNameFolder = (props) => {
   const inputElFolder = useRef(null);
@@ -84,16 +85,19 @@ const addNewNameFolder = (e) => {
                         props.thumbnailUpdate(entries)
                         })
                         .catch(function(error) {
-                          console.log(error);
+                          errorFunction(error, props.updateErrorMessage)
+                          console.log('RenameFolder Thumbnails rad 90');
                         });
                 
               })
               .catch(function(error) {
-                console.log(error);
+                errorFunction(error, props.updateErrorMessage)
+                console.log('RenameFolder Fileslistfolder rad 96');
               });
       })
       .catch(error => {
-        console.log(error);
+        errorFunction(error, props.updateErrorMessage)
+        console.log('RenameFolder FilesMoveV2 rad 101');
       });
     
 
@@ -119,7 +123,8 @@ renameInputFolder =
 return(
   <>
   {renameInputFolder}
-  <button className="listBtn" onClick={reNameFolder}><i data-path={props.path} className="material-icons rename-icon">edit</i></button>  </>
+  <button className="listBtn" onClick={reNameFolder}><i data-path={props.path} className="material-icons rename-icon">edit</i></button>  
+  </>
 )
 
 }

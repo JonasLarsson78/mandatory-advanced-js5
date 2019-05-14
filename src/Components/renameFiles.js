@@ -2,6 +2,7 @@ import React, {useState,useRef} from 'react';
 import { Dropbox } from 'dropbox';
 import {token$, favorites$, updateFavoriteToken} from './store.js';
 import { getThumbnails } from './getthumbnails'
+import { errorFunction } from './error.js'
 
 const RenameFile = (props) => {
 
@@ -72,16 +73,20 @@ const addNewName = (e) => {
                     props.thumbnailUpdate(entries)
                     })
                     .catch(function(error) {
-                      console.log(error);
+                      errorFunction(error, props.updateErrorMessage)
+                      console.log('RenameFile Thumbnails rad 77');
+                      
                     });
             
           })
           .catch(function(error) {
-            console.log(error);
+            errorFunction(error, props.updateErrorMessage)
+            console.log('RenameFile FilesListFolder rad 84');
           });
   })
   .catch(error => {
-    console.log(error);
+    errorFunction(error, props.updateErrorMessage)
+    console.log('RenameFile Filesmove rad 89');
   });
 
 
