@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import { Dropbox } from 'dropbox';
 import { getThumbnails } from './getthumbnails'
 import { Redirect } from "react-router-dom";
@@ -28,6 +28,12 @@ const Home = (props) => {
   const [pollMode, updatePollMode] = useState(false)
   const [clearSearch, updateClearSearch] = useState(false)
 
+
+  const dataRef = useRef([]);
+
+  useEffect(() => {
+    dataRef.current = data;
+  }, [data]);
 
   useEffect(() => {
     const subscription = favorites$.subscribe(updateFavorites);
@@ -67,6 +73,8 @@ const Home = (props) => {
           option,
         );
 
+        const dataTmp = dataRef.current;
+
         
         if(props.location.pathname === '/home'){
           dbx.filesListFolder({
@@ -74,6 +82,11 @@ const Home = (props) => {
           
           })
           .then(response => {
+            if (dataRef.current !== dataTmp) {
+           
+              return;
+            }
+           
            //updateOldData(data)
             
             let responseRev = response.entries.map(x => x.rev).filter(y => y !== undefined)
@@ -144,6 +157,10 @@ const Home = (props) => {
           
           })
           .then(response => {
+            if (dataRef.current !== dataTmp) {
+           
+              return;
+            }
 
             //updateOldData(response.entries)
 
@@ -234,7 +251,6 @@ const Home = (props) => {
       
       })
       .then(response => {
-        
         console.log('bilder börjar hämtas')
           updateThumbnails([]);
           updateData(response.entries)
@@ -242,7 +258,11 @@ const Home = (props) => {
 
         getThumbnails(dbx, response.entries)
         
-        .then(entries => {   
+        .then(entries => {  
+          if (response.entries !== dataRef.current) {
+            return;
+          }
+          
           console.log('bilder klara')
             updateThumbnails(entries)
             
