@@ -33,7 +33,7 @@ const CreateFolder = (props) => {
     );
     dbx.filesCreateFolderV2({
       path: newFolder + '/'+ input,
-      autorename: true
+      autorename: false
     })
     .then(response => { 
        

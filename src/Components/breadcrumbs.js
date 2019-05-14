@@ -22,7 +22,7 @@ const Breadcrumbs = withBreadcrumbs ([{ path: '/', breadcrumb: null }]) (({ brea
       }) => (
        
         <span key={match.url}>
-          <NavLink to={match.url} className="breadcrumb-link" onClick={() => console.log(breadcrumbs)}> {breadcrumb} 
+          <NavLink to={match.url} className="breadcrumb-link"> {breadcrumb} 
           </NavLink><i className="material-icons breadcrumb">arrow_right</i>
         </span>
       ))}

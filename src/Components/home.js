@@ -27,7 +27,7 @@ const Home = (props) => {
   const [favorites, updateFavorites] = useState([]);
   const [oldData, updateOldData] = useState([])
   const [pollMode, updatePollMode] = useState(false)
-  const [clearSearch, updateClearSearch] = useState(false)
+  const [clearSearch, updateClearSearch] = useState(true)
   const [errorMessage, updateErrorMessage] = useState('')
 
 
@@ -84,8 +84,9 @@ const Home = (props) => {
           
           })
           .then(response => {
+
             if (dataRef.current !== dataTmp) {
-           
+              
               return;
             }
            
@@ -99,18 +100,13 @@ const Home = (props) => {
             const diffRev = responseRev.filter(el => !oldrespRev.includes(el));
             const diffName = responseName.filter(el => !oldrespName.includes(el))
 
-            //Fullösning för att lösa fel i thumbnails när en mapp tas bort utifrån
+           
              if(response.entries.length < oldData.length){
               
               updateThumbnails([])
               updateData(response.entries)
             }
-            /* if(oldData.length < response.entries.length){
-              console.log('poll körs root')
-              updateData(response.entries)
-            } */
-           //console.log('Root mapp... Olddata ' + oldData.length)
-           // console.log('Root mapp... response.entries ' + response.entries.length)
+            
 
             if (response.entries.length !== oldData.length  || diffRev.length > 0 || diffName.length > 0){
               updatePollMode(true)
@@ -161,8 +157,9 @@ const Home = (props) => {
           
           })
           .then(response => {
+            
             if (dataRef.current !== dataTmp) {
-           
+              
               return;
             }
 
@@ -177,12 +174,7 @@ const Home = (props) => {
             const diffName = responseName.filter(el => !oldrespName.includes(el))
 
 
-            /* if(oldData.length < response.entries.length){
-              console.log('poll körs folder')
-             
-              updateData(response.entries)
-              
-            } */
+            
             if(response.entries.length < oldData.length){
               
               updateThumbnails([])
@@ -190,11 +182,9 @@ const Home = (props) => {
               
             }
 
-            //console.log('Folder mapp... Olddata ' + oldData.length)
-            //console.log('Folder mapp... Response.entries ' + response.entries.length)
 
             if(response.entries.length !== oldData.length || diffRev.length > 0 || diffName.length > 0){
-              // testa stoppa pollning här tills alla filer är klara...
+         
               updatePollMode(true)
               console.log('poll körs folder')
               console.log('poll stoppas tillfälligt folder')
@@ -242,7 +232,11 @@ const Home = (props) => {
 
     
   useEffect(() => {
-    updatePollMode(true)
+    
+    if(!clearSearch){
+      return;
+    }
+
     console.log('render Home')
     const option = {
       fetch: fetch,
@@ -251,14 +245,19 @@ const Home = (props) => {
     const dbx = new Dropbox(
       option,
     );
+
+    
+
     if(props.location.pathname === '/home'){
       dbx.filesListFolder({
         path: '',
       
       })
       .then(response => {
+
+
+
         console.log('bilder börjar hämtas')
-          updateThumbnails([]);
           updateData(response.entries)
           updateOldData(response.entries)
 
@@ -293,11 +292,14 @@ const Home = (props) => {
       let newFolder = props.location.pathname;
       newFolder = newFolder.substring(5)
 
+      console.log("FETCH");
+
       dbx.filesListFolder({
         path: newFolder,
       
       })
       .then(response => {
+        
         
         
         updateThumbnails([]);
@@ -310,7 +312,10 @@ const Home = (props) => {
         getThumbnails(dbx, response.entries)
         
       
-          .then(entries => {   
+          .then(entries => { 
+            if (response.entries !== dataRef.current) {
+              return;
+            }  
             console.log('bilder klara')
             updateThumbnails(entries)
          
@@ -327,8 +332,8 @@ const Home = (props) => {
         console.log('Home filesrequest 327');
        });
     }
-      clearSearchUpdate(false)
-      updatePollMode(false)
+      updateClearSearch(false)
+
   }, [props.location.pathname, clearSearch])
 
 
