@@ -36,6 +36,7 @@ exports[`matches snapshot 1`] = `
     />
     <i
       className="material-icons upload-close"
+      id="testi"
       onClick={[Function]}
     >
       close
