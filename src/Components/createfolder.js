@@ -12,7 +12,7 @@ const CreateFolder = (props) => {
 
   const [input, updateInput] = useState('')
   const [hide, updateHide] = useState("none");
-  const inputRef = useRef(null);
+  //const inputRef = useRef(null);
   let newFolder = props.folder
   newFolder = newFolder.substring(5);
 
@@ -36,7 +36,7 @@ const CreateFolder = (props) => {
     );
     dbx.filesCreateFolderV2({
       path: newFolder + '/'+ input,
-      autorename: true
+      autorename: false
     })
     .then(response => { 
        
