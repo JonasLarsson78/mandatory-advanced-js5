@@ -39,8 +39,12 @@ it ("Input sets state which sets value", () => {
     expect(wrapper.find(".upload-folder-input").prop("value")).to.equal("Test"); //Checkar att value faktiskt blivit "Test".
 })
 
-/* it ("Sets pollUpdate", () => {
-    const wrapper = shallow(<CreateFolder pollUpdateMode={noop} folder="/home/foo" />);
-    
-})
- */
+
+var sinon = require('sinon');
+
+
+
+/*
+spy.calledOnce
+true if spy was called exactly once
+*/
