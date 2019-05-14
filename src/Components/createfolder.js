@@ -2,6 +2,7 @@ import React, {useState, useRef } from 'react';
 import { Dropbox } from 'dropbox';
 import {token$} from './store.js';
 import { getThumbnails } from './getthumbnails'
+import { errorFunction } from './error.js'
 import '../Css/createfolder.css';
 
 //import { BrowserRouter as Router, Route, Link, Redirect}from "react-router-dom";
@@ -22,11 +23,9 @@ const CreateFolder = (props) => {
   }
 
   const createFolder = () => {
-
     const option = {
       fetch: fetch,
       accessToken: token$.value,
-      
     };
     const dbx = new Dropbox(
       option,
@@ -36,7 +35,6 @@ const CreateFolder = (props) => {
       autorename: false
     })
     .then(response => { 
-       
        setTimeout(() => {
          closeModal();
        }, 2000);
@@ -46,30 +44,29 @@ const CreateFolder = (props) => {
       
       })
       .then(response => {
-
         props.thumbnailUpdate([]);
         props.oldDataUpdate(response.entries)
         props.dataUpdate(response.entries)
-        
         getThumbnails(dbx, response.entries)
+        
         .then(entries => {   
-          
           props.thumbnailUpdate(entries)
           })
           .catch(function(error) {
-            console.log(error);
+            console.log('CreateFolder Thumbnail 56');
+            errorFunction(error, props.updateErrorMessage)
            });
       })
       .catch(function(error) {
-        console.log(error);
+        console.log('CreateFolder FilesListFolder 61');
+        errorFunction(error, props.updateErrorMessage)
        });
 
       })
       .catch(function(error) {
-        console.log(error);
+        console.log('CreateFolder FilesCreateFolder 67');
+            errorFunction(error, props.updateErrorMessage)
        });
-
-
   }
 
 

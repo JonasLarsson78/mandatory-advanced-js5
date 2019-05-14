@@ -23,7 +23,8 @@ export const downloadFile = (e) => {
           document.body.removeChild(link);
         })
         .catch(error => {
-         console.log(error)
+          console.log('Download FilesgetTemporaryLink 27');
+
         });
     }
   }

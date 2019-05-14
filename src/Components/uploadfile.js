@@ -18,18 +18,12 @@ const UploadFile = (props) => {
   
   const upload = (e) => {
     e.preventDefault();
-    
     const fileNodeList = inputRef.current.files;
-    
     const filesiZeLimit = 150 * 1024 * 1024;
-
-
     const fileList = Array.from(fileNodeList)
-  
     const option = {
       fetch: fetch,
       accessToken: token$.value,
-      
     };
     const dbx = new Dropbox(
       option,
