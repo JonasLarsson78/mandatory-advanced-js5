@@ -12,7 +12,6 @@ const CreateFolder = (props) => {
 
   const [input, updateInput] = useState('')
   const [hide, updateHide] = useState("none");
-  const inputRef = useRef(null);
   let newFolder = props.folder
   newFolder = newFolder.substring(5);
 
@@ -93,7 +92,7 @@ const CreateFolder = (props) => {
     <div className="upload-modal-folder" style={{display: hide}} ref={ uploadModal }>
       <label htmlFor="folder" className="upload-folder-label">Type in new folder name</label>
       <input className="upload-folder-input" type="text" id="folder" onChange={changeInput} value={input}></input>
-      <i className="material-icons upload-close" onClick={ closeModal }>close</i>
+      <i className="material-icons upload-close" id="testi" onClick={ closeModal }>close</i>
       <br /><button className="upload-folder-modal-button" onClick={createFolder}>Create new Folder</button>
     </div>
 
