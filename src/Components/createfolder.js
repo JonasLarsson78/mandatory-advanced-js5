@@ -12,10 +12,6 @@ const CreateFolder = (props) => {
 
   const [input, updateInput] = useState('')
   const [hide, updateHide] = useState("none");
-<<<<<<< HEAD
-  //const inputRef = useRef(null);
-=======
->>>>>>> 40cfb2fbcda56a7128d45df6bdc60f5f7f343b81
   let newFolder = props.folder
   newFolder = newFolder.substring(5);
 
