@@ -56,7 +56,14 @@ useEffect(() => {
     
     })
     .then(response => {
-      let fav = [...favorites$.value]
+      
+      
+      if (favorites$.value === null){
+        updateFavoriteToken([])
+      }
+      else{
+        let fav = [...favorites$.value]
+      
       let chekId = response.entries.map(x => x.id)
       let checkIdFav = fav.map(x => x.id)
      
@@ -72,6 +79,7 @@ useEffect(() => {
       }
       console.log("Poll Fav")
       updateFavoriteToken(newFavArr)
+    }
             })
   }, 5000);
 
