@@ -65,7 +65,9 @@ const ListItems = (props) => {
       if (!arrIdx.includes(newIdx)){
         newThumbs = <i className="material-icons-outlined filesFolders">insert_drive_file</i>
       }
-      
+      const download = (e) =>{
+        downloadFile(e, props.updateErrorMessage)
+      }
 
         return( //FILES
         
@@ -80,7 +82,7 @@ const ListItems = (props) => {
               title={"Download: " + data.name} 
               data-name={data.name} 
               data-folder={data.path_lower} 
-              data-tag={data[".tag"]} onClick={downloadFile}
+              data-tag={data[".tag"]} onClick={download}
               style={{width: "40px"}}>
                 {newThumbs}
             </td>
@@ -88,7 +90,7 @@ const ListItems = (props) => {
               title={"Download: " + data.name} 
               data-name={data.name} 
               data-folder={data.path_lower} 
-              data-tag={data[".tag"]} onClick={downloadFile}
+              data-tag={data[".tag"]} onClick={download}
             >
             {data.name}
             </td>
