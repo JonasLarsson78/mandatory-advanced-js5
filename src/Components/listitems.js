@@ -3,7 +3,7 @@ import {Link}from "react-router-dom";
 import '../Css/listitems.css';
 import {readableBytes} from './readablebytes'
 import {lastEdited} from './lastedited'
-import { downloadFile } from './dowload'
+import { downloadFile } from './dowload.js'
 import { Helmet } from "react-helmet";
 import Delete from './delete'
 import RenameFile  from './renameFiles'
