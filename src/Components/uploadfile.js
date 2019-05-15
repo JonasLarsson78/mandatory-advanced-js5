@@ -43,7 +43,8 @@ const UploadFile = (props) => {
         dbx.filesUpload({  
           
           contents: fileList[i],
-          path: newFolder + '/' + fileList[i].name
+          path: newFolder + '/' + fileList[i].name,
+         
           })
 
               .then(function(response) {
