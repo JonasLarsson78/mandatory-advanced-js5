@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useRef} from 'react';
 import { Dropbox } from 'dropbox';
 import { getThumbnails } from './getthumbnails'
-import { Redirect } from "react-router-dom";
+import { Redirect, Link } from "react-router-dom";
 import {token$} from './store.js';
 import ListItems from './listitems';
 import CreateFolder from './createfolder';
@@ -380,17 +380,17 @@ const Home = (props) => {
       <title>MyBOX</title>
     </Helmet>
     <header className="mainHeader">
-      <div className="header-logo-wrap"><img id="header-logo" src={ require('../Img/Logo_mybox.png') } alt="My Box logo"/> </div>
+      <div className="header-logo-wrap"><Link to="/Home"><img id="header-logo" src={ require('../Img/Logo_mybox.png') } alt="My Box logo"/></Link> </div>
         <span className="headerContent">
           <Search updateErrorMessage={ updateErrorMessage } pollUpdateMode={pollUpdateMode} searchData={data} folder={props.location.pathname} dataUpdate={dataUpdate} thumbnailUpdate={thumbnailUpdate} oldDataUpdate={oldDataUpdate} clearSearch={clearSearch} clearSearchUpdate={clearSearchUpdate} />
-          <span><UserAccount/></span>
+          <span><UserAccount updateErrorMessage={ updateErrorMessage }/></span>
           <span><LogOut updateTokenState={updateTokenState}/></span>
         </span>
     </header>
     <div className="mainWrapper">
       <aside className="leftSide">
         
-        <div className="left-link-wrap"><UploadFile folder={props.location.pathname} dataUpdate={dataUpdate} thumbnailUpdate={thumbnailUpdate} oldDataUpdate={oldDataUpdate} pollUpdateMode={pollUpdateMode}></UploadFile><br></br><br></br>
+        <div className="left-link-wrap"><UploadFile updateErrorMessage={ updateErrorMessage } folder={props.location.pathname} dataUpdate={dataUpdate} thumbnailUpdate={thumbnailUpdate} oldDataUpdate={oldDataUpdate} pollUpdateMode={pollUpdateMode}></UploadFile><br></br><br></br>
         <CreateFolder updateErrorMessage={ updateErrorMessage } folder={props.location.pathname} dataUpdate={dataUpdate} thumbnailUpdate={thumbnailUpdate} oldDataUpdate={oldDataUpdate} pollUpdateMode={pollUpdateMode}></CreateFolder></div>
       </aside>
       <main className="mainMain">

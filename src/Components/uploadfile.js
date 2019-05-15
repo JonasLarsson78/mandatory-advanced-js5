@@ -2,7 +2,8 @@ import React, {useState,useRef} from 'react';
 import { Dropbox } from 'dropbox';
 import {token$} from './store.js';
 import '../Css/upload.css';
-import { getThumbnails } from './getthumbnails'
+import { getThumbnails } from './getthumbnails';
+import { errorFunction } from './error.js'
 
 
 
@@ -25,7 +26,7 @@ const UploadFile = (props) => {
       fetch: fetch,
       accessToken: token$.value,
     };
-    const dbx = new Dropbox(
+    const dbx = new Dropbox (
       option,
     );
     console.log(fileList[0])
@@ -46,48 +47,39 @@ const UploadFile = (props) => {
                 setTimeout(() => {
                   closeModal();
                   updateMessage(null)
-                }, 3000);
+                }, 2500);
                 
                // props.upload(response)
-                console.log(props)
-                                
+                console.log(props)       
                 console.log(response);
 
                 dbx.filesListFolder({
                   path: newFolder,
-                
                 })
                 .then(response => {
                   console.log(response)
-          
                   props.thumbnailUpdate([]);
                   props.dataUpdate(response.entries)
                   props.oldDataUpdate(response.entries)
-          
                   getThumbnails(dbx, response.entries)
                   .then(entries => {   
-                    
                     props.thumbnailUpdate(entries)
                     })
                     .catch(function(error) {
-                      console.log(error);
+                      errorFunction(error, props.updateErrorMessage)
+                      console.log('UploadFile Thumbnail 67');
                      });
                 })
                 .catch(function(error) {
-                  console.log(error);
+                  errorFunction(error, props.updateErrorMessage)
+                  console.log('UploadFile FileListFolder 72');
                  });
-
-
-
-
               })
               .catch(function(error) {
-                console.error(error);
+                errorFunction(error, props.updateErrorMessage)
+                  console.log('UploadFile FileUpload 77');
               });
-
-
-      }
-      else{
+      } else {
         const maxBlob = 8 * 1000 * 1000; // 8Mb - Dropbox JavaScript API suggested max file / chunk size
         var workItems = [];     
       
@@ -105,10 +97,9 @@ const UploadFile = (props) => {
             return acc.then(function() {
               console.log('start')
               updateMessage(<><div>Upload in progress</div><div className="uploadLds-ring"><div></div><div></div><div></div><div></div></div></>)
-              
               return dbx.filesUploadSessionStart({ close: false, contents: blob})
                         .then(response => response.session_id)
-            });          
+              });          
           } else if (idx < items.length-1) { 
             console.log('append') 
             // Append part to the upload session
@@ -126,8 +117,7 @@ const UploadFile = (props) => {
           }          
         }, Promise.resolve());
         
-        task.then(function(result) {
-          
+        task.then(function(result) {      
           //props.upload(result)
           updateMessage('Upload done')
           setTimeout(() => {
@@ -137,32 +127,30 @@ const UploadFile = (props) => {
           console.log(result)
           dbx.filesListFolder({
             path: newFolder,
-          
           })
           .then(response => {
             console.log(response)
-    
             props.thumbnailUpdate([]);
             props.dataUpdate(response.entries)
             props.oldDataUpdate(response.entries)
-    
             getThumbnails(dbx, response.entries)
             .then(entries => {   
-              
               props.thumbnailUpdate(entries)
               })
               .catch(function(error) {
-                console.log(error);
-               });
+                errorFunction(error, props.updateErrorMessage)
+                  console.log('UploadFile Thumbnail 138');
+            });
           })
           .catch(function(error) {
-            console.log(error);
+            errorFunction(error, props.updateErrorMessage)
+            console.log('UploadFile FileListFolder 143');
            });
         })
         .catch(function(error) {
-          console.error(error);
+          errorFunction(error, props.updateErrorMessage)
+          console.log('UploadFile Filesupload 148');
         });
-        
       }
         
 
@@ -170,6 +158,7 @@ const UploadFile = (props) => {
     
    inputRef.current.value = '';
   }
+
     const closeModal = () => {
       uploadModal.current.style.display = 'none';
       props.pollUpdateMode(false)
@@ -180,15 +169,11 @@ const UploadFile = (props) => {
       props.pollUpdateMode(true)
     }
 
-  
-
       uploadFile = <div className="upload-modal-files" ref={ uploadModal }>
       <input type="file" className="upload-input" ref={inputRef}></input>
       <i className="material-icons upload-close" onClick={ closeModal }>close</i>
       <br /><input type="submit" className="upload-submit" onClick={upload} value="Upload files"></input>
       <label className="upload-label">{uploadMessage}</label></div>
-
-
 
   return(
     <>

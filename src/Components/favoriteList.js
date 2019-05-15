@@ -99,7 +99,7 @@ useEffect(() => {
                     data-folder={data.path_lower} 
                     data-tag={data[".tag"]}
                     style={{background: "white", zIndex: "0"}}
-                    className="listFiles"
+                    className="listFiles-favorites"
                     >
                   <td 
                     title={"Download: " + data.name} 
@@ -114,7 +114,7 @@ useEffect(() => {
                     data-name={data.name} 
                     data-folder={data.path_lower} 
                     data-tag={data[".tag"]} onClick={downloadFile}
-                    style={{cursor: "pointer"}}
+                    className="listFolderLink"
                   >
                   {data.name}
                   </td>
@@ -164,7 +164,7 @@ useEffect(() => {
         }
 
       return( //FOLDERS
-        <tr style={{background: "white"}} key={data.id} className="listFiles" data-name={data.name} data-folder={data.path_lower} data-tag={data[".tag"]}>
+        <tr style={{background: "white"}} key={data.id} className="listFiles-favorites" data-name={data.name} data-folder={data.path_lower} data-tag={data[".tag"]}>
           <td>
           <i className="material-icons filesFolders">folder</i>
           </td>
@@ -180,8 +180,9 @@ useEffect(() => {
     let renderingFavorites = data.map(renderFavorites);
     
     return (
-        <div className="favorite_list" style={{position: "relative", top: "56px", left: "8px"}} >
-          <span className="favoriteTitle" style={{fontSize: "14px"}}><i style={{color: "#ffd900", WebkitTextStroke: "1px #4d4d4d", fontSize: "12px"}} className="material-icons">star</i> Favorites:</span>
+        <div className="favorite_list" style={{position: "relative", top: "68px", left: "8px"}} >
+          <span className="favoriteTitle-my">
+          <i style={{color: "#ffd900", WebkitTextStroke: "0.5px #4d4d4d", fontSize: "22px"}} className="material-icons star">star</i> MyFavorites</span><div className="favoriteList-space"></div>
           <table>
             <tbody>
               {renderingFavorites}
