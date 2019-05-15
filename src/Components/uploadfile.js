@@ -29,10 +29,14 @@ const UploadFile = (props) => {
     const dbx = new Dropbox (
       option,
     );
-    console.log(fileList[0])
+    console.log(fileList[0].size)
     
- 
+    
       updateMessage(<><div>Upload in progress</div><div className="uploadLds-ring"><div></div><div></div><div></div><div></div></div></>)
+      
+      
+
+      console.log(fileList[0].size)
       if(fileList[0].size < filesiZeLimit){
        
         dbx.filesUpload({  
