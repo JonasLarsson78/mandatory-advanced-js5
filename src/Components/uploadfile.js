@@ -29,13 +29,16 @@ const UploadFile = (props) => {
     const dbx = new Dropbox (
       option,
     );
-    for(let i = 0; i < fileList.length; i++){
+    console.log(fileList[0])
+    
+ 
       updateMessage(<><div>Upload in progress</div><div className="uploadLds-ring"><div></div><div></div><div></div><div></div></div></>)
-      if (fileList[i].size < filesiZeLimit) {
-        console.log(fileList[i])
+      if(fileList[0].size < filesiZeLimit){
+       
         dbx.filesUpload({  
-          contents: fileList[i],
-          path: newFolder + '/' + fileList[i].name,
+          
+          contents: fileList[0],
+          path: newFolder + '/' + fileList[0].name,
          
           })
 
@@ -81,9 +84,9 @@ const UploadFile = (props) => {
         var workItems = [];     
       
         var offset = 0;
-        while (offset < fileList[i].size) {
-          var chunkSize = Math.min(maxBlob, fileList[i].size - offset);
-          workItems.push(fileList[i].slice(offset, offset + chunkSize));
+        while (offset < fileList[0].size) {
+          var chunkSize = Math.min(maxBlob, fileList[0].size - offset);
+          workItems.push(fileList[0].slice(offset, offset + chunkSize));
           offset += chunkSize;
         } 
           
@@ -107,8 +110,8 @@ const UploadFile = (props) => {
           } else {
             // Last chunk of data, close session
             return acc.then(function(sessionId) {
-              var cursor = { session_id: sessionId, offset: fileList[i].size - blob.size };
-              var commit = { path: newFolder + '/' + fileList[i].name, mode: 'add', autorename: true, mute: false };              
+              var cursor = { session_id: sessionId, offset: fileList[0].size - blob.size };
+              var commit = { path: newFolder + '/' + fileList[0].name, mode: 'add', autorename: true, mute: false };              
               return dbx.filesUploadSessionFinish({ cursor: cursor, commit: commit, contents: blob });           
             });
           }          
@@ -149,7 +152,10 @@ const UploadFile = (props) => {
           console.log('UploadFile Filesupload 148');
         });
       }
-    }   
+        
+
+    
+    
    inputRef.current.value = '';
   }
 
@@ -165,7 +171,7 @@ const UploadFile = (props) => {
     }
 
       uploadFile = <div className="upload-modal-files" ref={ uploadModal }>
-      <input type="file" className="upload-input" multiple ref={inputRef}></input>
+      <input type="file" className="upload-input" ref={inputRef}></input>
       <i className="material-icons upload-close" onClick={ closeModal }>close</i>
       <br /><input type="submit" className="upload-submit" onClick={upload} value="Upload files"></input>
       <label className="upload-label">{uploadMessage}</label></div>
