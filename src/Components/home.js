@@ -40,7 +40,7 @@ const Home = (props) => {
   useEffect(() => {
     setTimeout(() => {
       updateErrorMessage("")
-    }, 6000);
+    }, 5000);
   }, [errorMessage]);
 
   useEffect(() => {

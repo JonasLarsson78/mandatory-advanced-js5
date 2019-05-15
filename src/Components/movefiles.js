@@ -21,7 +21,12 @@ const MoveFiles = (props) => {
     const [data, updateData] = useState([]);
     let moveFolders = '';
     const path = window.decodeURIComponent(window.location.hash.slice(1));
-
+    
+    useEffect(() => {
+      setTimeout(() => {
+        updateMoveError("")
+      }, 5000);
+    }, [moveError]);
 
     /*========= API Request for List folders =========*/
     useEffect((e) => {
@@ -209,7 +214,7 @@ const MoveFiles = (props) => {
       </tbody>
     </table>
     </div>
-    <p style={{ color: 'red'}}> { moveError } </p>
+    <p style={{position:"absolute", bottom: "35px", color: 'red'}}> { moveError } </p>
     <button className="modal-movefiles-button" onClick={ moveToFolder }>Move</button>
     <i className="material-icons upload-close" onClick={closeModal}>close</i>
     <p ref={moveMessRef} style={{display: "none"}}>{props.name} moved...</p>
