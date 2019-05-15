@@ -1,7 +1,7 @@
 .moveModal {
     position: absolute;
     width: 500px;
-    min-height: 400px;
+    height: 420px;
     padding: 15px;
     border-radius: 5px;
     background-color: #efefef;
@@ -27,6 +27,11 @@
   .movefiles-file {
     font-weight: 600;
     color: #00AFD6;
+  }
+
+  .movefiles-table-wrapper {
+    overflow: auto;
+    height: 200px;
   }
 
   .modal-movefiles-tr {
@@ -67,6 +72,11 @@
     cursor: pointer;
     text-transform: uppercase;
   }
+
+  .modal-movefiles-button:hover {
+    background-color: #029BB5;
+  }
+ 
   .moveBack{
     position: fixed;
     display: none;

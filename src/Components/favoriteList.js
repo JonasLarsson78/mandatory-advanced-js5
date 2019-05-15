@@ -4,6 +4,7 @@ import {Link} from "react-router-dom";
 import {downloadFile} from "./dowload"
 import { Dropbox } from 'dropbox';
 import {token$} from './store.js';
+import { errorFunction } from './error.js'
 
 /*
 
@@ -56,35 +57,31 @@ useEffect(() => {
     
     })
     .then(response => {
-      
-      
       if (favorites$.value === null){
         updateFavoriteToken([])
       }
       else{
         let fav = [...favorites$.value]
-      
-      let chekId = response.entries.map(x => x.id)
-      let checkIdFav = fav.map(x => x.id)
-     
-
-      let z = chekId.filter(function(val) {
+        let chekId = response.entries.map(x => x.id)
+        let checkIdFav = fav.map(x => x.id)
+        let z = chekId.filter(function(val) {
         return checkIdFav.indexOf(val) !== -1;
         
-      });
-      let newFavArr = []
-      for (let i = 0; i < z.length; i++){
-        let newFav = fav.find( data => data.id === z[i] )
-        newFavArr.push(newFav)
-      }
+        });
+        let newFavArr = []
+        for (let i = 0; i < z.length; i++){
+          let newFav = fav.find( data => data.id === z[i] )
+          newFavArr.push(newFav)
+        }
      // console.log("Poll Fav")
       updateFavoriteToken(newFavArr)
     }
-            })
-  }, 5000);
-
+    })
+    }, 5000);
 }, []);
-
+const download = (e) =>{
+  downloadFile(e, props.updateErrorMessage)
+}
 
     let data = sortData;
     const renderFavorites = (data) => {
@@ -95,8 +92,6 @@ useEffect(() => {
           }
         }
       props.data.map(check)
-      
-
         /////IF FILES STARTS////
         if(data[".tag"] === 'file'){ 
               return( //FILES
@@ -106,13 +101,13 @@ useEffect(() => {
                     data-folder={data.path_lower} 
                     data-tag={data[".tag"]}
                     style={{background: "white", zIndex: "0"}}
-                    className="listFiles"
+                    className="listFiles-favorites"
                     >
                   <td 
                     title={"Download: " + data.name} 
                     data-name={data.name} 
                     data-folder={data.path_lower}
-                    data-tag={data[".tag"]} onClick={downloadFile}
+                    data-tag={data[".tag"]} onClick={download}
                     style={{cursor: "pointer"}}>
                     <i className="material-icons-outlined filesFolders">insert_drive_file</i>
                   </td>
@@ -120,8 +115,8 @@ useEffect(() => {
                     title={"Download: " + data.name} 
                     data-name={data.name} 
                     data-folder={data.path_lower} 
-                    data-tag={data[".tag"]} onClick={downloadFile}
-                    style={{cursor: "pointer"}}
+                    data-tag={data[".tag"]} onClick={download}
+                    className="listFolderLink"
                   >
                   {data.name}
                   </td>
@@ -155,27 +150,23 @@ useEffect(() => {
             
           })
           .catch(error => {
-            console.log(error);
+            console.log('FavoritList FilesMove2 151');
+            errorFunction(error, props.updateErrorMessage)
           });
         
         }
 
       /////IF FOLDER STARTS////
       if(data[".tag"] === 'folder'){ //FOLDER
-
-
         if (data.name.includes("(")){
-
           let brak = data.name.replace(/[()]/g,'')
           let newName = data.path_lower.substring(0, data.path_lower.lastIndexOf("/")) + "/" + brak;
-          
           renameBrackets(data.path_lower, newName)
           data.name = brak
         }
 
       return( //FOLDERS
-        
-        <tr style={{background: "white"}} key={data.id} className="listFiles" data-name={data.name} data-folder={data.path_lower} data-tag={data[".tag"]}>
+        <tr style={{background: "white"}} key={data.id} className="listFiles-favorites" data-name={data.name} data-folder={data.path_lower} data-tag={data[".tag"]}>
           <td>
           <i className="material-icons filesFolders">folder</i>
           </td>
@@ -191,8 +182,9 @@ useEffect(() => {
     let renderingFavorites = data.map(renderFavorites);
     
     return (
-        <div className="favorite_list" style={{position: "relative", top: "56px", left: "8px"}} >
-          <span className="favoriteTitle" style={{fontSize: "14px"}}><i style={{color: "#ffd900", WebkitTextStroke: "1px #4d4d4d", fontSize: "12px"}} className="material-icons">star</i> Favorites:</span>
+        <div className="favorite_list" style={{position: "relative", top: "68px", left: "8px"}} >
+          <span className="favoriteTitle-my">
+          <i style={{color: "#ffd900", WebkitTextStroke: "0.5px #4d4d4d", fontSize: "22px"}} className="material-icons star">star</i> MyFavorites</span><div className="favoriteList-space"></div>
           <table>
             <tbody>
               {renderingFavorites}

@@ -1,7 +1,8 @@
 import React, {useState, useRef} from 'react';
 import {token$, favorites$, updateFavoriteToken} from './store.js';
 import { Dropbox } from 'dropbox';
-import { getThumbnails } from './getthumbnails'
+import { getThumbnails } from './getthumbnails';
+import { errorFunction } from './error.js'
 import '../Css/modal.css'
 
 
@@ -26,11 +27,9 @@ const yes = () => {
             fetch: fetch,
             accessToken: token$.value
           };
-    
           const dbx = new Dropbox(
             option,
           );
-    
           dbx.filesDeleteV2({
             path: delFile,
           })
@@ -44,36 +43,34 @@ const yes = () => {
           }
             dbx.filesListFolder({
             path: path,
-          
                 }).then(response =>{
                   props.thumbnailUpdate([])
                   props.dataUpdate(response.entries)
                   props.oldDataUpdate(response.entries)
-
                   getThumbnails(dbx, response.entries)
-
-                        
                         .then(entries => {   
-                          
                           props.thumbnailUpdate(entries)
                           })
                           .catch(function(error) {
-                            console.log(error);
+                            errorFunction(error, props.updateErrorMessage)
+                            console.log('Delete FilesDelete2 55');
                           });
-                  
                 })
                 .catch(function(error) {
-                  console.log(error);
+                  console.log('Delete FilesDelete2 61');
+                  errorFunction(error, props.updateErrorMessage)
                 });
           })
           .catch(function(error) {
-            console.log(error);
+            console.log('Delete FilesDelete2 66');
+            errorFunction(error, props.updateErrorMessage)
           });
     
     element.current.style.visibility = "hidden"
     //document.body.style.overflowY = "auto"
     element.current.style.zIndex = "0";
     props.pollUpdateMode(false)
+    props.updateErrorMessage('')
 }
 
 const no = () => {
@@ -82,6 +79,7 @@ const no = () => {
     document.body.style.overflowY = "auto"
     element.current.style.zIndex = "0";
     props.pollUpdateMode(false)
+    props.updateErrorMessage('')
 }
 
 delModal = <div style={{pointerEvents: pointerEvent}} ref={element} className="modalBack">

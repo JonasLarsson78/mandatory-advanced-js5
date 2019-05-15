@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useRef} from 'react';
 import { Dropbox } from 'dropbox';
 import { getThumbnails } from './getthumbnails'
-import { Redirect } from "react-router-dom";
+import { Redirect, Link } from "react-router-dom";
 import {token$} from './store.js';
 import ListItems from './listitems';
 import CreateFolder from './createfolder';
@@ -14,11 +14,14 @@ import LogOut from './logout'
 import FavoriteList from "./favoriteList.js"
 import {favorites$} from './store'
 import {updateFavoriteToken} from './store'
+import { errorFunction } from './error.js'
 import '../Css/home.css';
 
 
 
 const Home = (props) => {
+
+
   const [token, updateTokenState] = useState(token$.value)
   const [data, updateData] = useState([]);
   const [thumbnails, updateThumbnails] = useState([])
@@ -26,8 +29,9 @@ const Home = (props) => {
   const [favorites, updateFavorites] = useState([]);
   const [oldData, updateOldData] = useState([])
   const [pollMode, updatePollMode] = useState(false)
-  const [clearSearch, updateClearSearch] = useState(false)
-
+  const [clearSearch, updateClearSearch] = useState(true)
+  const [errorMessage, updateErrorMessage] = useState('')
+  
 
   const dataRef = useRef([]);
 
@@ -36,12 +40,21 @@ const Home = (props) => {
   }, [data]);
 
   useEffect(() => {
+    if (errorMessage === ''){
+      return;
+    }
+    console.log('error')
+    setTimeout(() => {
+      updateErrorMessage("")
+    }, 5000);
+  }, [errorMessage]);
+
+  useEffect(() => {
     const subscription = favorites$.subscribe(updateFavorites);
     return () => subscription.unsubscribe();
   }, []);
 
   useEffect(() => {
-
     if (thumbnails.length === data.length) {
       const isLoaded = thumbnails.every((x, idx) => {
         return x[".tag"] === "failure" || x.metadata.id === data[idx].id;
@@ -57,7 +70,7 @@ const Home = (props) => {
 
     useEffect(() => {
 
-     
+      
       
        if(pollMode){
         return;
@@ -82,8 +95,9 @@ const Home = (props) => {
           
           })
           .then(response => {
+
             if (dataRef.current !== dataTmp) {
-           
+              
               return;
             }
            
@@ -97,18 +111,13 @@ const Home = (props) => {
             const diffRev = responseRev.filter(el => !oldrespRev.includes(el));
             const diffName = responseName.filter(el => !oldrespName.includes(el))
 
-            //Fullösning för att lösa fel i thumbnails när en mapp tas bort utifrån
+           
              if(response.entries.length < oldData.length){
               
               updateThumbnails([])
               updateData(response.entries)
             }
-            /* if(oldData.length < response.entries.length){
-              console.log('poll körs root')
-              updateData(response.entries)
-            } */
-           //console.log('Root mapp... Olddata ' + oldData.length)
-           // console.log('Root mapp... response.entries ' + response.entries.length)
+            
 
             if (response.entries.length !== oldData.length  || diffRev.length > 0 || diffName.length > 0){
               updatePollMode(true)
@@ -130,7 +139,8 @@ const Home = (props) => {
 
                 })
                 .catch(function(error) {
-                  console.log(error);
+                  errorFunction(error, updateErrorMessage)
+                  console.log('Home Thumbnails rad 136');
                  });
               
 
@@ -143,7 +153,8 @@ const Home = (props) => {
           })
           
           .catch(function(error) {
-            console.log(error);
+            errorFunction(error, updateErrorMessage)
+            console.log('Home filesrequest 150');
            });
     
         }
@@ -157,8 +168,9 @@ const Home = (props) => {
           
           })
           .then(response => {
+            
             if (dataRef.current !== dataTmp) {
-           
+              
               return;
             }
 
@@ -173,12 +185,7 @@ const Home = (props) => {
             const diffName = responseName.filter(el => !oldrespName.includes(el))
 
 
-            /* if(oldData.length < response.entries.length){
-              console.log('poll körs folder')
-             
-              updateData(response.entries)
-              
-            } */
+            
             if(response.entries.length < oldData.length){
               
               updateThumbnails([])
@@ -186,11 +193,9 @@ const Home = (props) => {
               
             }
 
-            //console.log('Folder mapp... Olddata ' + oldData.length)
-            //console.log('Folder mapp... Response.entries ' + response.entries.length)
 
             if(response.entries.length !== oldData.length || diffRev.length > 0 || diffName.length > 0){
-              // testa stoppa pollning här tills alla filer är klara...
+         
               updatePollMode(true)
               console.log('poll körs folder')
               console.log('poll stoppas tillfälligt folder')
@@ -210,7 +215,8 @@ const Home = (props) => {
               })
               
               .catch(function(error) {
-                console.log(error);
+                errorFunction(error, updateErrorMessage)
+                console.log('Home Poll folder 218');
                });
               }
               else{
@@ -221,7 +227,8 @@ const Home = (props) => {
           })
         
           .catch(function(error) {
-            console.log(error);
+            errorFunction(error, updateErrorMessage)
+            console.log('Home Poll interval 230');
            });
         }
       }, 5000);
@@ -236,7 +243,12 @@ const Home = (props) => {
 
     
   useEffect(() => {
-    updatePollMode(true)
+    
+    
+    if(!clearSearch){
+      return;
+    }
+
     console.log('render Home')
     const option = {
       fetch: fetch,
@@ -245,14 +257,19 @@ const Home = (props) => {
     const dbx = new Dropbox(
       option,
     );
+
+    
+
     if(props.location.pathname === '/home'){
       dbx.filesListFolder({
         path: '',
       
       })
       .then(response => {
+
+
+
         console.log('bilder börjar hämtas')
-          updateThumbnails([]);
           updateData(response.entries)
           updateOldData(response.entries)
 
@@ -268,14 +285,16 @@ const Home = (props) => {
             
           })
           .catch(function(error) {
-            console.log(error);
+            errorFunction(error, updateErrorMessage)
+            console.log('Home filesrequest folder 278');
            });
            
 
       })
       
       .catch(function(error) {
-        console.log(error);
+        errorFunction(error, updateErrorMessage)
+            console.log('Home Update Poll 286');
        });
 
      
@@ -285,11 +304,14 @@ const Home = (props) => {
       let newFolder = props.location.pathname;
       newFolder = newFolder.substring(5)
 
+      console.log("FETCH");
+
       dbx.filesListFolder({
         path: newFolder,
       
       })
       .then(response => {
+        
         
         
         updateThumbnails([]);
@@ -302,36 +324,34 @@ const Home = (props) => {
         getThumbnails(dbx, response.entries)
         
       
-          .then(entries => {   
+          .then(entries => { 
+            if (response.entries !== dataRef.current) {
+              return;
+            }  
             console.log('bilder klara')
             updateThumbnails(entries)
          
             })
             
             .catch(function(error) {
-              if(error.response.status === 409){
-                updateThumbnails([])
-              }
+              errorFunction(error, updateErrorMessage)
+              console.log('Home Request newfolder 321');
              });
 
-        
-          
-        
-           
       })
       .catch(function(error) {
-        console.log(error);
+        errorFunction(error, updateErrorMessage)
+        console.log('Home filesrequest 327');
        });
     }
-      clearSearchUpdate(false)
-      updatePollMode(false)
+      updateClearSearch(false)
+
   }, [props.location.pathname, clearSearch])
 
 
   const dataUpdate = (data) => {
     //updateOldData(data)
     updateData(data)
-    
   }
 
   const thumbnailUpdate = (data) => {
@@ -362,6 +382,8 @@ const Home = (props) => {
     
   }
 
+ 
+  
   if(token === null){
     return <Redirect to="/" />
   }
@@ -371,23 +393,25 @@ const Home = (props) => {
     <Helmet>
       <title>MyBOX</title>
     </Helmet>
+    
     <header className="mainHeader">
-      <div className="header-logo-wrap"><img id="header-logo" src={ require('../Img/Logo_mybox.png') } alt="My Box logo"/> </div>
+      <div className="header-logo-wrap"><img id="header-logo" src={ require('../Img/Logo_mybox.png') } alt="My Box logo"/></div>
         <span className="headerContent">
-          <Search pollUpdateMode={pollUpdateMode} searchData={data} folder={props.location.pathname} dataUpdate={dataUpdate} thumbnailUpdate={thumbnailUpdate} oldDataUpdate={oldDataUpdate} clearSearch={clearSearch} clearSearchUpdate={clearSearchUpdate} />
-          <span><UserAccount/></span>
+          <Search updateErrorMessage={ updateErrorMessage } pollUpdateMode={pollUpdateMode} searchData={data} folder={props.location.pathname} dataUpdate={dataUpdate} thumbnailUpdate={thumbnailUpdate} oldDataUpdate={oldDataUpdate} clearSearch={clearSearch} clearSearchUpdate={clearSearchUpdate} />
+          <span><UserAccount updateErrorMessage={ updateErrorMessage }/></span>
           <span><LogOut updateTokenState={updateTokenState}/></span>
         </span>
     </header>
     <div className="mainWrapper">
       <aside className="leftSide">
         
-        <div className="left-link-wrap"><UploadFile folder={props.location.pathname} dataUpdate={dataUpdate} thumbnailUpdate={thumbnailUpdate} oldDataUpdate={oldDataUpdate} pollUpdateMode={pollUpdateMode}></UploadFile><br></br><br></br>
-        <CreateFolder folder={props.location.pathname} dataUpdate={dataUpdate} thumbnailUpdate={thumbnailUpdate} oldDataUpdate={oldDataUpdate} pollUpdateMode={pollUpdateMode}></CreateFolder></div>
+        <div className="left-link-wrap"><UploadFile updateErrorMessage={ updateErrorMessage } folder={props.location.pathname} dataUpdate={dataUpdate} thumbnailUpdate={thumbnailUpdate} oldDataUpdate={oldDataUpdate} pollUpdateMode={pollUpdateMode}></UploadFile><br></br><br></br>
+        <CreateFolder updateErrorMessage={ updateErrorMessage } folder={props.location.pathname} dataUpdate={dataUpdate} thumbnailUpdate={thumbnailUpdate} oldDataUpdate={oldDataUpdate} pollUpdateMode={pollUpdateMode}></CreateFolder></div>
       </aside>
       <main className="mainMain">
       <label onClick={() => updateClearSearch(true)}>
       <Breadcrumbs clearSearchUpdate={clearSearchUpdate}/><br /></label>
+      <p style={{ color: 'red' }}> { errorMessage }</p>
         <table className="mainTable">
           <thead>
             <tr className="home-thead-tr">
@@ -418,16 +442,15 @@ const Home = (props) => {
             </tr>
           </thead>
           <tbody>
-            <ListItems favorites={favorites} favUpdate={favUpdate} thumbnailsLoaded={thumbnailsLoaded} folder={props.location.pathname} dataUpdate={dataUpdate} thumbnailUpdate={thumbnailUpdate} oldDataUpdate={oldDataUpdate} renderData={data} thumbnails={thumbnails} clearSearchUpdate={clearSearchUpdate} pollUpdateMode={pollUpdateMode}></ListItems>
+            <ListItems updateErrorMessage={ updateErrorMessage } favorites={favorites} favUpdate={favUpdate} thumbnailsLoaded={thumbnailsLoaded} folder={props.location.pathname} dataUpdate={dataUpdate} thumbnailUpdate={thumbnailUpdate} oldDataUpdate={oldDataUpdate} renderData={data} thumbnails={thumbnails} clearSearchUpdate={clearSearchUpdate} pollUpdateMode={pollUpdateMode}></ListItems>
           </tbody>
         </table>
       </main>
       <aside className="rightSide">
         <div className="aside"></div>
-         <FavoriteList upFavTok={upFavTok} data={data} />
+         <FavoriteList updateErrorMessage={ updateErrorMessage } upFavTok={upFavTok} data={data} />
       </aside>
     </div>
-    
     </>
   )
 }

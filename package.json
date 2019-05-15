@@ -6,7 +6,15 @@
 
   "dependencies": {
     "axios": "^0.18.0",
+<<<<<<< HEAD
     "gh-pages": "^2.0.1",
+=======
+    "chai": "^4.2.0",
+    "chai-jest-snapshot": "^2.0.0",
+    "enzyme": "^3.9.0",
+    "enzyme-adapter-react-16": "^1.13.0",
+    "enzyme-to-json": "^3.3.5",
+>>>>>>> 04ded397dee12c4a98a0af9883ef6ef73ef64b95
     "helmet": "^3.16.0",
     "i": "^0.3.6",
     "lodash.chunk": "^4.2.0",
@@ -22,7 +30,8 @@
     "react-router-dom": "^5.0.0",
     "react-router-dynamic-breadcrumbs": "^2.2.0",
     "react-scripts": "3.0.0",
-    "rxjs": "^6.5.1"
+    "rxjs": "^6.5.1",
+    "sinon": "^7.3.2"
   },
   "scripts": {
     "start": "react-scripts start",

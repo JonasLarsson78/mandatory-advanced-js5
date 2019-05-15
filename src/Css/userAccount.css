@@ -5,13 +5,13 @@
 .userFlag{
     position: relative;
     top: 7px;
-    left: -25px;
+    left: -28px;
 }
 .userName{
     position: relative;
     top: -32px;
-    margin-right: 5px;
-    font-weight: bold;
+    margin-right: 7px;
+    font-weight: 400;
     color: #4d4d4d;
 }
 .userMail{
@@ -19,11 +19,13 @@
     top: -32px;
     margin-right: 5px;
     color: #4d4d4d;
-    
 }
 .userMailAtag{
     text-decoration: none;
     color: #4d4d4d;
+}
+.userMailAtag:hover {
+    text-decoration: underline;
 }
 .userPhoto{
     position: relative;

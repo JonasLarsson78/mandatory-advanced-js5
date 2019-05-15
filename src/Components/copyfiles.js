@@ -3,7 +3,8 @@ import { Dropbox } from 'dropbox';
 import { token$ } from './store.js';
 import {Link}from "react-router-dom";
 import { HashRouter as Router} from "react-router-dom";
-import ModalBreadcrumbs from './modalbreadcrumb.js'
+import ModalBreadcrumbs from './modalbreadcrumbs';
+import { errorFunction } from './error.js';
 import '../Css/movefiles.css';
 
 
@@ -19,6 +20,14 @@ const CopyFiles = (props) => {
     let moveFolders = '';
     const path = window.decodeURIComponent(window.location.hash.slice(1));
 
+    useEffect(() => {
+      if (moveError === ''){
+        return;
+      }
+      setTimeout(() => {
+        updateMoveError("")
+      }, 5000);
+    }, [moveError]);
   
     
     /*========= API Request for List folders =========*/
@@ -47,7 +56,8 @@ const CopyFiles = (props) => {
           updateData(response.entries)          
         })
         .catch(error => {
-          console.log(error);
+          console.log('CopyFiles FileListFolder home 51');
+          errorFunction(error, updateMoveError)
         }); 
        } else {
         dbx.filesListFolder({
@@ -57,7 +67,8 @@ const CopyFiles = (props) => {
           updateData(response.entries)
         })
         .catch(error => {
-          console.log(error);
+          console.log('CopyFiles FileListFolder path 62');
+          errorFunction(error, updateMoveError)
         }); 
       }
     }
@@ -83,9 +94,6 @@ const CopyFiles = (props) => {
       /*========= API Request for move files =========*/
 
   const moveToFolder = () => {
-      if (startPath === movePath) {
-        updateMoveError('You cant move files in same directory')
-      } else {
         let index = startPath.lastIndexOf("/")
         let newName = startPath.substring(index)
         updateMoveError('')
@@ -103,34 +111,28 @@ const CopyFiles = (props) => {
             autorename: false
           })
           .then(response => {
-              //console.log(response.entries)
             updateFileTransfer('File Moved')
             dbx.filesListFolder({
               path: movePath,
             })
             .then(response => {
                 closeModal() 
-
-
-
-
-
-
             })
             .catch(error => {
-              console.log(error);
+              console.log('CopyFiles FilesCopy 117');
+              errorFunction(error, updateMoveError)
             }); 
           })
           .catch(error => {
-            console.log(error);
+            console.log('CopyFiles FilesListFolder 122');
+            errorFunction(error, updateMoveError)
           });
-      }
+          props.updateErrorMessage('')
+          updateMoveError('')
     }
  /*==================*/
 
   const renderModalData = (data) => {
-    //console.log(startPath)
-    //console.log(data.path_lower)
     if(data[".tag"] === 'folder'){ //FOLDER
       return( //FOLDERS
         <tr key={data.id} className="modal-movefiles-tr" data-name={data.name} data-folder={data.path_display} data-tag={data[".tag"]}>
@@ -152,6 +154,8 @@ const CopyFiles = (props) => {
       props.pollUpdateMode(false)
       updateMovePath('')
       updateStartPath('')
+      updateMoveError('')
+      props.updateErrorMessage('')
       document.body.style.overflowY = "auto"
   }
 
@@ -163,13 +167,15 @@ const CopyFiles = (props) => {
     <ModalBreadcrumbs />
     <p className="movefiles-p">Copy <span className="movefiles-file">{ props.name }</span> ... to ... <span className="movefiles-file">{ movePath.slice(1)}</span></p>
     <p>{ fileTransfer }</p>
+    <div className="movefiles-table-wrapper">
     <table>
       <tbody>
       { mapping }
       </tbody>
     </table>
-    { moveError }
-    <button className="modal-movefiles-button" onClick={moveToFolder}>Move</button>
+    </div>
+    <p style={{position:"absolute", bottom: "35px", color: 'red'}}> { moveError } </p>
+    <button className="modal-movefiles-button" onClick={moveToFolder}>Copy</button>
     <i className="material-icons upload-close" onClick={closeModal}>close</i>
     <p ref={moveMessRef} style={{display: "none"}}>{props.name} moved...</p>
     </div>

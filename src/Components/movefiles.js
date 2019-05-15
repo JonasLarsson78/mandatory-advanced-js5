@@ -3,8 +3,9 @@ import { Dropbox } from 'dropbox';
 import {token$, favorites$, updateFavoriteToken} from './store.js';
 import {Link}from "react-router-dom";
 import { HashRouter as Router} from "react-router-dom";
-import ModalBreadcrumbs from './modalbreadcrumb.js'
+import ModalBreadcrumbs from './modalbreadcrumbs'
 import { getThumbnails } from './getthumbnails'
+import { errorFunction } from './error.js'
 import '../Css/movefiles.css';
 
 
@@ -20,7 +21,15 @@ const MoveFiles = (props) => {
     const [data, updateData] = useState([]);
     let moveFolders = '';
     const path = window.decodeURIComponent(window.location.hash.slice(1));
-
+    
+    useEffect(() => {
+      if (moveError === ''){
+        return;
+      }
+      setTimeout(() => {
+        updateMoveError("")
+      }, 5000);
+    }, [moveError]);
 
     /*========= API Request for List folders =========*/
     useEffect((e) => {
@@ -53,7 +62,8 @@ const MoveFiles = (props) => {
           updateData(arr)  
         })
         .catch(error => {
-          console.log(error);
+          console.log('MoveFiles FileslistFolder home 57');
+          errorFunction(error, updateMoveError)
         }); 
        } else {
         
@@ -70,7 +80,8 @@ const MoveFiles = (props) => {
           updateData(arr) 
         })
         .catch(error => {
-          console.log(error);
+          console.log('MoveFiles FileslistFolder path 74');
+          errorFunction(error, updateMoveError)
         }); 
       }
     }
@@ -142,19 +153,23 @@ const MoveFiles = (props) => {
               props.thumbnailUpdate(entries)
               })
               .catch(function(error) {
-                console.log(error);
+                console.log('MoveFiles FilesMove2 146');
+                errorFunction(error, updateMoveError)
                });
-
           })
             .catch(error => {
-              console.log(error);
+              console.log('MoveFiles FilesMove2 150');
+              errorFunction(error, updateMoveError)
           }); 
         })
         .catch(error => {
-          console.log(error);
-          updateMoveError("File / Folder with the same name already exists!")
+          console.log('MoveFiles FilesMove2 155');
+          errorFunction(error, updateMoveError)
+          //updateMoveError("File / Folder with the same name already exists!")
         });
         props.pollUpdateMode(false)
+        props.updateErrorMessage('')
+        updateMoveError('')
     }
  /*==================*/
  
@@ -181,14 +196,11 @@ const MoveFiles = (props) => {
       updateShowModal(false)
       updateMovePath('')
       updateStartPath('')
+      updateMoveError('')
       document.body.style.overflowY = "auto"
       props.pollUpdateMode(false)
+      props.updateErrorMessage('')
   }
-  
-
- 
-
-  
 
     moveFolders = 
     <Router>
@@ -198,12 +210,14 @@ const MoveFiles = (props) => {
     <ModalBreadcrumbs />
     <p className="movefiles-p">Move <span className="movefiles-file">{props.name}</span> ... to ... <span className="movefiles-file">{ movePath.slice(1)}</span></p>
     <p>{ fileTransfer }</p>
+    <div className="movefiles-table-wrapper">
     <table>
       <tbody>
       { mapping }
       </tbody>
     </table>
-    { moveError }
+    </div>
+    <p style={{position:"absolute", bottom: "35px", color: 'red'}}> { moveError } </p>
     <button className="modal-movefiles-button" onClick={ moveToFolder }>Move</button>
     <i className="material-icons upload-close" onClick={closeModal}>close</i>
     <p ref={moveMessRef} style={{display: "none"}}>{props.name} moved...</p>
