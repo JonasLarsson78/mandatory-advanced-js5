@@ -2,6 +2,7 @@ import React, {useState,useRef} from 'react';
 import { Dropbox } from 'dropbox';
 import {token$, favorites$, updateFavoriteToken} from './store.js';
 import { getThumbnails } from './getthumbnails'
+import { errorFunction } from './error.js'
 
 const RenameFile = (props) => {
 
@@ -72,37 +73,41 @@ const addNewName = (e) => {
                     props.thumbnailUpdate(entries)
                     })
                     .catch(function(error) {
-                      console.log(error);
+                      errorFunction(error, props.updateErrorMessage)
+                      console.log('RenameFile Thumbnails rad 77');
+                      
                     });
             
           })
           .catch(function(error) {
-            console.log(error);
+            errorFunction(error, props.updateErrorMessage)
+            console.log('RenameFile FilesListFolder rad 84');
           });
   })
   .catch(error => {
-    console.log(error);
+    errorFunction(error, props.updateErrorMessage)
+    console.log('RenameFile Filesmove rad 89');
   });
-
-
-
 
   inputEl.current.style.display = "none"
   document.body.style.overflowY = "auto"
   clearInput.current.value = "";
   props.pollUpdateMode(false)
-
+  props.updateErrorMessage('')
 }
 
 const addNewNameClose = () =>{
   inputEl.current.style.display = "none"
   document.body.style.overflowY = "auto"
   props.pollUpdateMode(false)
+  props.updateErrorMessage('')
 }
 
 renameInput = 
 <div className="reNameBack" ref={inputEl} >
-<div className="listRenameInput"><div className="listRenameText"> Rename file</div><span className="listRenameClose" onClick={addNewNameClose}><i className="material-icons">close</i></span><input className="listRenameInputText" style={{outline: "none"}} ref={clearInput} placeholder="New filename..." type="text" onChange={newNameInput} /><button style={{outline: "none"}} className="listBtnRename" onClick={addNewName}>Ok</button></div></div>
+
+<div className="listRenameInput"><h3 className="movefiles-h3">Rename files</h3>
+<div className="renamefile-input-wrapper"><span className="listRenameClose" onClick={addNewNameClose}><i className="material-icons">close</i></span><input className="listRenameInputText" style={{outline: "none"}} ref={clearInput} placeholder="New filename..." type="text" onChange={newNameInput} /><button style={{outline: "none"}} className="renamefile-ok-button" onClick={addNewName}>Ok</button></div></div></div>
 
 
 return(

@@ -2,6 +2,7 @@ import React, {useState,useRef} from 'react';
 import { Dropbox } from 'dropbox';
 import {token$, favorites$, updateFavoriteToken} from './store.js';
 import { getThumbnails } from './getthumbnails'
+import { errorFunction } from './error.js'
 
 const ReNameFolder = (props) => {
   const inputElFolder = useRef(null);
@@ -84,42 +85,46 @@ const addNewNameFolder = (e) => {
                         props.thumbnailUpdate(entries)
                         })
                         .catch(function(error) {
-                          console.log(error);
+                          errorFunction(error, props.updateErrorMessage)
+                          console.log('RenameFolder Thumbnails rad 90');
                         });
                 
               })
               .catch(function(error) {
-                console.log(error);
+                errorFunction(error, props.updateErrorMessage)
+                console.log('RenameFolder Fileslistfolder rad 96');
               });
       })
       .catch(error => {
-        console.log(error);
+        errorFunction(error, props.updateErrorMessage)
+        console.log('RenameFolder FilesMoveV2 rad 101');
       });
-    
-
-
 
 inputElFolder.current.style.display = "none"
 document.body.style.overflowY = "auto"
 clearInputFolder.current.value = "";
 props.pollUpdateMode(false)
+props.updateErrorMessage('')
 
 }
 const addNewNameCloseFolder = () =>{
 inputElFolder.current.style.display = "none"
 document.body.style.overflowY = "auto"
 props.pollUpdateMode(false)
+props.updateErrorMessage('')
 }
 
 renameInputFolder = 
 <div ref={inputElFolder} className="reNameBack">
-<div className="listRenameInput"><div className="listRenameText">Rename folder</div><span className="listRenameClose" onClick={addNewNameCloseFolder}><i className="material-icons">close</i></span><input placeholder="New foldername..." className="listRenameInputText" style={{outline: "none"}} ref={clearInputFolder} type="text" onChange={newNameInputFolder} /><button ref={okBtn} className="listBtnRename" style={{outline: "none"}} onClick={addNewNameFolder}>Ok</button></div><div ref={reNameMess} className="renameFoldeEerrorMess">No folder name whit ( ) !</div></div>
+<div className="listRenameInput"><h3 className="movefiles-h3">Rename folder</h3>
+<div className="renamefile-input-wrapper"><span className="listRenameClose" onClick={addNewNameCloseFolder}><i className="material-icons">close</i></span><input placeholder="New foldername..." className="listRenameInputText" style={{outline: "none"}} ref={clearInputFolder} type="text" onChange={newNameInputFolder} /><button ref={okBtn} className="renamefile-ok-button" style={{outline: "none"}} onClick={addNewNameFolder}>Ok</button></div></div><div ref={reNameMess} className="renameFoldeEerrorMess">No folder name whit ( ) !</div></div>
 
 
 return(
   <>
   {renameInputFolder}
-  <button className="listBtn" onClick={reNameFolder}><i data-path={props.path} className="material-icons rename-icon">edit</i></button>  </>
+  <button className="listBtn" onClick={reNameFolder}><i data-path={props.path} className="material-icons rename-icon">edit</i></button>  
+  </>
 )
 
 }
