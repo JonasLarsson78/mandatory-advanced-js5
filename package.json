@@ -2,7 +2,7 @@
   "name": "mandatory-advanced-js5",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://jonaslarsson78.github.io/mandatory-advanced-js5/",
+  "homepage": "https://jonaslarsson78.github.io/mandatory-advanced-js5",
 
   "dependencies": {
     "axios": "^0.18.0",
