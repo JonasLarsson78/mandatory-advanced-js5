@@ -7,7 +7,6 @@ const appkey =  'bvtwa87o7e9bfk6';
 
 
 const Login = () => {
-  window.location.pathname = ""
 
 const dbx = new Dropbox({
   clientId: appkey,
