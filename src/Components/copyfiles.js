@@ -21,6 +21,9 @@ const CopyFiles = (props) => {
     const path = window.decodeURIComponent(window.location.hash.slice(1));
 
     useEffect(() => {
+      if (moveError === ''){
+        return;
+      }
       setTimeout(() => {
         updateMoveError("")
       }, 5000);

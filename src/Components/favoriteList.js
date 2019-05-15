@@ -79,7 +79,9 @@ useEffect(() => {
     })
     }, 5000);
 }, []);
-
+const download = (e) =>{
+  downloadFile(e, props.updateErrorMessage)
+}
 
     let data = sortData;
     const renderFavorites = (data) => {
@@ -105,7 +107,7 @@ useEffect(() => {
                     title={"Download: " + data.name} 
                     data-name={data.name} 
                     data-folder={data.path_lower}
-                    data-tag={data[".tag"]} onClick={downloadFile}
+                    data-tag={data[".tag"]} onClick={download}
                     style={{cursor: "pointer"}}>
                     <i className="material-icons-outlined filesFolders">insert_drive_file</i>
                   </td>
@@ -113,7 +115,7 @@ useEffect(() => {
                     title={"Download: " + data.name} 
                     data-name={data.name} 
                     data-folder={data.path_lower} 
-                    data-tag={data[".tag"]} onClick={downloadFile}
+                    data-tag={data[".tag"]} onClick={download}
                     className="listFolderLink"
                   >
                   {data.name}
