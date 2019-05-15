@@ -2,9 +2,10 @@ import React, {useState, useEffect, useRef} from 'react';
 import ReactCountryFlag from 'react-country-flag';
 import { Dropbox } from 'dropbox';
 import {token$} from './store.js';
+import { errorFunction } from './error.js'
 import '../Css/userAccount.css';
 
-const UserAccount = () => {
+const UserAccount = (props) => {
 const photoRef = useRef(null);  
 const [name, updateName] = useState("Name Lastname");
 const [mail, updateMail] = useState("name@domain.com");
@@ -12,17 +13,14 @@ const [photoUrl, updatePhotUrl] = useState(null);
 const [country, updateCountry] = useState("us");
 
 
-  useEffect(() => {
-  
+  useEffect(() => { 
     const option = {
       fetch: fetch,
       accessToken: token$.value
     };
-
     const dbx = new Dropbox(
       option,
     );
-
     dbx.usersGetCurrentAccount(
     )
     .then(response => {
@@ -30,13 +28,13 @@ const [country, updateCountry] = useState("us");
       updateMail(response.email)
       updatePhotUrl(response.profile_photo_url)
       updateCountry(response.country)
-      
     })
     .catch(error => {
-      console.log(error);
+      errorFunction(error, props.updateErrorMessage)
+      console.log('UserAccount userGetCurrentAccount 34');
     });
 
-   },[])
+   },[ props.updateErrorMessage ])
 
 const onMouseOverPhoto = (e) => {
   photoRef.current.style.display = "block";
@@ -53,19 +51,17 @@ const onMouseOutPhoto = (e) => {
   if (!photoUrl){
     checkPhoto = 
     <>
-    <img style={{border: "1px solid black"}} alt="userPhoto" onMouseOver={onMouseOverPhoto} onMouseOut={onMouseOutPhoto} className="userPhoto" src={ require("../Img/profile-img-none.png")}/>
-    <img style={{border: "1px solid black"}} alt="userPhotoBig" ref={photoRef} className="userPhotoBig" src={ require("../Img/profile-img-none.png")}/>
+    <img style={{border: "1px solid grey"}} alt="userPhoto" onMouseOver={onMouseOverPhoto} onMouseOut={onMouseOutPhoto} className="userPhoto" src={ require("../Img/profile-img-none.png")}/>
+    <img style={{border: "1px solid grey"}} alt="userPhotoBig" ref={photoRef} className="userPhotoBig" src={ require("../Img/profile-img-none.png")}/>
     </>
   }
   else{
     checkPhoto = 
     <>
-    <img style={{border: "1px solid black"}} alt="userPhoto" onMouseOver={onMouseOverPhoto} onMouseOut={onMouseOutPhoto} className="userPhoto" src={photoUrl}/>
-    <img style={{border: "1px solid black"}} alt="userPhotoBig" ref={photoRef} className="userPhotoBig" src={photoUrl}/>
+    <img style={{border: "1px solid grey"}} alt="userPhoto" onMouseOver={onMouseOverPhoto} onMouseOut={onMouseOutPhoto} className="userPhoto" src={photoUrl}/>
+    <img style={{border: "1px solid grey"}} alt="userPhotoBig" ref={photoRef} className="userPhotoBig" src={photoUrl}/>
     </>
   }
-
-  
 
 return(
   <div className="userMain">

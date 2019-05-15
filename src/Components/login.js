@@ -19,6 +19,8 @@ const dbx = new Dropbox({
     <Helmet>
       <title>MyBOX Connect</title>
     </Helmet>
+    <p className="loginText-big">The World number 1 box solution</p>
+    <p className="loginText-small">Get control of your files in the cloud. Move, copy, upload and download files and have your personally favorites. Explore the App now!</p>
     <div className="loginMain">
       <a className="loginLink" href={dbx.getAuthenticationUrl('http://localhost:3000/auth')}><button className="loginBtn">Connect</button></a>
     </div>

@@ -107,7 +107,9 @@ const addNewNameClose = () =>{
 
 renameInput = 
 <div className="reNameBack" ref={inputEl} >
-<div className="listRenameInput"><div className="listRenameText"> Rename file</div><span className="listRenameClose" onClick={addNewNameClose}><i className="material-icons">close</i></span><input className="listRenameInputText" style={{outline: "none"}} ref={clearInput} placeholder="New filename..." type="text" onChange={newNameInput} /><button style={{outline: "none"}} className="listBtnRename" onClick={addNewName}>Ok</button></div></div>
+
+<div className="listRenameInput"><h3 className="movefiles-h3">Rename files</h3>
+<div className="renamefile-input-wrapper"><span className="listRenameClose" onClick={addNewNameClose}><i className="material-icons">close</i></span><input className="listRenameInputText" style={{outline: "none"}} ref={clearInput} placeholder="New filename..." type="text" onChange={newNameInput} /><button style={{outline: "none"}} className="renamefile-ok-button" onClick={addNewName}>Ok</button></div></div></div>
 
 
 return(

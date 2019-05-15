@@ -16,12 +16,12 @@ body{
     justify-content: space-between;
     align-content: center;
     width: 100%;
-    height: 150px;
+    height: 170px;
     border: 0px solid black;
 }
 
 #header-logo {
-    width: 230px;
+    width: 250px;
     margin-left: 20px;
 }
 
@@ -33,11 +33,12 @@ body{
     outline: none;
     border: 1px solid #4D4D4D4D;
     padding: 3px;
-    font-size: 18px;
+    font-size: 16px;
 }
 .header-serach-icon{
     position: relative;
     top: 5px;
+    margin-right: 3px;
     height: 50px;
     color: #4d4d4d;
 }
@@ -52,16 +53,20 @@ body{
     top: 5px;
     margin-right: 20px;
     margin-left: 10px;
+    padding: 0 7px;
     height: 25px;
-    border: none;
+    border: 1px solid #00AFD6;
     border-radius: 5px;
-    color: white;
-    background-color: #00AFD6;
+    color: #00AFD6;
+    background-color: transparent;
     outline: none;
     cursor: pointer;
+    font-size: 11px;
+    text-transform: uppercase;
 }
 .headerLogOutBtn:hover{
     background-color: #029BB5;
+    color: #ffffff;
 }
 
 /* ========== MAIN ============ */
@@ -79,7 +84,7 @@ body{
     flex-grow: 0;
     flex-basis: 250px;
     height: 500px;
-    padding: 0 20px 0;
+    padding: 0 20px;
 }
 
 .left-link-wrap {
@@ -106,6 +111,7 @@ body{
 
 .rightSide {
     width: 250px;
+    padding: 0 15px;
 }
 
 .mainTable{
@@ -139,4 +145,22 @@ tr:nth-child(odd) {
     font-size: 26px;
     -webkit-text-stroke: 0.9px #029BB5;
     transition: font-size 0.2s;
+}
+
+.favoriteTitle-my {
+    font-family: 'Lobster', cursive;
+    font-size: 18px;
+    color: #4D4D4D;
+    letter-spacing: 1px;
+    padding: 3px;
+    letter-spacing: 1.5px;
+}
+
+.favoriteList-space {
+    height: 10px;
+}
+
+.star {
+    position: relative;
+    top: 4px;
 }

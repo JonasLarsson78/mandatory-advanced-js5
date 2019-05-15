@@ -117,7 +117,8 @@ props.pollUpdateMode(false)
 
 renameInputFolder = 
 <div ref={inputElFolder} className="reNameBack">
-<div className="listRenameInput"><div className="listRenameText">Rename folder</div><span className="listRenameClose" onClick={addNewNameCloseFolder}><i className="material-icons">close</i></span><input placeholder="New foldername..." className="listRenameInputText" style={{outline: "none"}} ref={clearInputFolder} type="text" onChange={newNameInputFolder} /><button ref={okBtn} className="listBtnRename" style={{outline: "none"}} onClick={addNewNameFolder}>Ok</button></div><div ref={reNameMess} className="renameFoldeEerrorMess">No folder name whit ( ) !</div></div>
+<div className="listRenameInput"><h3 className="movefiles-h3">Rename folder</h3>
+<div className="renamefile-input-wrapper"><span className="listRenameClose" onClick={addNewNameCloseFolder}><i className="material-icons">close</i></span><input placeholder="New foldername..." className="listRenameInputText" style={{outline: "none"}} ref={clearInputFolder} type="text" onChange={newNameInputFolder} /><button ref={okBtn} className="renamefile-ok-button" style={{outline: "none"}} onClick={addNewNameFolder}>Ok</button></div></div><div ref={reNameMess} className="renameFoldeEerrorMess">No folder name whit ( ) !</div></div>
 
 
 return(

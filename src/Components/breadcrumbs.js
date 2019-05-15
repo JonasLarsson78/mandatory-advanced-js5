@@ -13,7 +13,6 @@ const Breadcrumbs = withBreadcrumbs ([{ path: '/', breadcrumb: null }]) (({ brea
   
     <>
     <i className="material-icons-outlined breadcrumb-home" >home</i>
-    <React.Fragment>
       {breadcrumbs.map(({
         match,
         breadcrumb,
@@ -26,7 +25,6 @@ const Breadcrumbs = withBreadcrumbs ([{ path: '/', breadcrumb: null }]) (({ brea
           </NavLink><i className="material-icons breadcrumb">arrow_right</i>
         </span>
       ))}
-    </React.Fragment>
     <br />
     </>
   );

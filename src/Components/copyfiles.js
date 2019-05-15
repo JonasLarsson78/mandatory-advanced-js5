@@ -155,11 +155,13 @@ const CopyFiles = (props) => {
     <ModalBreadcrumbs />
     <p className="movefiles-p">Copy <span className="movefiles-file">{ props.name }</span> ... to ... <span className="movefiles-file">{ movePath.slice(1)}</span></p>
     <p>{ fileTransfer }</p>
+    <div className="movefiles-table-wrapper">
     <table>
       <tbody>
       { mapping }
       </tbody>
     </table>
+    </div>
     <p style={{ color: 'red'}}> { moveError } </p>
     <button className="modal-movefiles-button" onClick={moveToFolder}>Copy</button>
     <i className="material-icons upload-close" onClick={closeModal}>close</i>
