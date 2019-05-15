@@ -57,7 +57,7 @@ const Search = (props) => {
               console.log('Search FilesListFolder 57');
               errorFunction(error, props.updateErrorMessage)
             });
-
+            props.updateErrorMessage('')
     }
     if(e.target.value.length > 0){
      //props.clearSearchUpdate(false)
@@ -89,9 +89,7 @@ const Search = (props) => {
 
       })
     }
-    
-    
-    
+    props.updateErrorMessage('')
   }
     
 return (

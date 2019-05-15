@@ -38,12 +38,17 @@ const Home = (props) => {
   }, [data]);
 
   useEffect(() => {
+    setTimeout(() => {
+      updateErrorMessage("")
+    }, 6000);
+  }, [errorMessage]);
+
+  useEffect(() => {
     const subscription = favorites$.subscribe(updateFavorites);
     return () => subscription.unsubscribe();
   }, []);
 
   useEffect(() => {
-
     if (thumbnails.length === data.length) {
       const isLoaded = thumbnails.every((x, idx) => {
         return x[".tag"] === "failure" || x.metadata.id === data[idx].id;

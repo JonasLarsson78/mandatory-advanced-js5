@@ -23,7 +23,15 @@ export const downloadFile = (e) => {
           document.body.removeChild(link);
         })
         .catch(error => {
-          console.log('Delete FilesDelete2 55');
+          if (error.response.status > 399 && error.response.status < 500 ) {
+            alert('Something went wrong, please try again');
+          }
+          else if (error.response.status > 499 && error.response.status < 600 ) {
+            alert('Something went wrong with the server, please try again');
+          }
+          else {
+            alert('Something went wrong, please try again');
+          }
         });
     }
   }

@@ -89,20 +89,18 @@ const addNewName = (e) => {
     console.log('RenameFile Filesmove rad 89');
   });
 
-
-
-
   inputEl.current.style.display = "none"
   document.body.style.overflowY = "auto"
   clearInput.current.value = "";
   props.pollUpdateMode(false)
-
+  props.updateErrorMessage('')
 }
 
 const addNewNameClose = () =>{
   inputEl.current.style.display = "none"
   document.body.style.overflowY = "auto"
   props.pollUpdateMode(false)
+  props.updateErrorMessage('')
 }
 
 renameInput = 
