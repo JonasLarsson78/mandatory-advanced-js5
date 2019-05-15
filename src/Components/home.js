@@ -382,48 +382,7 @@ const Home = (props) => {
     
   }
 
-  const linkToRoot = () => {
-    const option = {
-      fetch: fetch,
-      accessToken: token$.value
-    };
-    const dbx = new Dropbox(
-      option,
-    );
-
  
-      dbx.filesListFolder({
-        path: '',
-      
-      })
-      .then(response => {
-
-
-
-        console.log('bilder börjar hämtas')
-          updateData(response.entries)
-          updateOldData(response.entries)
-
-        getThumbnails(dbx, response.entries)
-        
-        .then(entries => {  
-          if (response.entries !== dataRef.current) {
-            return;
-          }
-          
-          console.log('bilder klara')
-            updateThumbnails(entries)
-            
-          })
-          .catch(function(error) {
-            errorFunction(error, updateErrorMessage)
-            console.log('Home filesrequest folder 278');
-           });
-           
-
-      })
-  
-}
   
   if(token === null){
     return <Redirect to="/" />
@@ -436,7 +395,7 @@ const Home = (props) => {
     </Helmet>
     
     <header className="mainHeader">
-      <div className="header-logo-wrap"><Link to='/home' onClick={linkToRoot}><img id="header-logo" src={ require('../Img/Logo_mybox.png') } alt="My Box logo"/></Link> </div>
+      <div className="header-logo-wrap"><img id="header-logo" src={ require('../Img/Logo_mybox.png') } alt="My Box logo"/></div>
         <span className="headerContent">
           <Search updateErrorMessage={ updateErrorMessage } pollUpdateMode={pollUpdateMode} searchData={data} folder={props.location.pathname} dataUpdate={dataUpdate} thumbnailUpdate={thumbnailUpdate} oldDataUpdate={oldDataUpdate} clearSearch={clearSearch} clearSearchUpdate={clearSearchUpdate} />
           <span><UserAccount updateErrorMessage={ updateErrorMessage }/></span>
