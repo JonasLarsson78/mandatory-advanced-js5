@@ -20,6 +20,8 @@ import '../Css/home.css';
 
 
 const Home = (props) => {
+
+
   const [token, updateTokenState] = useState(token$.value)
   const [data, updateData] = useState([]);
   const [thumbnails, updateThumbnails] = useState([])
@@ -29,7 +31,7 @@ const Home = (props) => {
   const [pollMode, updatePollMode] = useState(false)
   const [clearSearch, updateClearSearch] = useState(true)
   const [errorMessage, updateErrorMessage] = useState('')
-
+  
 
   const dataRef = useRef([]);
 
@@ -38,6 +40,10 @@ const Home = (props) => {
   }, [data]);
 
   useEffect(() => {
+    if (errorMessage === ''){
+      return;
+    }
+    console.log('error')
     setTimeout(() => {
       updateErrorMessage("")
     }, 5000);
@@ -374,7 +380,7 @@ const Home = (props) => {
 
     
   }
-
+  
   if(token === null){
     return <Redirect to="/" />
   }

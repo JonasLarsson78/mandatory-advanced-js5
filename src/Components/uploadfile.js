@@ -20,7 +20,7 @@ const UploadFile = (props) => {
   const upload = (e) => {
     e.preventDefault();
     const fileNodeList = inputRef.current.files;
-
+    console.log(fileNodeList)
     if(fileNodeList.length === 0){
       return;
     }
