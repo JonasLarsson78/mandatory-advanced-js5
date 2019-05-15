@@ -2,7 +2,7 @@ import React from 'react';
 import Login from './Components/login';
 import Auth from './Components/auth';
 import Home from './Components/home';
-import { BrowserRouter as Router, Route}from "react-router-dom";
+import { ReactRouter as Router, Route}from "react-router-dom";
 
 
 
