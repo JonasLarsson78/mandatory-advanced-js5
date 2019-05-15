@@ -20,8 +20,16 @@ const UploadFile = (props) => {
   const upload = (e) => {
     e.preventDefault();
     const fileNodeList = inputRef.current.files;
+
+    if(fileNodeList.length === 0){
+      return;
+    }
+
     const filesiZeLimit = 150 * 1024 * 1024;
     const fileList = Array.from(fileNodeList)
+    
+    
+
     const option = {
       fetch: fetch,
       accessToken: token$.value,
@@ -29,14 +37,14 @@ const UploadFile = (props) => {
     const dbx = new Dropbox (
       option,
     );
-    console.log(fileList[0].size)
+ 
     
     
       updateMessage(<><div>Upload in progress</div><div className="uploadLds-ring"><div></div><div></div><div></div><div></div></div></>)
       
       
 
-      console.log(fileList[0].size)
+    
       if(fileList[0].size < filesiZeLimit){
        
         dbx.filesUpload({  
