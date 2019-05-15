@@ -99,20 +99,19 @@ const addNewNameFolder = (e) => {
         errorFunction(error, props.updateErrorMessage)
         console.log('RenameFolder FilesMoveV2 rad 101');
       });
-    
-
-
 
 inputElFolder.current.style.display = "none"
 document.body.style.overflowY = "auto"
 clearInputFolder.current.value = "";
 props.pollUpdateMode(false)
+props.updateErrorMessage('')
 
 }
 const addNewNameCloseFolder = () =>{
 inputElFolder.current.style.display = "none"
 document.body.style.overflowY = "auto"
 props.pollUpdateMode(false)
+props.updateErrorMessage('')
 }
 
 renameInputFolder = 

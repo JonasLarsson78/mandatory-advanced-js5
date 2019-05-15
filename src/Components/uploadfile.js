@@ -156,6 +156,7 @@ const UploadFile = (props) => {
     const closeModal = () => {
       uploadModal.current.style.display = 'none';
       props.pollUpdateMode(false)
+      props.updateErrorMessage('')
     }
 
     const startModal = () => {

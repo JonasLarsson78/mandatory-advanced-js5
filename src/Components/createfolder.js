@@ -74,6 +74,7 @@ const CreateFolder = (props) => {
     //uploadModal.current.style.display = 'none';
     updateHide("none")
     props.pollUpdateMode(false)
+    props.updateErrorMessage('')
   }
 
   const startModal = () => {

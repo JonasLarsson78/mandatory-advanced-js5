@@ -160,6 +160,8 @@ const MoveFiles = (props) => {
           //updateMoveError("File / Folder with the same name already exists!")
         });
         props.pollUpdateMode(false)
+        props.updateErrorMessage('')
+        updateMoveError('')
     }
  /*==================*/
  
@@ -186,14 +188,11 @@ const MoveFiles = (props) => {
       updateShowModal(false)
       updateMovePath('')
       updateStartPath('')
+      updateMoveError('')
       document.body.style.overflowY = "auto"
       props.pollUpdateMode(false)
+      props.updateErrorMessage('')
   }
-  
-
- 
-
-  
 
     moveFolders = 
     <Router>

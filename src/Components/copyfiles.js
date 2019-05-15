@@ -119,6 +119,8 @@ const CopyFiles = (props) => {
             console.log('CopyFiles FilesListFolder 122');
             errorFunction(error, updateMoveError)
           });
+          props.updateErrorMessage('')
+          updateMoveError('')
     }
  /*==================*/
 
@@ -144,6 +146,8 @@ const CopyFiles = (props) => {
       props.pollUpdateMode(false)
       updateMovePath('')
       updateStartPath('')
+      updateMoveError('')
+      props.updateErrorMessage('')
       document.body.style.overflowY = "auto"
   }
 

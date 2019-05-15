@@ -70,6 +70,7 @@ const yes = () => {
     //document.body.style.overflowY = "auto"
     element.current.style.zIndex = "0";
     props.pollUpdateMode(false)
+    props.updateErrorMessage('')
 }
 
 const no = () => {
@@ -78,6 +79,7 @@ const no = () => {
     document.body.style.overflowY = "auto"
     element.current.style.zIndex = "0";
     props.pollUpdateMode(false)
+    props.updateErrorMessage('')
 }
 
 delModal = <div style={{pointerEvents: pointerEvent}} ref={element} className="modalBack">

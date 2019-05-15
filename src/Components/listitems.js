@@ -13,11 +13,6 @@ import AddFavorites from "./addFavorites.js";
 import CopyFiles from './copyfiles.js'
 
 
-
-
-
-
-
 const ListItems = (props) => {
 
  //===================RENDER LIST====================
