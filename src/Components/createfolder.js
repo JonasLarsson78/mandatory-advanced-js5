@@ -11,10 +11,6 @@ import '../Css/createfolder.css';
 const CreateFolder = (props) => {
   const [input, updateInput] = useState('')
   const [hide, updateHide] = useState("none");
-  const reNameMess = useRef(null)
-  const okBtn = useRef(null)
-
-
   let newFolder = props.folder
   newFolder = newFolder.substring(5);
 
@@ -24,17 +20,6 @@ const CreateFolder = (props) => {
 
   const changeInput = (e) => {
     updateInput(e.target.value)
-    let target = e.target.value
-    if (target.includes("(") && target.includes(")")){
-      okBtn.current.style.pointerEvents = "none"
-      okBtn.current.style.background = "gray"
-      reNameMess.current.style.display = "block"
-    }
-    else{
-      okBtn.current.style.pointerEvents = "visible" 
-      okBtn.current.style.background = "#029BB5"
-      reNameMess.current.style.display = "none"
-    }
   }
 
   const createFolder = () => {
@@ -104,8 +89,7 @@ const CreateFolder = (props) => {
       <label htmlFor="folder" className="upload-folder-label">Type in new folder name</label>
       <input className="upload-folder-input" type="text" id="folder" onChange={changeInput} value={input}></input>
       <i className="material-icons upload-close" id="testi" onClick={ closeModal }>close</i>
-      <br /><button ref={okBtn} className="upload-folder-modal-button" onClick={createFolder}>Create new Folder</button>
-      <div ref={reNameMess} className="renameFoldeEerrorMess">No folder name whit ( ) !</div>
+      <br /><button className="upload-folder-modal-button" onClick={createFolder}>Create new Folder</button>
     </div>
 
 
