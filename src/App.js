@@ -11,16 +11,9 @@ function App() {
 
   return (
     <Router>
-    <div className="App">
-    
-    
-    </div>
-    
     <Route exact path='/' component={Login} />
     <Route path='/auth' component={Auth} />
     <Route path='/home' component={Home} />
-
-   
     </Router>
   );
 }
