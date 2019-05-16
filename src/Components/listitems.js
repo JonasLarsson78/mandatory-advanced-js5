@@ -160,7 +160,6 @@ return( //FOLDERS
     )
   } 
 }
-
     
   const listData = props.renderData.map(renderList)
   
