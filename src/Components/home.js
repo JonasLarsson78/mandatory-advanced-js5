@@ -377,8 +377,6 @@ const Home = (props) => {
 
   const clearSearchUpdate = (bool) => {
     updateClearSearch(bool)
-
-
     
   }
 
