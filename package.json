@@ -10,6 +10,7 @@
     "enzyme": "^3.9.0",
     "enzyme-adapter-react-16": "^1.13.0",
     "enzyme-to-json": "^3.3.5",
+    "gh-pages": "^2.0.1",
     "helmet": "^3.16.0",
     "i": "^0.3.6",
     "lodash.chunk": "^4.2.0",
