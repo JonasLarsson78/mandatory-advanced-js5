@@ -67,7 +67,7 @@ const yes = () => {
           });
     
     element.current.style.visibility = "hidden"
-    //document.body.style.overflowY = "auto"
+    document.body.style.overflowY = "auto"
     element.current.style.zIndex = "0";
     props.pollUpdateMode(false)
     props.updateErrorMessage('')
