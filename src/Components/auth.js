@@ -40,7 +40,6 @@ const Auth = () => {
    </>
     )
   }
-  
     if(isLoggedIn){
           return  <Redirect to={{pathname:"/home", state: {isLoggedIn: isLoggedIn}}} />
     }
